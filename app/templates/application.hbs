@@ -1,0 +1,5 @@
+{{scoped-array-checklist optionList=bikeMetaData.domain.codedValues}}
+{{#leaflet-map lat=42.1 lng=-71 zoom=12 as |layers|}}
+  {{layers.tile url='http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}}
+  {{cartodb-layer sql=sqlMapping url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' zIndex=1}}
+{{/leaflet-map}}

@@ -1,0 +1,4 @@
+{{#each optionList as |option|}}
+	{{ui-checkbox label=option.name checked=(concat "option" option.code) onChange=(action 'reset' (concat "option" option.code))}}
+{{/each}}
+
