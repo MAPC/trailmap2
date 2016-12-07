@@ -1,5 +1,4 @@
 import Ember from 'ember';
-// import GeneratorMixin from '../mixins/generator';
 import computed from 'ember-computed';
 import cartodbSql from '../utils/cartodb-sql';
 import config from '../config/environment';
@@ -7,12 +6,6 @@ import request from 'ember-ajax';
 
 let filters = config.APP.filters;
 let paramNames = filters.uniqBy('alias').mapBy('alias');
-
-function makeSql(table, fields) {
-  return computed(...paramNames, function() {
-    return cartodbSql(this, filters, table, fields);
-  });
-}
 
 export default Ember.Controller.extend({
   ajax: Ember.inject.service(),
@@ -30,8 +23,15 @@ export default Ember.Controller.extend({
 
   }.property('walkingtrailsQuery,bikefacilitiesQuery,landlineregionalgreenwaysQuery'),
 
-  bike_fac_type: '1,2,3,5',
+  bike_fac_type: '1,3,4,5,7,9,2',
+  walk_fac_type: '1,2,3',
 
   bikeMetaData: config.APP.domains.bike_fac_type,
   walkMetaData: config.APP.domains.walk_fac_type
 });
+
+function makeSql(table, fields) {
+  return computed(...paramNames, function() {
+    return cartodbSql(this, filters, table, fields);
+  });
+}
