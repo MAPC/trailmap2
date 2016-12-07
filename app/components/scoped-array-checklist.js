@@ -2,6 +2,7 @@ import Ember from 'ember';
 import computed from 'ember-computed';
 
 export default Ember.Component.extend({
+  classNames: ['filter-list'],
   getVals: Ember.on('init', function() {
     let optionList = this.get('optionList').mapBy('code');
     let valuesList = this.get('valuesList');

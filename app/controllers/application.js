@@ -27,7 +27,13 @@ export default Ember.Controller.extend({
   walk_fac_type: '1,2,3',
 
   bikeMetaData: config.APP.domains.bike_fac_type,
-  walkMetaData: config.APP.domains.walk_fac_type
+  walkMetaData: config.APP.domains.walk_fac_type,
+
+  actions: {
+    getMap (map) {
+      map.target.zoomControl.setPosition('topright');
+    }    
+  }
 });
 
 function makeSql(table, fields) {
