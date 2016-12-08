@@ -1,5 +1,7 @@
 <nav class="filters">
+
   <div class="ui link vertical menu">
+    {{vizJson}}
     <h2 class="ui attached header inverted">Trailmap</h2>
     <h3 class="ui attached header inverted">Bike</h3>
     {{scoped-array-checklist 
@@ -12,10 +14,10 @@
   </div>
 </nav>
 <main>
-  {{#leaflet-map lat=42.1 lng=-71 zoom=zoom zoomControl=true onLoad='getMap' as |layers|}}
+  {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=true onCartoLayerLoad='test' onLoad='getMap' onMoveend=(action "updatePosition") as |layers|}}
     {{tile-layer url='http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}}
     {{cartodb-layer 
       sql=sqlMapping url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
-      zIndex=1}}
+      zIndex=1 legends=false search=true}}
   {{/leaflet-map}}
 </main>
