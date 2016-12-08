@@ -1,7 +1,9 @@
 {{#each optionList as |option|}}
-    {{ui-checkbox 
-      class=(concat "item" " " "option" option.code)
-      label=option.name 
-      checked=(get this (concat "option" option.code))
-      onChange=(action 'reset' (concat "option" option.code))}}
+  {{#ui-checkbox 
+    color=option.color
+    label=option.name 
+    class="item icon"
+    checked=(get this (concat "option" option.code))
+    onChange=(action 'reset' (concat "option" option.code))}}
+  {{/ui-checkbox}}
 {{/each}}

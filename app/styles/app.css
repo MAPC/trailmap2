@@ -22,8 +22,8 @@ main {
   display: flex;
   flex-direction: column;
   position: absolute;
-  z-index: 1000;
-  max-width: 35%;
+  z-index: 1;
+  width: 18rem;
   margin: 1em;
   background-color: white;
 }
@@ -42,7 +42,7 @@ main {
 }
 
 .filters .ui.vertical.menu {
-  width: 20rem;
+  width: 25rem;
 }
 
 .ui.vertical.menu .item {
@@ -55,7 +55,9 @@ main {
   margin: 1em;
 }
 
-
+.cartodb-logo {
+  display: none !important;
+}
 
 .leaflet-container {
   display: flex;

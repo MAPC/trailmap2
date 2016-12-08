@@ -1,18 +1,33 @@
 <nav class="filters">
-
-  <div class="ui link vertical menu">
-    {{vizJson}}
+  <div class="ui link vertical compact menu">
     <h2 class="ui attached header inverted">Trailmap</h2>
-    <h3 class="ui attached header inverted">Bike</h3>
-    {{scoped-array-checklist 
-      optionList=bikeMetaData.domain.codedValues 
-      valuesList=bike_fac_type}}
-    <h3 class="ui attached header inverted">Walk</h3>
-    {{scoped-array-checklist 
-      optionList=walkMetaData.domain.codedValues 
-      valuesList=walk_fac_type}}
+    {{#ui-accordion}}
+      <h3 class="ui attached active title header inverted" id="has-info-tooltip">
+        <i class="dropdown icon"></i>
+        Bike
+      </h3>
+      <div class="active content">
+        {{scoped-array-checklist 
+          optionList=bikeMetaData.domain.codedValues 
+          valuesList=bike_fac_type}}
+      </div>
+    {{/ui-accordion}}
+    {{#ui-accordion}}
+      <h3 class="ui attached header title inverted">
+        <i class="dropdown icon"></i>
+        Walk
+      </h3>
+      <div class="content">
+        {{scoped-array-checklist 
+          optionList=walkMetaData.domain.codedValues 
+          valuesList=walk_fac_type}}
+      </div>
+    {{/ui-accordion}}
   </div>
 </nav>
+
+
+
 <main>
   {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=true onCartoLayerLoad='test' onLoad='getMap' onMoveend=(action "updatePosition") as |layers|}}
     {{tile-layer url='http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}}

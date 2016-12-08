@@ -87,15 +87,18 @@ module.exports = function(environment) {
             codedValues: [
               {
                 name: "Paved Walkway",
-                code: 1
+                code: 1,
+                color: "#A6CEE3"
               },
               {
                 name: "Footpath, natural surface (single track or unknown/default)",
-                code: 2
+                code: 2,
+                color: "#1F78B4"
               },
               {
                 name: "Cartpath, natural surface (double track)",
-                code: 3
+                code: 3,
+                color: "#B2DF8A"
               }
             ]
           },
