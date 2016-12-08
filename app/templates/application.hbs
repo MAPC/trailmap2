@@ -1,7 +1,7 @@
 <nav class="filters">
   <div class="ui link vertical compact menu">
     <h2 class="ui attached header inverted">Trailmap</h2>
-    {{#ui-accordion}}
+    {{#ui-accordion exclusive=true}}
       <h3 class="ui attached active title header inverted" id="has-info-tooltip">
         <i class="dropdown icon"></i>
         Bike
@@ -12,7 +12,7 @@
           valuesList=bike_fac_type}}
       </div>
     {{/ui-accordion}}
-    {{#ui-accordion}}
+    {{#ui-accordion exclusive=true}}
       <h3 class="ui attached header title inverted">
         <i class="dropdown icon"></i>
         Walk
@@ -25,8 +25,6 @@
     {{/ui-accordion}}
   </div>
 </nav>
-
-
 
 <main>
   {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=true onCartoLayerLoad='test' onLoad='getMap' onMoveend=(action "updatePosition") as |layers|}}
