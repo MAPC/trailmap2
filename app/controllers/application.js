@@ -35,11 +35,11 @@ export default Ember.Controller.extend({
 
   actions: {
     getMap(map) {
-      map.target.zoomControl.setPosition('topright');
-      map.target.eachLayer((layer) => {
-        console.log(layer.layers);
-        // this.set('vizJson', layer.vizJson);
+      map.target.eachLayer(function(layer) {
+        window.layer = layer;
       });
+      
+      map.target.zoomControl.setPosition('topright');
     },
     updatePosition(e) {
       let map = e.target;
