@@ -33,10 +33,6 @@ export default Ember.Controller.extend({
   bikeMetaData: config.APP.domains.bike_fac_type,
   walkMetaData: config.APP.domains.walk_fac_type,
 
-  didInsertElement() {
-    $('ui.accordion').accordion();
-  }
-
   actions: {
     getMap(map) {
       map.target.eachLayer(function(layer) {
