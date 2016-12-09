@@ -1,28 +1,37 @@
 <nav class="filters">
   <div class="ui link vertical compact menu">
-    <h2 class="ui attached header inverted">Trailmap</h2>
-    {{#ui-accordion exclusive=true}}
-      <h3 class="ui attached active title header inverted" id="has-info-tooltip">
-        <i class="dropdown icon"></i>
-        Bike
-      </h3>
-      <div class="active content">
-        {{scoped-array-checklist 
-          optionList=bikeMetaData.domain.codedValues 
-          valuesList=bike_fac_type}}
+    {{#ui-accordion class="ui accordion"}}
+      <h2 class="ui parent attached header title inverted">
+        <i class="dropdown right floated icon"></i>
+        Trailmap Filters
+      </h2>
+      <div class="ui parent content">
+        {{#ui-accordion exclusive=true}}
+          <h3 class="ui child attached title header inverted">
+            <i class="dropdown icon"></i>
+            Bike
+          </h3>
+          <div class="child content">
+            {{scoped-array-checklist 
+              optionList=bikeMetaData.domain.codedValues 
+              valuesList=bike_fac_type}}
+          </div>
+        {{/ui-accordion}}
+        {{#ui-accordion exclusive=true}}
+          <h3 class="ui child attached header title inverted">
+            <i class="dropdown icon"></i>
+            Walk
+          </h3>
+          <div class="child content">
+            {{scoped-array-checklist 
+              optionList=walkMetaData.domain.codedValues 
+              valuesList=walk_fac_type}}
+          </div>
+        {{/ui-accordion}}
       </div>
     {{/ui-accordion}}
-    {{#ui-accordion exclusive=true}}
-      <h3 class="ui attached header title inverted">
-        <i class="dropdown icon"></i>
-        Walk
-      </h3>
-      <div class="content">
-        {{scoped-array-checklist 
-          optionList=walkMetaData.domain.codedValues 
-          valuesList=walk_fac_type}}
-      </div>
-    {{/ui-accordion}}
+    
+
   </div>
 </nav>
 

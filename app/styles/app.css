@@ -18,6 +18,10 @@ main {
   flex-direction: column;
 }
 
+
+
+
+/* filters */
 .filters {
   display: flex;
   flex-direction: column;
@@ -26,6 +30,10 @@ main {
   width: 18rem;
   margin: 1em;
   background-color: white;
+}
+
+.filters > .ui.menu {
+  border: none;
 }
 
 .filters h2.ui.inverted.attached.header {
@@ -59,8 +67,29 @@ main {
   display: none !important;
 }
 
+
+/* leaflet */
 .leaflet-container {
   display: flex;
   width: 100%;
   flex-direction: row;
+}
+
+.leaflet-bar {
+  border-radius: 0px;
+  box-shadow: none;
+}
+
+.leaflet-bar a:first-child {
+  border-radius: 0px;
+}
+
+.leaflet-bar a:last-child {
+  border-radius: 0px;
+}
+
+.leaflet-bar a {
+  color: white;
+  border-radius: 0;
+  background-color: rgba(0,0,0,0.8);
 }
