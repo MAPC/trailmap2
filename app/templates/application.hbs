@@ -39,7 +39,7 @@
 
 <main>
   {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=true onLoad='getMap' onMoveend=(action "updatePosition") as |layers|}}
-    {{tile-layer url='http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}}
+    {{tile-layer url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'}}
     {{cartodb-layer 
       sql=sqlMapping https=true onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
       zIndex=1 legends=false search=true}}
