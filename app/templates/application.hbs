@@ -44,6 +44,9 @@
       sql=sqlMapping https=true onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
       zIndex=1 legends=false search=true}}
     {{#if currentLocation}}
+      {{#if locations}}
+        {{polyline-layer locations=locations}}
+      {{/if}}
       {{marker-layer location=currentLocation}}
     {{/if}}
   {{/leaflet-map}}
