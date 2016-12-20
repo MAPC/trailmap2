@@ -41,5 +41,8 @@
     {{cartodb-layer 
       sql=sqlMapping onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
       zIndex=1 legends=false search=true}}
+    {{#if currentLocation}}
+      {{marker-layer location=currentLocation}}
+    {{/if}}
   {{/leaflet-map}}
 </main>
