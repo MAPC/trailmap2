@@ -30,6 +30,8 @@ export default Ember.Controller.extend({
   lat: 42.32657,
   lng: -71.352,
 
+  currentLocation: null,
+
   bikeMetaData: config.APP.domains.bike_fac_type,
   walkMetaData: config.APP.domains.walk_fac_type,
 
