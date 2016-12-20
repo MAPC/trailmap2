@@ -11,8 +11,8 @@ export default Ember.Controller.extend({
   ajax: Ember.inject.service(),
   queryParams: filters.uniqBy('alias').mapBy('alias').concat(['zoom', 'lat', 'lng']),
   // these long field sql pieces need to be moved into environment. the API should change to allow for this.
-  walkingtrailsQuery: makeSql('walking_trails', ["CASE WHEN fac_type=1 THEN 'Paved Walkway' WHEN fac_type=2 THEN 'Footpath' WHEN fac_type=3 THEN 'Cartpath' END AS fac_type_name"]),
-  bikefacilitiesQuery: makeSql('bike_facilities', ["(CASE WHEN fac_type=1 then 'Bike Lane' WHEN fac_type=2 THEN 'Cycle Track' WHEN fac_type=3 THEN 'Sign-posted on-road bike route' WHEN fac_type=4 THEN 'Paved bike shoulder' WHEN fac_type=5 THEN 'Shared-Use Path' WHEN fac_type=7 THEN 'Bicycle / Pedestrian priority roadway' WHEN fac_type=9 THEN 'Marked Shared-Lane' END) AS fac_type_str"]),
+  walkingtrailsQuery: makeSql('walking_trails'),
+  bikefacilitiesQuery: makeSql('bike_facilities'),
   landlineregionalgreenwaysQuery: makeSql('landline_regional_greenways'),
 
   sqlMapping: function() {

@@ -83,7 +83,7 @@ module.exports = function(environment) {
           alias: "Facility Type",
           domain: {
             type: "codedValue",
-            name: "wfac_type",
+            name: "fac_type",
             codedValues: [
               {
                 name: "Paved Walkway",
