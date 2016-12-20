@@ -15,21 +15,26 @@ export default function cartodbSql(context, filters, table, fields) {
   filters.forEach((el) => {
     let column = `${table}.${el['name']}`
     let value = context.get(el['alias']);
-    if(!!value && (el['table'] == queryTable)) {
+
+    if((!!value || (el['type'] == 'list') ) && (el['table'] == queryTable)) {
       switch(el['type']) {
         case "boolean":
           query.where(column + " = " + value);
           break;
+          
         case "range":
           let propertyValue = value;
           let parsedRangeArray = JSON.parse(propertyValue);
           query.where(column + " BETWEEN " + parsedRangeArray[0] + " AND " + parsedRangeArray[1]);
           break;
+
         case "list":
           // not an array for now
           // let joinedArray = value.join();
           if(!!value.length) {
             query.where(column + " IN " + `(${value})`);  
+          } else {
+            query.where(column + " IN " + `(-1)`);  
           }
           break;
         default:

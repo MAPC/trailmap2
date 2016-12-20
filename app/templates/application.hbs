@@ -1,16 +1,45 @@
 <nav class="filters">
-  {{scoped-array-checklist 
-    optionList=bikeMetaData.domain.codedValues 
-    valuesList=bike_fac_type}}
-  {{scoped-array-checklist 
-    optionList=walkMetaData.domain.codedValues 
-    valuesList=walk_fac_type}}
+  <div class="ui link vertical compact menu">
+    {{#ui-accordion class="ui accordion"}}
+      <h2 class="ui parent attached header title inverted">
+        <i class="dropdown right floated icon"></i>
+        Trailmap Filters
+      </h2>
+      <div class="ui parent content">
+        {{#ui-accordion exclusive=true}}
+          <h3 class="ui child attached title header inverted">
+            <i class="dropdown icon"></i>
+            Bike
+          </h3>
+          <div class="child content">
+            {{scoped-array-checklist 
+              optionList=bikeMetaData.domain.codedValues 
+              valuesList=bike_fac_type}}
+          </div>
+        {{/ui-accordion}}
+        {{#ui-accordion exclusive=true}}
+          <h3 class="ui child attached header title inverted">
+            <i class="dropdown icon"></i>
+            Walk
+          </h3>
+          <div class="child content">
+            {{scoped-array-checklist 
+              optionList=walkMetaData.domain.codedValues 
+              valuesList=walk_fac_type}}
+          </div>
+        {{/ui-accordion}}
+      </div>
+    {{/ui-accordion}}
+    
+
+  </div>
 </nav>
+
 <main>
-  {{#leaflet-map lat=42.1 lng=-71 zoom=12 zoomControl=true onLoad='getMap' as |layers|}}
+  {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=true onLoad='getMap' onMoveend=(action "updatePosition") as |layers|}}
     {{tile-layer url='http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'}}
     {{cartodb-layer 
-      sql=sqlMapping url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
-      zIndex=1}}
+      sql=sqlMapping onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
+      zIndex=1 legends=false search=true}}
   {{/leaflet-map}}
 </main>

@@ -14,18 +14,7 @@ module.exports = function(environment) {
     },
 
     APP: {
-      filters: [{
-        name: "fac_type_name",
-        alias: "walk_fac_type_name",
-        table: "walking_trails",
-        type: "list"
-      },
-      {
-        name: "fac_type_name",
-        alias: "bike_fac_type_name",
-        table: "bike_facilities",
-        type: "list"
-      },
+      filters: [
       {
         name: "fac_type",
         alias: "bike_fac_type",
@@ -39,7 +28,6 @@ module.exports = function(environment) {
         type: "list"
       }
       ],
-
       domains: {
         bike_fac_type: {
           name: "fac_type",
@@ -51,31 +39,38 @@ module.exports = function(environment) {
             codedValues: [
               {
                 name: "Bike Lane",
-                code: 1
+                code: 1,
+                color: "#A6CEE3"
               },
               {
                 name: "Sign-posted on-road bike route",
-                code: 3
+                code: 3,
+                color: "#1F78B4"
               },
               {
                 name: "Paved bike shoulder",
-                code: 4
+                code: 4,
+                color: "#B2DF8A"
               },
               {
                 name: "Shared-Use Path",
-                code: 5
+                code: 5,
+                color: "#33A02C"
               },
               {
                 name: "Bicycle / Pedestrian priority roadway",
-                code: 7
+                code: 7,
+                color: "#FB9A99"
               },
               {
                 name: "Marked Shared-Lane",
-                code: 9
+                code: 9,
+                color: "#E31A1C"
               },
               {
                 name: "Protected Bike Lane",
-                code: 2
+                code: 2,
+                color: "#FDBF6F"
               }
             ]
           },
@@ -92,15 +87,18 @@ module.exports = function(environment) {
             codedValues: [
               {
                 name: "Paved Walkway",
-                code: 1
+                code: 1,
+                color: "#A6CEE3"
               },
               {
                 name: "Footpath, natural surface (single track or unknown/default)",
-                code: 2
+                code: 2,
+                color: "#1F78B4"
               },
               {
                 name: "Cartpath, natural surface (double track)",
-                code: 3
+                code: 3,
+                color: "#B2DF8A"
               }
             ]
           },
@@ -134,6 +132,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.locationType = 'hash';
+    ENV.baseUrl = '/trailmap/';
 
   }
 
