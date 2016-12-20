@@ -12,7 +12,7 @@ export default Ember.Route.extend({
         applicationController.set('currentLocation', null);
       } else {
         this.toggleProperty('tracking');
-        this.get('geolocation').trackLocation(null, (geoObject) => {
+        this.get('geolocation').trackLocation({enableHighAccuracy: true}, (geoObject) => {
           applicationController.set('currentLocation', this.get('geolocation.currentLocation'));
         });        
       }
