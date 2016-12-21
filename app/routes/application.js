@@ -34,6 +34,4 @@ export default Ember.Route.extend({
     let applicationController = this.controllerFor('application');
     applicationController.set('locations', this.get('locations'));
   })
-  // some debounce functionality that hits currentLocation at some set interval?
-  // or it observes it... then a geojson loads feature. I think this is in leaflet.
 });

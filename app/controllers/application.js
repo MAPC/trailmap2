@@ -9,22 +9,27 @@ let paramNames = filters.uniqBy('alias').mapBy('alias');
 
 export default Ember.Controller.extend({
   ajax: Ember.inject.service(),
-  queryParams: filters.uniqBy('alias').mapBy('alias').concat(['zoom', 'lat', 'lng']),
+  queryParams: filters.uniqBy('alias').mapBy('alias').concat(['zoom', 'lat', 'lng', 'basemap']),
   // these long field sql pieces need to be moved into environment. the API should change to allow for this.
-  walkingtrailsQuery: makeSql('walking_trails', ["CASE WHEN fac_type=1 THEN 'Paved Walkway' WHEN fac_type=2 THEN 'Footpath' WHEN fac_type=3 THEN 'Cartpath' END AS fac_type_name"]),
-  bikefacilitiesQuery: makeSql('bike_facilities', ["(CASE WHEN fac_type=1 then 'Bike Lane' WHEN fac_type=2 THEN 'Cycle Track' WHEN fac_type=3 THEN 'Sign-posted on-road bike route' WHEN fac_type=4 THEN 'Paved bike shoulder' WHEN fac_type=5 THEN 'Shared-Use Path' WHEN fac_type=7 THEN 'Bicycle / Pedestrian priority roadway' WHEN fac_type=9 THEN 'Marked Shared-Lane' END) AS fac_type_str"]),
-  landlineregionalgreenwaysQuery: makeSql('landline_regional_greenways'),
+  walkingtrailsQuery: makeSql('walk_fac_type', ["(CASE WHEN fac_type=1 THEN 1 WHEN fac_type=2 THEN 1 WHEN fac_type=3 THEN 1 END) AS fac_type_simp_code", "CASE WHEN fac_type=1 THEN 'Paved Walkway' WHEN fac_type=2 THEN 'Footpath' WHEN fac_type=3 THEN 'Cartpath' END AS fac_type_name"]),
+  bikefacilitiesQuery: makeSql('bike_fac_type', ["(CASE WHEN fac_type=1 then 'Bike Lane' WHEN fac_type=2 THEN 'Cycle Track' WHEN fac_type=3 THEN 'Sign-posted on-road bike route' WHEN fac_type=4 THEN 'Paved bike shoulder' WHEN fac_type=5 THEN 'Shared-Use Path' WHEN fac_type=7 THEN 'Bicycle / Pedestrian priority roadway' WHEN fac_type=9 THEN 'Marked Shared-Lane' END) AS fac_type_str"]),
+  landlineregionalgreenwaysQuery: makeSql('land_line_type'),
+  dualtrailsQuery: makeSql('dual_fac_type'),
 
   sqlMapping: function() {
     // order matters.
     return [this.get('landlineregionalgreenwaysQuery'),
             this.get('bikefacilitiesQuery'),
-            this.get('walkingtrailsQuery')];
+            this.get('walkingtrailsQuery'),
+            this.get('dualtrailsQuery')];
 
-  }.property('walkingtrailsQuery,bikefacilitiesQuery,landlineregionalgreenwaysQuery'),
+  }.property('walkingtrailsQuery,bikefacilitiesQuery,landlineregionalgreenwaysQuery,dualtrailsQuery'),
 
-  bike_fac_type: '1,3,4,5,7,9,2',
-  walk_fac_type: '1,2,3',
+  bike_fac_type: '1,2,3',
+  walk_fac_type: '1',
+  dual_fac_type: '5',
+  land_line_type: false,
+  basemap: 'default',
 
   zoom: 11,
   lat: 42.32657,
@@ -34,6 +39,8 @@ export default Ember.Controller.extend({
 
   bikeMetaData: config.APP.domains.bike_fac_type,
   walkMetaData: config.APP.domains.walk_fac_type,
+  dualMetaData: config.APP.domains.dual_fac_type,
+  regionalLandLineMetaData: config.APP.domains.landline_regional_greenways,
 
   actions: {
     getMap(map) {
@@ -54,8 +61,8 @@ export default Ember.Controller.extend({
   }
 });
 
-function makeSql(table, fields) {
+function makeSql(alias, fields) {
   return computed(...paramNames, function() {
-    return cartodbSql(this, filters, table, fields);
+    return cartodbSql(this, filters, alias, fields);
   });
 }

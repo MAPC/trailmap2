@@ -1,22 +1,39 @@
 import squel from 'npm:squel';
 
-export default function cartodbSql(context, filters, table, fields) {
+export default function cartodbSql(context, filters, alias, fields) {
+  // squel.useFlavour('postgres');
+  squel.cls.DefaultQueryBuilderOptions.tableAliasQuoteCharacter = '';
+
   let query = squel.select();
-  let queryTable = table;
-  query.from(queryTable);
+
+  let queryTable = '';
+  let tableFilters = filters.filterBy('alias', alias);
+  
+  if (tableFilters[0])  {
+    queryTable = tableFilters[0].table;  
+  }
+
+  
 
   if (fields) {
     query.field('*');
+    let subQuery = squel.select();
+    subQuery.field('*');
     fields.forEach((el) => {
-      query.field(el) 
+      subQuery.field(el) 
     });
+    subQuery.from(queryTable);
+    query.from(subQuery, 'tablealias');
+    queryTable = 'tablealias';
+  } else {
+    query.from(queryTable);
   }
 
-  filters.forEach((el) => {
-    let column = `${table}.${el['name']}`
+  tableFilters.forEach((el) => {
+    let column = `${queryTable}.${el['name']}`;
     let value = context.get(el['alias']);
 
-    if((!!value || (el['type'] == 'list') ) && (el['table'] == queryTable)) {
+    if (value || (el['type'] == 'list') || (el['type'] == 'toggle')) {
       switch(el['type']) {
         case "boolean":
           query.where(column + " = " + value);
@@ -29,19 +46,26 @@ export default function cartodbSql(context, filters, table, fields) {
           break;
 
         case "list":
-          // not an array for now
-          // let joinedArray = value.join();
-          if(!!value.length) {
+          //non-blank string
+          if(value) {
             query.where(column + " IN " + `(${value})`);  
-          } else {
+          } 
+
+          // blank string
+          else if (value == '' && (typeof value == "string")) {
             query.where(column + " IN " + `(-1)`);  
+          } 
+          break;
+        case "toggle":
+          if(!value) {
+            query.limit(1);
           }
           break;
-        default:
-          query.where(column + " = '" + value + "'");
       }
     }
-  });
 
+
+  });
+  
   return query.toString();
 }

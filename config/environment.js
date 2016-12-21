@@ -22,10 +22,22 @@ module.exports = function(environment) {
         type: "list"
       },
       {
-        name: "fac_type",
+        name: "fac_type_simp_code",
         alias: "walk_fac_type",
         table: "walking_trails",
         type: "list"
+      },
+      {
+        name: "fac_type",
+        alias: "dual_fac_type",
+        table: "bike_facilities",
+        type: "list"
+      },
+      {
+        name: "none",
+        alias: "land_line_type",
+        table: "landline_regional_greenways",
+        type: "toggle"
       }
       ],
       domains: {
@@ -38,9 +50,9 @@ module.exports = function(environment) {
             name: "fac_type",
             codedValues: [
               {
-                name: "Bike Lane",
-                code: 1,
-                color: "#A6CEE3"
+                name: "Protected Bike Lane",
+                code: 2,
+                color: "#FDBF6F"
               },
               {
                 name: "Sign-posted on-road bike route",
@@ -48,29 +60,9 @@ module.exports = function(environment) {
                 color: "#1F78B4"
               },
               {
-                name: "Paved bike shoulder",
-                code: 4,
-                color: "#B2DF8A"
-              },
-              {
-                name: "Shared-Use Path",
-                code: 5,
-                color: "#33A02C"
-              },
-              {
-                name: "Bicycle / Pedestrian priority roadway",
-                code: 7,
-                color: "#FB9A99"
-              },
-              {
-                name: "Marked Shared-Lane",
-                code: 9,
-                color: "#E31A1C"
-              },
-              {
-                name: "Protected Bike Lane",
-                code: 2,
-                color: "#FDBF6F"
+                name: "Bike Lane",
+                code: 1,
+                color: "#A6CEE3"
               }
             ]
           },
@@ -78,27 +70,53 @@ module.exports = function(environment) {
           nullable: false
         },
         walk_fac_type: {
-          name: "fac_type",
+          name: "fac_type_simp_code",
           type: "esriFieldTypeSmallInteger",
           alias: "Facility Type",
           domain: {
             type: "codedValue",
-            name: "wfac_type",
+            name: "fac_type_simp_code",
             codedValues: [
               {
-                name: "Paved Walkway",
+                name: "Walkways & Trails",
                 code: 1,
                 color: "#A6CEE3"
-              },
+              }
+            ]
+          },
+          editable: true,
+          nullable: false
+        },
+        dual_fac_type: {
+          name: "dual_fac_type",
+          type: "esriFieldTypeSmallInteger",
+          alias: "Facility Type",
+          domain: {
+            type: "codedValue",
+            name: "dual_fac_type",
+            codedValues: [
               {
-                name: "Footpath, natural surface (single track or unknown/default)",
-                code: 2,
-                color: "#1F78B4"
-              },
+                name: "Multi-Use Path",
+                code: 5,
+                color: "#A6CEE3"
+              }
+            ]
+          },
+          editable: true,
+          nullable: false
+        },
+        landline_regional_greenways: {
+          name: "landline_regional_greenways",
+          type: "esriFieldTypeSmallInteger",
+          alias: "Facility Type",
+          domain: {
+            type: "codedValue",
+            name: "landline_regional_greenways",
+            codedValues: [
               {
-                name: "Cartpath, natural surface (double track)",
-                code: 3,
-                color: "#B2DF8A"
+                name: "Regional Land Lines",
+                code: false,
+                color: "#A6CEE3"
               }
             ]
           },
