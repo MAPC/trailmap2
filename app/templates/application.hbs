@@ -28,6 +28,72 @@
               valuesList=walk_fac_type}}
           </div>
         {{/ui-accordion}}
+        {{#ui-accordion exclusive=true}}
+          <h3 class="ui child attached header title inverted">
+            <i class="dropdown icon"></i>
+            Walk/Bike
+          </h3>
+          <div class="child content">
+            {{scoped-array-checklist 
+              optionList=dualMetaData.domain.codedValues 
+              valuesList=dual_fac_type}}
+          </div>
+        {{/ui-accordion}}
+        {{#ui-accordion exclusive=true}}
+          <h3 class="ui child attached header title inverted">
+            <i class="dropdown icon"></i>
+            Regional Landlines
+          </h3>
+          <div class="child content">
+            {{#ui-checkbox 
+              color='#EEE'
+              label='Regional Landlines' 
+              class="item icon"
+              checked=land_line_type
+              onChange=(action (mut land_line_type) )}}
+            {{/ui-checkbox}}
+          </div>
+        {{/ui-accordion}}
+        {{#ui-accordion exclusive=true}}
+          <h3 class="ui child attached header title inverted">
+            <i class="dropdown icon"></i>
+            Basemaps
+          </h3>
+          <div class="child content">
+            {{#ui-radio 
+              class="item icon"
+              name="default"
+              label="Default"
+              value="default"
+              current=basemap
+              onChange=(action (mut basemap) )}}
+            {{/ui-radio}}
+            {{#ui-radio 
+              class="item icon"
+              name="mapc"
+              label="MAPC"
+              value="mapc"
+              current=basemap
+              onChange=(action (mut basemap) )}}
+            {{/ui-radio}}
+            {{#ui-radio 
+              class="item icon"
+              name="osm"
+              label="Open Street Map"
+              value="osm"
+              current=basemap
+              onChange=(action (mut basemap) )}}
+            {{/ui-radio}}
+            {{#ui-radio 
+              class="item icon"
+              name="satellite"
+              label="Satellite"
+              value="satellite"
+              current=basemap
+              onChange=(action (mut basemap) )}}
+            {{/ui-radio}}
+          </div>
+        {{/ui-accordion}}
       </div>
     {{/ui-accordion}}
     <div class="item">
@@ -39,13 +105,24 @@
 
 <main>
   {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=true onLoad='getMap' onMoveend=(action "updatePosition") as |layers|}}
-    {{tile-layer url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'}}
+    {{#if (eq basemap 'default')}}
+      {{tile-layer url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'}}
+    {{/if}}
+    {{#if (eq basemap 'mapc')}}
+      {{tile-layer url='http://tiles.mapc.org/basemap/{z}/{x}/{y}.png'}}
+    {{/if}}
+    {{#if (eq basemap 'osm')}}
+      {{tile-layer url='https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'}}
+    {{/if}}
+    {{#if (eq basemap 'satellite')}}
+      {{tile-layer url='http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}}
+    {{/if}}
     {{cartodb-layer 
       sql=sqlMapping https=true onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
       zIndex=1 legends=false search=true}}
     {{#if currentLocation}}
       {{#if locations}}
-        {{polyline-layer locations=locations}}
+        {{polyline-layer smoothFactor=5 locations=locations}}
       {{/if}}
       {{marker-layer location=currentLocation}}
     {{/if}}
