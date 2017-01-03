@@ -1,10 +1,14 @@
 {{#if checked}}
    <i class="minus large icon" style="color: {{color}}"></i>
 {{/if}}
-<input type={{type}}
-       name={{name}}
-       tabindex={{tabindex}}
-       checked={{unbound checked}}
-       disabled={{unbound disabled}} />
-<label>{{label}}</label>
-{{yield (action "execute")}}
+{{#if hasBlock}}
+  {{yield (hash type=type name=name label=label checked=checked disabled=disabled execute=(action "execute")) }}
+{{else}}
+  <input type={{type}}
+         name={{name}}
+         tabindex={{tabindex}}
+         checked={{unbound checked}}
+         disabled={{unbound disabled}} />
+  <label>{{label}}</label>
+  {{yield (action "execute")}}
+{{/if}}
