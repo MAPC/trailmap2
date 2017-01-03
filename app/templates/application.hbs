@@ -39,21 +39,20 @@
               valuesList=dual_fac_type}}
           </div>
         {{/ui-accordion}}
-        {{#ui-accordion exclusive=true}}
-          <h3 class="ui child attached header title inverted">
-            <i class="dropdown icon"></i>
-            Regional Landlines
-          </h3>
-          <div class="child content">
-            {{#ui-checkbox 
-              color='#EEE'
-              label='Regional Landlines' 
-              class="item icon"
-              checked=land_line_type
-              onChange=(action (mut land_line_type) )}}
-            {{/ui-checkbox}}
-          </div>
-        {{/ui-accordion}}
+        {{#ui-checkbox 
+          color='#EEE'
+          label='Regional Landlines' 
+          class='top-level-checkbox ui inverted attached header item'
+          checked=land_line_type
+          onChange=(action (mut land_line_type) ) as |checkbox|}}
+            <input type={{checkbox.type}}
+                   name={{checkbox.name}}
+                   class="inverted"
+                   tabindex={{checkbox.tabindex}}
+                   checked={{unbound checkbox.checked}}
+                   disabled={{unbound checkbox.disabled}} />
+            <label><h3 class="ui header title">{{checkbox.label}}</h3></label>
+        {{/ui-checkbox}}
         {{#ui-accordion exclusive=true}}
           <h3 class="ui child attached header title inverted">
             <i class="dropdown icon"></i>
