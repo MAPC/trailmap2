@@ -26,6 +26,7 @@ export default Ember.Route.extend({
       }
     }
   },
+
   trackLocationLine: Ember.observer('geolocation.currentLocation', function() {
     let currentLocation = this.get('geolocation.currentLocation');
     if (currentLocation) {

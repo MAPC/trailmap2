@@ -1,11 +1,12 @@
 <nav class="filters">
-  <div class="ui link vertical compact menu">
+  <div class="ui link vertical menu">
     {{#ui-accordion class="ui accordion"}}
-      <h2 class="ui parent attached header title inverted">
+      <h2 class="ui parent active attached header title inverted">
         <i class="dropdown right floated icon"></i>
         Trailmap Filters
       </h2>
-      <div class="ui parent content">
+
+      <div class="ui parent active content">
         {{#ui-accordion exclusive=true}}
           <h3 class="ui child attached title header inverted">
             <i class="dropdown icon"></i>
@@ -13,53 +14,38 @@
           </h3>
           <div class="child content">
             {{scoped-array-checklist 
-              optionList=bikeMetaData.domain.codedValues 
-              valuesList=bike_fac_type}}
+             checklistItems=bikeFacChecklist
+             valuesList=bike_fac_type}}
           </div>
         {{/ui-accordion}}
-        {{#ui-accordion exclusive=true}}
-          <h3 class="ui child attached header title inverted">
-            <i class="dropdown icon"></i>
-            Walk
-          </h3>
-          <div class="child content">
-            {{scoped-array-checklist 
-              optionList=walkMetaData.domain.codedValues 
-              valuesList=walk_fac_type}}
-          </div>
-        {{/ui-accordion}}
-        {{#ui-accordion exclusive=true}}
-          <h3 class="ui child attached header title inverted">
-            <i class="dropdown icon"></i>
-            Walk/Bike
-          </h3>
-          <div class="child content">
-            {{scoped-array-checklist 
-              optionList=dualMetaData.domain.codedValues 
-              valuesList=dual_fac_type}}
-          </div>
-        {{/ui-accordion}}
-        {{#ui-checkbox 
-          color='#EEE'
-          label='Regional Landlines' 
-          class='top-level-checkbox ui inverted attached header item'
-          checked=land_line_type
-          onChange=(action (mut land_line_type) ) as |checkbox|}}
-            <input type={{checkbox.type}}
-                   name={{checkbox.name}}
-                   class="inverted"
-                   tabindex={{checkbox.tabindex}}
-                   checked={{unbound checkbox.checked}}
-                   disabled={{unbound checkbox.disabled}} />
-            <label><h3 class="ui header title">{{checkbox.label}}</h3></label>
-        {{/ui-checkbox}}
+
+        <a class="ui inverted top-level-checkbox attached header item" {{action 'toggleCategories' 'walk_fac_type' '1'}}>
+          {{ui-checkbox
+            color='#EEE'
+            label='Walk'
+            checked=walk_fac_type}}
+        </a>
+        <a class="ui inverted attached header item" {{action 'toggleCategories' 'dual_fac_type' '1'}}>
+          {{ui-checkbox
+            color='#EEE'
+            label='Walk'
+            checked=dual_fac_type}}
+        </a>
+        <a class="ui inverted attached header item">
+          {{ui-checkbox
+            color='#EEE'
+            label='Regional Land Lines'
+            checked=land_line_type
+            onChange=(action (mut land_line_type))}}
+        </a>
+
         {{#ui-accordion exclusive=true}}
           <h3 class="ui child attached header title inverted">
             <i class="dropdown icon"></i>
             Basemaps
           </h3>
           <div class="child content">
-            {{#ui-radio 
+            {{#ui-radio
               class="item icon"
               name="default"
               label="Default"
@@ -67,7 +53,7 @@
               current=basemap
               onChange=(action (mut basemap) )}}
             {{/ui-radio}}
-            {{#ui-radio 
+            {{#ui-radio
               class="item icon"
               name="osm"
               label="Open Street Map"
@@ -75,7 +61,7 @@
               current=basemap
               onChange=(action (mut basemap) )}}
             {{/ui-radio}}
-            {{#ui-radio 
+            {{#ui-radio
               class="item icon"
               name="satellite"
               label="Satellite"
@@ -91,7 +77,7 @@
       {{ui-checkbox class="ui slider checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
     </div>
   </div>
-  
+
 </nav>
 
 <main>
@@ -105,8 +91,8 @@
     {{#if (eq basemap 'satellite')}}
       {{tile-layer url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}}
     {{/if}}
-    {{cartodb-layer 
-      sql=sqlMapping https=true onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json' 
+    {{cartodb-layer
+      sql=sqlMapping https=true onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/08794274-bbce-11e6-8fba-0e233c30368f/viz.json'
       zIndex=1 legends=false search=true}}
     {{#if currentLocation}}
       {{#if locations}}

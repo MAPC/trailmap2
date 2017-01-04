@@ -3,33 +3,25 @@ import computed from 'ember-computed';
 
 export default Ember.Component.extend({
   classNames: ['filter-list'],
-  getVals: Ember.on('init', function() {
-    let optionList = this.get('optionList').mapBy('code');
-    let valuesList = this.get('valuesList');
-    valuesList = JSON.parse(`[${valuesList}]`);
-    
-    this.set('codes', optionList);
-    this.set('valuesList', valuesList);
+  checklistItems: null,
+  valuesList: '',
 
-    optionList.forEach((el) => {
-      this.set(`option${el}`, false);
-    });
-
-    valuesList.forEach((el) => {
-      this.set(`option${el}`, true);
-    });
-  }),
-  generateString: function() {
-    let codes = this.get('codes').filter((el) => {
-      let val = !!this.get(`option${el}`);
-      return val;
-    });
-    this.set('valuesList', codes);
+  init() {
+    this._super(...arguments);
+    this.checklistItems = this.checklistItems || [];
   },
+
+  parsedValuesList: computed('valuesList', function() {
+    let valuesList = this.get('valuesList');
+    return JSON.parse(`[${valuesList}]`);
+  }),
+
   actions: {
-    reset: function(id, val) {
-      this.set(id, val);
-      this.generateString();
+    toggleItem(item, value) {
+      let newList = this.get('parsedValuesList');
+      value ? newList.pushObject(item.value) : newList.removeObject(item.value)
+      
+      this.set('valuesList', newList.toString());
     }
   }
 });

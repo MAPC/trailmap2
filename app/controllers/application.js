@@ -38,6 +38,13 @@ export default Ember.Controller.extend({
   currentLocation: null,
 
   bikeMetaData: config.APP.domains.bike_fac_type,
+  bikeFacChecklist: computed('bike_fac_type', 'bikeMetaData', function() {
+    let codedValues = this.get('bikeMetaData.domain.codedValues');
+    return codedValues.map((c) => {
+      return { label: c.name, value: c.code };
+    });
+  }),
+
   walkMetaData: config.APP.domains.walk_fac_type,
   dualMetaData: config.APP.domains.dual_fac_type,
   regionalLandLineMetaData: config.APP.domains.landline_regional_greenways,
@@ -50,6 +57,17 @@ export default Ember.Controller.extend({
       
       map.target.zoomControl.setPosition('topright');
     },
+
+    toggleCategories(category,defaultValues) {
+      let localCategory = this.get(category);
+      
+      if (localCategory) {
+        this.set(category, '');
+      } else {
+        this.set(category, defaultValues);
+      }
+    },
+
     updatePosition(e) {
       let map = e.target;
       this.setProperties({
