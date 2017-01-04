@@ -1,7 +1,11 @@
 {{#each checklistItems as |item|}}
-  {{ui-checkbox
-    label=item.label
-    class="item icon"
-    checked=(contains item.value parsedValuesList)
-    onChange=(action 'toggleItem' item)}}
+  <a class="item">
+    {{ui-checkbox
+      label=item.label
+      checked=(contains item.value parsedValuesList)
+      onChange=(action 'toggleItem' item)}}
+    {{#if (contains item.value parsedValuesList)}}
+      <i class="minus icon" style='color: {{item.color}}'></i>
+    {{/if}}
+  </a>
 {{/each}}

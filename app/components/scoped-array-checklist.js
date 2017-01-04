@@ -2,7 +2,7 @@ import Ember from 'ember';
 import computed from 'ember-computed';
 
 export default Ember.Component.extend({
-  classNames: ['filter-list'],
+  classNames: ['filter-list', 'menu'],
   checklistItems: null,
   valuesList: '',
 
