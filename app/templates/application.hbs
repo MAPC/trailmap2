@@ -1,50 +1,62 @@
 <nav class="filters">
   <div class="ui link vertical menu">
     {{#ui-accordion class="ui accordion"}}
-      <h2 class="ui parent active attached header title inverted">
+      <h3 class="ui parent active title item">
         <i class="dropdown right floated icon"></i>
         Trailmap Filters
-      </h2>
+      </h3>
 
       <div class="ui parent active content">
         {{#ui-accordion exclusive=true}}
-          <h3 class="ui child attached title header inverted">
+          <a class="ui child attached title item">
+            {{ui-checkbox
+              color='#EEE'
+              label='Bike'
+              checked=(eq bike_fac_type '1,2,3')
+              onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,3')}}
             <i class="dropdown icon"></i>
-            Bike
-          </h3>
+          </a>
           <div class="child content">
             {{scoped-array-checklist 
              checklistItems=bikeFacChecklist
              valuesList=bike_fac_type}}
           </div>
         {{/ui-accordion}}
-
-        <a class="ui inverted top-level-checkbox attached header item" {{action 'toggleCategories' 'walk_fac_type' '1'}}>
+        <a class="item" {{action 'toggleCategories' 'walk_fac_type' '1'}}>
           {{ui-checkbox
             color='#EEE'
             label='Walk'
             checked=walk_fac_type}}
+          {{#if walk_fac_type}}
+            <i class="minus icon" style='#EEE'></i>
+          {{/if}}
         </a>
-        <a class="ui inverted attached header item" {{action 'toggleCategories' 'dual_fac_type' '1'}}>
+        <a class="item" {{action 'toggleCategories' 'dual_fac_type' '1'}}>
           {{ui-checkbox
             color='#EEE'
             label='Walk/Bike'
             checked=dual_fac_type}}
+          {{#if dual_fac_type}}
+            <i class="minus icon" style='#EEE'></i>
+          {{/if}}
         </a>
-        <a class="ui inverted attached header item">
+        <a class="item">
           {{ui-checkbox
             color='#EEE'
             label='Regional Land Lines'
             checked=land_line_type
             onChange=(action (mut land_line_type))}}
+          {{#if land_line_type}}
+            <i class="minus icon" style='#EEE'></i>
+          {{/if}}
         </a>
 
         {{#ui-accordion exclusive=true}}
-          <h3 class="ui child attached header title inverted">
-            <i class="dropdown icon"></i>
+          <a class="ui child active attached title item">
             Basemaps
-          </h3>
-          <div class="child content">
+            <i class="dropdown icon"></i>
+          </a>
+          <div class="child active content">
             {{#ui-radio
               class="item icon"
               name="default"
@@ -77,7 +89,6 @@
       {{ui-checkbox class="ui slider checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
     </div>
   </div>
-
 </nav>
 
 <main>
