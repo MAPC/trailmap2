@@ -1,3 +1,6 @@
+<div class="ui segment track-route">
+  {{ui-checkbox class="ui slider checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
+</div>
 <nav class="filters">
   <div class="ui link vertical menu">
     {{#ui-accordion class="ui accordion"}}
@@ -82,7 +85,7 @@
       </div>
     {{/ui-accordion}}
     <div class="item">
-      {{ui-checkbox class="ui slider checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
+      {{ui-checkbox class="ui slider checkbox" onChange=(action (mut showProposed)) checked=showProposed label="Show Proposed Trails"}}
     </div>
   </div>
 </nav>

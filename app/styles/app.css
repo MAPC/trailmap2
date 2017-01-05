@@ -41,6 +41,15 @@ h3:first-child {
   z-index: 1;
 }
 
+/* special */
+.ui.segment.track-route {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 1em;
+  z-index: 1;
+}
+
 /* carto */
 
 .cartodb-logo {
@@ -49,7 +58,7 @@ h3:first-child {
 
 
 /* leaflet */
-.leaflet-bar {
+/*.leaflet-bar {
   border-radius: 0px;
   box-shadow: none;
 }
@@ -67,9 +76,14 @@ h3:first-child {
   border-radius: 0;
   background-color: rgba(0,0,0,0.8);
 }
+*/
 
 .ui.loader.map.active {
   background-color: rgba(255,255,255,.8);
   border-radius: 300px;
   border-color: white;
+}
+
+.leaflet-control-attribution  {
+  display: none;
 }

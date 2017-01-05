@@ -22,6 +22,12 @@ module.exports = function(environment) {
         type: "list"
       },
       {
+        name: "fac_type_status",
+        alias: "bike_fac_type_status",
+        table: "bike_facilities",
+        type: "list"
+      },
+      {
         name: "fac_type_simp_code",
         alias: "walk_fac_type",
         table: "walking_trails",
@@ -68,6 +74,25 @@ module.exports = function(environment) {
           },
           editable: true,
           nullable: false
+        },
+        bike_fac_type_status: {
+          name: "fac_type",
+          type: "esriFieldTypeSmallInteger",
+          alias: "Facility Type",
+          domain: {
+            type: "codedValue",
+            name: "fac_stat",
+            codedValues: [
+              {
+                name: "Existing",
+                code: 1
+              },
+              {
+                name: "Proposed",
+                code: 2
+              }
+            ]
+          }
         },
         walk_fac_type: {
           name: "fac_type_simp_code",
