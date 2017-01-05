@@ -5,7 +5,7 @@ import config from '../config/environment';
 import request from 'ember-ajax';
 
 let filters = config.APP.filters;
-let paramNames = filters.uniqBy('alias').mapBy('alias');
+let paramNames = filters.uniqBy('alias').mapBy('alias').concat(['showProposed']);
 
 export default Ember.Controller.extend({
   ajax: Ember.inject.service(),
@@ -30,6 +30,7 @@ export default Ember.Controller.extend({
   dual_fac_type: '5',
   land_line_type: false,
   basemap: 'default',
+  showProposed: false,
 
   zoom: 11,
   lat: 42.32657,
@@ -41,7 +42,7 @@ export default Ember.Controller.extend({
   bikeFacChecklist: computed('bike_fac_type', 'bikeMetaData', function() {
     let codedValues = this.get('bikeMetaData.domain.codedValues');
     return codedValues.map((c) => {
-      return { label: c.name, value: c.code, color: c.color };
+      return { label: c.name, value: c.code };
     });
   }),
 

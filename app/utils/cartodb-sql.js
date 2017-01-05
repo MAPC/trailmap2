@@ -13,8 +13,6 @@ export default function cartodbSql(context, filters, alias, fields) {
     queryTable = tableFilters[0].table;  
   }
 
-  
-
   if (fields) {
     query.field('*');
     let subQuery = squel.select();
@@ -62,6 +60,12 @@ export default function cartodbSql(context, filters, alias, fields) {
           }
           break;
       }
+    }
+
+    if(context.get('showProposed')) {
+      query.where('fac_stat IN (1,2,3)');
+    } else {
+      query.where('fac_stat IN (1)');
     }
 
 
