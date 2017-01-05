@@ -14,7 +14,7 @@
           <a class="ui child attached title item">
             {{ui-checkbox
               label='Bike'
-              checked=(eq bike_fac_type '1,2,3')
+              checked=(eq (orderDelimitedString bike_fac_type delimiter=',') '1,2,3')
               onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,3')}}
             <i class="dropdown icon"></i>
           </a>
