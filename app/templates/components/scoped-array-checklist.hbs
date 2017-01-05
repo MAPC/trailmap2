@@ -1,5 +1,5 @@
 {{#each checklistItems as |item|}}
-  <a class="item">
+  <a class="item" {{action 'toggleItem' item}}>
     {{ui-checkbox
       label=item.label
       checked=(contains item.value parsedValuesList)

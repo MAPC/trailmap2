@@ -41,7 +41,7 @@ export default Ember.Controller.extend({
   bikeFacChecklist: computed('bike_fac_type', 'bikeMetaData', function() {
     let codedValues = this.get('bikeMetaData.domain.codedValues');
     return codedValues.map((c) => {
-      return { label: c.name, value: c.code };
+      return { label: c.name, value: c.code, color: c.color };
     });
   }),
 
