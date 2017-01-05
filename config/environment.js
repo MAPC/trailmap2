@@ -176,8 +176,8 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.locationType = 'hash';
-    ENV.baseUrl = 'https://mapc.github.io/trailmap/';
-
+    ENV.baseUrl = '/trailmap/';
+    ENV.prepend = 'https://mapc.github.io/trailmap';
   }
 
   return ENV;

@@ -1,10 +1,12 @@
 /*jshint node:true*/
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
+var config = require('./config/environment')(process.env.EMBER_ENV || 'development');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     fingerprint: {
+      prepend: config.prepend,
       exclude: [
         'images/layers-2x.png',
         'images/layers.png',
