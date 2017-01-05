@@ -9,12 +9,12 @@ let paramNames = filters.uniqBy('alias').mapBy('alias').concat(['showProposed'])
 
 export default Ember.Controller.extend({
   ajax: Ember.inject.service(),
-  queryParams: filters.uniqBy('alias').mapBy('alias').concat(['zoom', 'lat', 'lng', 'basemap']),
+  queryParams: filters.uniqBy('alias').mapBy('alias').concat(['zoom', 'lat', 'lng', 'basemap', 'showProposed']),
   // these long field sql pieces need to be moved into environment. the API should change to allow for this.
   walkingtrailsQuery: makeSql('walk_fac_type', ["(CASE WHEN fac_type=1 THEN 1 WHEN fac_type=2 THEN 1 WHEN fac_type=3 THEN 1 END) AS fac_type_simp_code", "CASE WHEN fac_type=1 THEN 'Paved Walkway' WHEN fac_type=2 THEN 'Footpath' WHEN fac_type=3 THEN 'Cartpath' END AS fac_type_name"]),
   bikefacilitiesQuery: makeSql('bike_fac_type', ["(CASE WHEN fac_type=1 then 'Bike Lane' WHEN fac_type=2 THEN 'Cycle Track' WHEN fac_type=3 THEN 'Sign-posted on-road bike route' WHEN fac_type=4 THEN 'Paved bike shoulder' WHEN fac_type=5 THEN 'Shared-Use Path' WHEN fac_type=7 THEN 'Bicycle / Pedestrian priority roadway' WHEN fac_type=9 THEN 'Marked Shared-Lane' END) AS fac_type_str"]),
   landlineregionalgreenwaysQuery: makeSql('land_line_type'),
-  dualtrailsQuery: makeSql('dual_fac_type'),
+  dualtrailsQuery: makeSql('dual_fac_type', ["(CASE WHEN fac_type=1 then 'Bike Lane' WHEN fac_type=2 THEN 'Cycle Track' WHEN fac_type=3 THEN 'Sign-posted on-road bike route' WHEN fac_type=4 THEN 'Paved bike shoulder' WHEN fac_type=5 THEN 'Shared-Use Path' WHEN fac_type=7 THEN 'Bicycle / Pedestrian priority roadway' WHEN fac_type=9 THEN 'Marked Shared-Lane' END) AS fac_type_str"]),
 
   sqlMapping: function() {
     // order matters.
