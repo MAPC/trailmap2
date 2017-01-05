@@ -10,13 +10,12 @@
         {{#ui-accordion exclusive=true}}
           <a class="ui child attached title item">
             {{ui-checkbox
-              color='#EEE'
               label='Bike'
               checked=(eq bike_fac_type '1,2,3')
               onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,3')}}
             <i class="dropdown icon"></i>
           </a>
-          <div class="child content">
+          <div class="child content link menu">
             {{scoped-array-checklist 
              checklistItems=bikeFacChecklist
              valuesList=bike_fac_type}}
@@ -24,30 +23,27 @@
         {{/ui-accordion}}
         <a class="item" {{action 'toggleCategories' 'walk_fac_type' '1'}}>
           {{ui-checkbox
-            color='#EEE'
             label='Walk'
             checked=walk_fac_type}}
           {{#if walk_fac_type}}
-            <i class="minus icon" style='#EEE'></i>
+            <i class="minus icon" style='color: #db813f'></i>
           {{/if}}
         </a>
         <a class="item" {{action 'toggleCategories' 'dual_fac_type' '1'}}>
           {{ui-checkbox
-            color='#EEE'
             label='Walk/Bike'
             checked=dual_fac_type}}
           {{#if dual_fac_type}}
-            <i class="minus icon" style='#EEE'></i>
+            <i class="minus icon" style='color: #275f68'></i>
           {{/if}}
         </a>
         <a class="item">
           {{ui-checkbox
-            color='#EEE'
             label='Regional Land Lines'
             checked=land_line_type
             onChange=(action (mut land_line_type))}}
           {{#if land_line_type}}
-            <i class="minus icon" style='#EEE'></i>
+            <i class="minus icon" style='color: #FFCC00'></i>
           {{/if}}
         </a>
 

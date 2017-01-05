@@ -52,17 +52,17 @@ module.exports = function(environment) {
               {
                 name: "Protected Bike Lane",
                 code: 2,
-                color: "#FDBF6F"
+                color: "#7f3193"
               },
               {
                 name: "Sign-posted on-road bike route",
                 code: 3,
-                color: "#1F78B4"
+                color: "#9dce6b"
               },
               {
                 name: "Bike Lane",
                 code: 1,
-                color: "#A6CEE3"
+                color: "#0874b9"
               }
             ]
           },
@@ -80,7 +80,7 @@ module.exports = function(environment) {
               {
                 name: "Walkways & Trails",
                 code: 1,
-                color: "#A6CEE3"
+                color: "#db813f"
               }
             ]
           },
@@ -98,7 +98,7 @@ module.exports = function(environment) {
               {
                 name: "Multi-Use Path",
                 code: 5,
-                color: "#A6CEE3"
+                color: "#275f68"
               }
             ]
           },
@@ -116,7 +116,7 @@ module.exports = function(environment) {
               {
                 name: "Regional Land Lines",
                 code: false,
-                color: "#A6CEE3"
+                color: "#FFCC00"
               }
             ]
           },
