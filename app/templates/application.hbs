@@ -1,5 +1,5 @@
 <div class="ui segment track-route">
-  {{ui-checkbox class="ui slider checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
+  {{ui-checkbox class="ui toggle checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
 </div>
 <nav class="filters">
   <div class="ui link vertical menu">
@@ -32,23 +32,36 @@
             <i class="minus icon" style='color: #db813f'></i>
           {{/if}}
         </a>
-        <a class="item" {{action 'toggleCategories' 'dual_fac_type' '1'}}>
+        <a class="item" {{action 'toggleCategories' 'dual_fac_type' '5'}}>
           {{ui-checkbox
-            label='Walk/Bike'
+            label='Multi-Use Path'
             checked=dual_fac_type}}
           {{#if dual_fac_type}}
             <i class="minus icon" style='color: #275f68'></i>
           {{/if}}
         </a>
-        <a class="item">
-          {{ui-checkbox
-            label='Regional Land Lines'
-            checked=land_line_type
-            onChange=(action (mut land_line_type))}}
+{{!--         <a class="item">
+
           {{#if land_line_type}}
             <i class="minus icon" style='color: #FFCC00'></i>
           {{/if}}
-        </a>
+        </a> --}}
+
+        {{#ui-accordion exclusive=true}}
+          <a class="ui child attached title item">
+            {{ui-checkbox
+              label='Regional Land Lines'
+              checked=land_line_type
+              onChange=(action (mut land_line_type))}}
+            <i class="dropdown icon"></i>
+          </a>
+          <div class="child content link menu">
+            <a class="item">
+              Legend
+            </a>
+          </div>
+
+        {{/ui-accordion}}
 
         {{#ui-accordion exclusive=true}}
           <a class="ui child active attached title item">
@@ -85,7 +98,7 @@
       </div>
     {{/ui-accordion}}
     <div class="item">
-      {{ui-checkbox class="ui slider checkbox" onChange=(action (mut showProposed)) checked=showProposed label="Show Proposed Trails"}}
+      {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut showProposed)) checked=showProposed label="Proposed Trails"}}
       {{#if showProposed}}
         <i class="ellipsis horizontal icon"></i>
       {{/if}}
