@@ -51,14 +51,6 @@ export default Ember.Controller.extend({
   regionalLandLineMetaData: config.APP.domains.landline_regional_greenways,
 
   actions: {
-    getMap(map) {
-      map.target.eachLayer(function(layer) {
-        window.layer = layer;
-      });
-      
-      map.target.zoomControl.setPosition('topright');
-    },
-
     toggleCategories(category,defaultValues) {
       let localCategory = this.get(category);
       

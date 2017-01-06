@@ -100,19 +100,19 @@
             {{/ui-radio}}
           </div>
         {{/ui-accordion}}
+        <div class="item">
+          {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut showProposed)) checked=showProposed label="Proposed Trails"}}
+          {{#if showProposed}}
+            <i class="ellipsis horizontal icon"></i>
+          {{/if}}
+        </div>
       </div>
     {{/ui-accordion}}
-    <div class="item">
-      {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut showProposed)) checked=showProposed label="Proposed Trails"}}
-      {{#if showProposed}}
-        <i class="ellipsis horizontal icon"></i>
-      {{/if}}
-    </div>
   </div>
 </nav>
 
 <main>
-  {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=true onLoad='getMap' onMoveend=(action "updatePosition") as |layers|}}
+  {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=false onMoveend=(action "updatePosition") as |layers|}}
     {{#if (eq basemap 'default')}}
       {{tile-layer url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'}}
     {{/if}}

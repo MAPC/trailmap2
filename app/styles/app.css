@@ -59,6 +59,23 @@ h3:first-child {
 }
 
 
+@media screen and (max-width: 415px) {
+  .filters {
+    position: absolute;
+    margin: 0em;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .ui.vertical.menu {
+    min-width: 100%;
+  }
+
+  .ui.segment.track-route {
+    margin: 0;
+  }
+}
+
 /* carto */
 
 .cartodb-logo {
