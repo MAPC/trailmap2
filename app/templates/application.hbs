@@ -14,9 +14,10 @@
           <a class="ui child attached title item">
             {{ui-checkbox
               label='Bike'
-              checked=(eq (orderDelimitedString bike_fac_type delimiter=',') '1,2,9')
+              checked=(gt bike_fac_type.length 0)
               onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,9')}}
             <i class="dropdown icon"></i>
+            {{log (intersect (orderDelimitedString bike_fac_type delimiter=',') (array 1 2 9))}}
           </a>
           <div class="child content link menu">
             {{scoped-array-checklist 
