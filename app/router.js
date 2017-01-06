@@ -8,4 +8,14 @@ const Router = Ember.Router.extend({
 Router.map(function() {
 });
 
+Router.reopen({
+    notifyGoogleAnalytics: function() {
+        if (typeof ga != 'function') { return; }
+        return ga('send', 'pageview', {
+          'page': this.get('url'),
+          'title': this.get('url')
+        });
+    }.on('didTransition')
+});
+
 export default Router;
