@@ -25,7 +25,7 @@ export default Ember.Controller.extend({
 
   }.property('walkingtrailsQuery,bikefacilitiesQuery,landlineregionalgreenwaysQuery,dualtrailsQuery'),
 
-  bike_fac_type: '1,2,3',
+  bike_fac_type: '1,2,9',
   walk_fac_type: '1',
   dual_fac_type: '5',
   land_line_type: false,

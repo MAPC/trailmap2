@@ -61,9 +61,9 @@ module.exports = function(environment) {
                 color: "#7f3193"
               },
               {
-                name: "Sign-posted on-road bike route",
-                code: 3,
-                color: "#9dce6b"
+                name: "Shared Lane Marking",
+                code: 9,
+                color: "#82C5EC"
               },
               {
                 name: "Bike Lane",

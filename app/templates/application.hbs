@@ -14,8 +14,8 @@
           <a class="ui child attached title item">
             {{ui-checkbox
               label='Bike'
-              checked=(eq (orderDelimitedString bike_fac_type delimiter=',') '1,2,3')
-              onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,3')}}
+              checked=(eq (orderDelimitedString bike_fac_type delimiter=',') '1,2,9')
+              onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,9')}}
             <i class="dropdown icon"></i>
           </a>
           <div class="child content link menu">
@@ -46,22 +46,24 @@
             <i class="minus icon" style='color: #FFCC00'></i>
           {{/if}}
         </a> --}}
+        <a class="item">
+          {{ui-checkbox
+            label='Regional Land Lines'
+            checked=land_line_type
+            onChange=(action (mut land_line_type))}}
+        </a>
 
-        {{#ui-accordion exclusive=true}}
-          <a class="ui child attached title item">
-            {{ui-checkbox
-              label='Regional Land Lines'
-              checked=land_line_type
-              onChange=(action (mut land_line_type))}}
-            <i class="dropdown icon"></i>
+        {{#if land_line_type}}
+          <a class="item legend">
+            Greeway Route <i class="minus icon" style='color: #ffcc00'></i>
           </a>
-          <div class="child content link menu">
-            <a class="item">
-              Legend
-            </a>
-          </div>
-
-        {{/ui-accordion}}
+          <a class="item legend">
+            Regional Walking Trail <i class="minus icon" style='color: #c696b7'></i>
+          </a>
+          <a class="item legend">
+            Combination <i class="minus icon" style='color: #d6a583'></i>
+          </a>
+        {{/if}}
 
         {{#ui-accordion exclusive=true}}
           <a class="ui child active attached title item">
