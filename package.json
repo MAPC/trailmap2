@@ -50,6 +50,6 @@
     "ember-welcome-page": "^1.0.1",
     "loader.js": "^4.0.1",
     "semantic-ui-ember": "2.0.0",
-    "squel": "^5.5.0"
+    "squel": "^5.5.1"
   }
 }
