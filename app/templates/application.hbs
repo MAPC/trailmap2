@@ -13,6 +13,7 @@
         {{#ui-accordion exclusive=true}}
           <a class="ui child attached title item">
             {{ui-checkbox
+              class='parent-checkbox'
               label='Bike'
               checked=(gt bike_fac_type.length 0)
               onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,9')}}
