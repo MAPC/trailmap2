@@ -1,6 +1,8 @@
+{{#if (or media.isDesktop media.isTablet)}}
 <div class="ui segment track-route">
   {{ui-checkbox class="ui toggle checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
 </div>
+{{/if}}
 <nav class="filters">
   <div class="ui link vertical menu">
     {{#ui-accordion class="ui accordion"}}
@@ -9,7 +11,7 @@
         Trailmap Filters
       </h3>
 
-      <div class="ui parent active content">
+      <div class="ui parent {{if (not media.isMobile) 'active'}} content">
         {{#ui-accordion exclusive=true}}
           <a class="ui child attached title item">
             {{ui-checkbox

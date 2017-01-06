@@ -44,6 +44,7 @@
     "ember-leaflet-cartodb": "git://github.com/allthesignals/ember-leaflet-cartodb.git#3355b767d796567c8c55bfcbe849a98972aea198",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
+    "ember-responsive": "2.0.0",
     "ember-route-action-helper": "2.0.1",
     "ember-tether": "0.3.1",
     "ember-truth-helpers": "1.3.0",
