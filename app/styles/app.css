@@ -50,6 +50,15 @@ h3:first-child {
   z-index: 1;
 }
 
+.ui.menu .menu .item.legend {
+ padding-left: 4em;
+}
+
+.ui.vertical.menu .child.menu .item {
+  padding-left: 3.5em;
+}
+
+
 /* carto */
 
 .cartodb-logo {
