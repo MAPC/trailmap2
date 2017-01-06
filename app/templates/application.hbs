@@ -17,7 +17,6 @@
               checked=(gt bike_fac_type.length 0)
               onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,9')}}
             <i class="dropdown icon"></i>
-            {{log (intersect (orderDelimitedString bike_fac_type delimiter=',') (array 1 2 9))}}
           </a>
           <div class="child content link menu">
             {{scoped-array-checklist 
@@ -55,15 +54,17 @@
         </a>
 
         {{#if land_line_type}}
-          <a class="item legend">
-            Greeway Route <i class="minus icon" style='color: #ffcc00'></i>
-          </a>
-          <a class="item legend">
-            Regional Walking Trail <i class="minus icon" style='color: #c696b7'></i>
-          </a>
-          <a class="item legend">
-            Combination <i class="minus icon" style='color: #d6a583'></i>
-          </a>
+          <div class="menu">
+            <div class="item legend">
+              Greeway Route <i class="minus icon" style='color: #ffcc00'></i>
+            </div>
+            <div class="item legend">
+              Regional Walking Trail <i class="minus icon" style='color: #c696b7'></i>
+            </div>
+            <div class="item legend">
+              Combination <i class="minus icon" style='color: #d6a583'></i>
+            </div>
+          </div>
         {{/if}}
 
         {{#ui-accordion exclusive=true}}
