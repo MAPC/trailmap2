@@ -40,9 +40,16 @@
             label='Multi-Use Path'
             checked=dual_fac_type}}
           {{#if dual_fac_type}}
-            <i class="minus icon" style='color: #275f68'></i>
+            <i class="minus icon" style='color: #38A800;'></i>
           {{/if}}
         </a>
+        {{#if dual_fac_type}}
+          <div class="menu">
+            <div class="item legend">
+              Unimproved <i class="minus icon" style='color: #a87000;'></i>
+            </div>
+          </div>
+        {{/if}}
 {{!--         <a class="item">
 
           {{#if land_line_type}}
@@ -51,7 +58,7 @@
         </a> --}}
         <a class="item">
           {{ui-checkbox
-            label='Regional Land Lines'
+            label='LandLine (Metro Greenway Network)'
             checked=land_line_type
             onChange=(action (mut land_line_type))}}
         </a>
