@@ -21,39 +21,23 @@ export default CartoDbLayer.extend({
 
   loading: false,
 
-  didInsertParent() {
-    alert("did insert parent");
+  layerSetup() {
     this._layer = this.createLayer();
     this._addObservers();
     this._addEventListeners();
-
-    let map = this.get('containerLayer._layer');
-
-    if (map) {
+    if (this.get('containerLayer')) {
+      let map = this.get('containerLayer')._layer;
       let zIndex = this.get('options.zIndex');
-
-
       this._layer.on('done', (layer) => {
-        // leaflet 1.0 hack, remove once cartodb.js supports leaflet 1.0
-        layer._adjustTilePoint = () => {};
-
         cdb.geo.LeafletMapView.addLayerToMap(layer, map, zIndex);
+        Ember.set(map, 'vizJson', Ember.get(layer, 'options.options.layer_definition.layers'));
         this.layer = layer;
         this.didCreateLayer();
-
-        if (this.get('sql')) {
+        if(this.get('sql')) {
           this.setSql();
         }
-
-        if (this.get('onClick')) {
-          layer.getSubLayers().forEach((subLayer) => {
-
-            cdb.vis.Vis.addCursorInteraction(map, subLayer);
-            subLayer.setInteraction(true);
-            subLayer.on('featureClick', run.bind(this, (...args) => {
-              this.get('onClick')(...args);
-            }));
-          });
+        if(this.get('sublayers')) {
+          this.bindSublayerStates();
         }
       });
     }
@@ -102,5 +86,41 @@ export default CartoDbLayer.extend({
     let options = this.getProperties('legends', 'infowindow');
     let layer = cartodb.createLayer(map, url, options);
     return layer;
-  }
+  },
+
+  bindSublayerStates: observer('sublayers', function() {
+    let sublayers = this.get('sublayers');
+    let values = Object.values(sublayers);
+    let doesIncludeProposed = this.get('proposed');
+
+    this.layer.on('loading', () =>  {
+      this.set('loading', true);
+    });
+
+    this.layer.on('load', () =>  {
+      this.set('loading', false);
+    });
+
+    values.forEach((property, index) => {
+      let sublayer = this.layer.getSubLayer(index);
+
+      if (doesIncludeProposed) {
+        let sublayerSQL = sublayer.getSQL();
+        console.log("includes proposed ", sublayerSQL);
+        sublayerSQL = `SELECT * FROM (${sublayerSQL}) AS the_table WHERE fac_stat in (1,2,3)`;
+        sublayer.setSQL(sublayerSQL);
+      } else {
+        let sublayerSQL = sublayer.getSQL();
+        sublayerSQL.replace("fac_stat in (1,2,3)", "fac_stat in (1)");
+        sublayer.setSQL(sublayerSQL);
+        console.log("doesn't include proposed", sublayerSQL);
+      }
+
+      if(property) {
+        this.layer.getSubLayer(index).show();
+      } else {
+        this.layer.getSubLayer(index).hide();
+      }
+    });
+  })
 });
