@@ -1,4 +1,4 @@
-{{outlet}}
+{{liquid-outlet}}
 <main>
   {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=false onMoveend=(action "updatePosition") as |layers|}}
     {{#if (eq basemap 'default')}}

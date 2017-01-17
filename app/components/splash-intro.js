@@ -1,5 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['splash-intro']
+  classNames: ['splash-intro'],
+  didInsertElement: function() {
+    $('.logo')
+      .transition('fade down', { duration: 1750 })
+    ;
+    $('p')
+      .transition('fade down', { duration: 1750 })
+    ;
+    $('.option')
+      .transition('fly left', { duration: 1750 })
+    ;
+  }
 });
