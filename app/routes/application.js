@@ -13,7 +13,7 @@ export default Ember.Route.extend({
 
   actions: {
     getLocation() {
-      let mapController = this.controllerFor('map');
+      let mapController = this.controllerFor('application');
       if (this.get('tracking')) {
         this.toggleProperty('tracking');
         this.get('geolocation').stopTracking();
@@ -28,11 +28,13 @@ export default Ember.Route.extend({
   },
 
   trackLocationLine: Ember.observer('geolocation.currentLocation', function() {
-    let currentLocation = this.get('geolocation.currentLocation');
-    if (currentLocation) {
-      this.get('locations').pushObject({ lat: currentLocation[0], lng: currentLocation[1]});  
+    if (this.get("tracking")) {
+      let currentLocation = this.get('geolocation.currentLocation');
+      if (currentLocation) {
+        this.get('locations').pushObject({ lat: currentLocation[0], lng: currentLocation[1]});  
+      }
+      let mapController = this.controllerFor('application');
+      mapController.set('locations', this.get('locations'));
     }
-    let mapController = this.controllerFor('map');
-    mapController.set('locations', this.get('locations'));
   })
 });

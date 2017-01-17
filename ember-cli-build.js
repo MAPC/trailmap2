@@ -18,6 +18,8 @@ module.exports = function(defaults) {
     // Add options here
   });
 
+  app.import('bower_components/leaflet-icon-pulse/src/L.Icon.Pulse.js');
+  app.import('bower_components/leaflet-icon-pulse/src/L.Icon.Pulse.css');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

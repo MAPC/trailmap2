@@ -7,6 +7,7 @@
     "ember-qunit-notifications": "0.1.0",
     "leaflet": "~0.7.7",
     "semantic-ui": "^2.2.6",
-    "trackjs": "~2.3.1"
+    "trackjs": "~2.3.1",
+    "leaflet-icon-pulse": "leaflet-pulse-icon#^0.1.0"
   }
 }

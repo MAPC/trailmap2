@@ -10,7 +10,7 @@ export default Ember.Component.extend({
       .transition('fade down', { duration: 1750 })
     ;
     $('.option')
-      .transition('fly left', { duration: 1750 })
+      .transition('fade down', { duration: 1750 })
     ;
   }
 });

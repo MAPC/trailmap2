@@ -12,14 +12,14 @@
   <div class="ui container">
     <div class="ui stackable equal width center aligned padded two column grid">
       <div class="column">
-      {{#link-to 'filters' class="option hidden" style="display: none;"}}
-        <button class="ui massive inverted button"><i class="inverted map pin icon"></i>Track Your Route</button>
-      {{/link-to}}
+        <a class="option hidden" {{action trackLocation}}>
+          <button class="ui massive inverted button"><i class="inverted map pin icon"></i>Track Your Route</button>
+        </a>
       </div>
       <div class="column" style="display: none;">
-      {{#link-to 'filters' class="option hidden" style="display: none;"}}
-        <button class="ui massive inverted button"><i class="inverted map icon"></i>LandLine Network</button>
-      {{/link-to}}
+        {{#link-to 'filters' (query-params bike_fac_type='' dual_fac_type='' land_line_type=true walk_fac_type='') class="option hidden"}}
+          <button class="ui massive inverted button"><i class="inverted map icon"></i>LandLine Network</button>
+        {{/link-to}}
       </div>
     </div>
   </div>

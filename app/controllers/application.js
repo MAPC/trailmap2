@@ -15,6 +15,7 @@ export default Ember.Controller.extend({
   bikefacilitiesQuery: makeSql('bike_fac_type', ["(CASE WHEN fac_type=1 then 'Bike Lane' WHEN fac_type=2 THEN 'Cycle Track' WHEN fac_type=3 THEN 'Sign-posted on-road bike route' WHEN fac_type=4 THEN 'Paved bike shoulder' WHEN fac_type=5 THEN 'Shared-Use Path' WHEN fac_type=7 THEN 'Bicycle / Pedestrian priority roadway' WHEN fac_type=9 THEN 'Marked Shared-Lane' END) AS fac_type_str"]),
   landlineregionalgreenwaysQuery: makeSql('land_line_type'),
   dualtrailsQuery: makeSql('dual_fac_type', ["(CASE WHEN fac_type=1 then 'Bike Lane' WHEN fac_type=2 THEN 'Cycle Track' WHEN fac_type=3 THEN 'Sign-posted on-road bike route' WHEN fac_type=4 THEN 'Paved bike shoulder' WHEN fac_type=5 THEN 'Shared-Use Path' WHEN fac_type=7 THEN 'Bicycle / Pedestrian priority roadway' WHEN fac_type=9 THEN 'Marked Shared-Lane' END) AS fac_type_str"]),
+  geolocation: Ember.inject.service(),
 
   sqlMapping: function() {
     // order matters.
@@ -37,6 +38,9 @@ export default Ember.Controller.extend({
   lng: -71.352,
 
   currentLocation: null,
+  customIcon: Ember.computed(function() {
+    return L.icon.pulse({iconSize:[20,20],color:'blue'});
+  }),
 
   bikeMetaData: config.APP.domains.bike_fac_type,
   bikeFacChecklist: computed('bike_fac_type', 'bikeMetaData', function() {
@@ -68,6 +72,18 @@ export default Ember.Controller.extend({
         lng: map.getCenter().lng,
         zoom: map.getZoom()
       });
+    },
+
+    trackLocation() {
+      this.get('geolocation').trackLocation({enableHighAccuracy: true}, (geoObject) => {
+        this.set('currentLocation', this.get('geolocation.currentLocation'));
+      });
+      this.get('geolocation').getLocation().then((geoObject) => {
+        let { latitude, longitude } = geoObject.coords;
+        this.setProperties({lat: latitude, lng: longitude, zoom: 18 });
+      });
+      
+      this.transitionToRoute('filters');
     }
   }
 });
