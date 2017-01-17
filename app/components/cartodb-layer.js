@@ -45,6 +45,14 @@ export default CartoDbLayer.extend({
           this.setSql();
         }
 
+        this.layer.on('loading', () =>  {
+          this.set('loading', true);
+        });
+
+        this.layer.on('load', () =>  {
+          this.set('loading', false);
+        });
+
         if (this.get('onClick')) {
           layer.getSubLayers().forEach((subLayer) => {
 
