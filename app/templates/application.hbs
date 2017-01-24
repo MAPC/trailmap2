@@ -33,7 +33,8 @@
                     {{ui-checkbox
                       class='parent-checkbox'
                       label='Bike'
-                      checked=(gt bike_fac_type.length 0)}}
+                      checked=(or protected shared bike_lane)
+                      onChange=(action 'toggleAll' (array 'protected' 'shared' 'bike_lane'))}}
                     <i class="dropdown icon"></i>
                   </a>
                   <div class="child content link menu">
@@ -55,7 +56,7 @@
                     </a>
                     <a class="item" {{action (toggle 'bike_lane' this)}}>
                       {{ui-checkbox
-                        label='Shared Lane Marking'
+                        label='Bike Lane'
                         checked=bike_lane}}
                       {{#if bike_lane}}
                         <i class="minus icon" style='color: #0874b9;'></i>
@@ -138,12 +139,6 @@
                     {{/ui-radio}}
                   </div>
                 {{/ui-accordion}}
-                <div class="item">
-                  {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut proposed)) checked=proposed label="Proposed Trails"}}
-                  {{#if proposed}}
-                    <i class="ellipsis horizontal icon"></i>
-                  {{/if}}
-                </div>
               </div>
             {{/ui-accordion}}
           </div>

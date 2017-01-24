@@ -35,7 +35,7 @@ export default Ember.Controller.extend({
   sublayers: function() {
     // order matters.
     return this.getProperties('protected','shared','bike_lane','walk','multi_use_path','landline');
-  }.property('protected,shared,bike_lane,walk,multi_use_path,landline','proposed'),
+  }.property('protected,shared,bike_lane,walk,multi_use_path,landline'),
 
   bike_fac_type: '1,2,9',
   walk_fac_type: '1',
@@ -65,13 +65,18 @@ export default Ember.Controller.extend({
 
 
   actions: {
-    toggleCategories(category,defaultValues) {
-      let localCategory = this.get(category);
-      
-      if (localCategory) {
-        this.set(category, '');
+    toggleAll(props) {
+      let properties = this.getProperties(props);
+      let values = Object.values(properties);
+      let keys = Object.keys(properties);
+      if(values.includes(true)) {
+        keys.forEach((key) => {
+          this.set(key, false);
+        });
       } else {
-        this.set(category, defaultValues);
+        keys.forEach((key) => {
+          this.set(key, true);
+        });
       }
     },
 
