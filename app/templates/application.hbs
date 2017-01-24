@@ -1,1 +1,26 @@
 {{liquid-outlet}}
+
+<main>
+  {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=false onMoveend=(action "updatePosition") as |layers|}}
+    {{#if (eq basemap 'default')}}
+      {{tile-layer url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'}}
+    {{/if}}
+    {{#if (eq basemap 'osm')}}
+      {{tile-layer url='https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'}}
+    {{/if}}
+    {{#if (eq basemap 'satellite')}}
+      {{tile-layer url='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'}}
+    {{/if}}
+    {{#cartodb-layer
+      sublayers=sublayers proposed=proposed https=true onLoad='getLayer' url='https://mapc.carto.com/u/mapc-admin/api/v2/viz/ffb06642-d6ab-11e6-b416-0e233c30368f/viz.json'
+      zIndex=1 legends=false search=true as |cartodb-layer|}}
+
+    {{/cartodb-layer}}
+    {{#if currentLocation}}
+      {{#if locations}}
+        {{polyline-layer smoothFactor=5 locations=locations}}
+      {{/if}}
+      {{marker-layer location=currentLocation icon=customIcon}}
+    {{/if}}
+  {{/leaflet-map}}
+</main>

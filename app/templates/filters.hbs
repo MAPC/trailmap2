@@ -17,67 +17,67 @@
             {{ui-checkbox
               class='parent-checkbox'
               label='Bike'
-              checked=(or protected shared bike_lane)
+              checked=(or applicationController.protected applicationController.shared applicationController.bike_lane)
               onChange=(action 'toggleAll' (array 'protected' 'shared' 'bike_lane'))}}
             <i class="dropdown icon"></i>
           </a>
           <div class="child content link menu">
-            <a class="item" {{action (toggle 'protected' this)}}>
+            <a class="item" {{action (toggle 'protected' applicationController)}}>
               {{ui-checkbox
                 label='Protected Bike Lane'
-                checked=protected}}
+                checked=applicationController.protected}}
               {{#if protected}}
                 <i class="minus icon" style='color: #7f3193;'></i>
               {{/if}}
             </a>
-            <a class="item" {{action (toggle 'shared' this)}}>
+            <a class="item" {{action (toggle 'shared' applicationController)}}>
               {{ui-checkbox
                 label='Shared Lane Marking'
-                checked=shared}}
+                checked=applicationController.shared}}
               {{#if shared}}
                 <i class="minus icon" style='color: #82C5EC;'></i>
               {{/if}}
             </a>
-            <a class="item" {{action (toggle 'bike_lane' this)}}>
+            <a class="item" {{action (toggle 'bike_lane' applicationController)}}>
               {{ui-checkbox
                 label='Bike Lane'
-                checked=bike_lane}}
+                checked=applicationController.bike_lane}}
               {{#if bike_lane}}
                 <i class="minus icon" style='color: #0874b9;'></i>
               {{/if}}
             </a>
           </div>
         {{/ui-accordion}}
-        <a class="item" {{action (toggle 'walk' this)}}>
+        <a class="item" {{action (toggle 'walk' applicationController)}}>
           {{ui-checkbox
             label='Walk'
-            checked=walk}}
+            checked=applicationController.walk}}
           {{#if walk}}
             <i class="minus icon" style='color: #db813f'></i>
           {{/if}}
         </a>
-        <a class="item" {{action (toggle 'multi_use_path' this)}}>
+        <a class="item" {{action (toggle 'multi_use_path' applicationController)}}>
           {{ui-checkbox
             label='Multi-Use Path'
-            checked=multi_use_path}}
+            checked=applicationController.multi_use_path}}
           {{#if multi_use_path}}
             <i class="minus icon" style='color: #38A800;'></i>
           {{/if}}
         </a>
-        {{#if multi_use_path}}
+        {{#if applicationController.multi_use_path}}
           <div class="menu">
             <div class="item legend">
               Unimproved <i class="minus icon" style='color: #a87000;'></i>
             </div>
           </div>
         {{/if}}
-        <a class="item" {{action (toggle 'landline' this)}}>
+        <a class="item" {{action (toggle 'landline' applicationController)}}>
           {{ui-checkbox
             label='LandLine (Metro Greenway Network)'
-            checked=landline}}
+            checked=applicationController.landline}}
         </a>
 
-        {{#if landline}}
+        {{#if applicationController.landline}}
           <div class="menu">
             <div class="item legend">
               Greeway Route <i class="minus icon" style='color: #ffcc00'></i>
@@ -102,24 +102,24 @@
               name="default"
               label="Default"
               value="default"
-              current=basemap
-              onChange=(action (mut basemap) )}}
+              current=applicationController.basemap
+              onChange=(action (mut applicationController.basemap) )}}
             {{/ui-radio}}
             {{#ui-radio
               class="item icon"
               name="osm"
               label="Open Street Map"
               value="osm"
-              current=basemap
-              onChange=(action (mut basemap) )}}
+              current=applicationController.basemap
+              onChange=(action (mut applicationController.basemap) )}}
             {{/ui-radio}}
             {{#ui-radio
               class="item icon"
               name="satellite"
               label="Satellite"
               value="satellite"
-              current=basemap
-              onChange=(action (mut basemap) )}}
+              current=applicationController.basemap
+              onChange=(action (mut applicationController.basemap) )}}
             {{/ui-radio}}
           </div>
         {{/ui-accordion}}
