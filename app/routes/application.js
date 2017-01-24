@@ -13,26 +13,28 @@ export default Ember.Route.extend({
 
   actions: {
     getLocation() {
-      let applicationController = this.controllerFor('application');
+      let mapController = this.controllerFor('application');
       if (this.get('tracking')) {
         this.toggleProperty('tracking');
         this.get('geolocation').stopTracking();
-        applicationController.set('currentLocation', null);
+        mapController.set('currentLocation', null);
       } else {
         this.toggleProperty('tracking');
         this.get('geolocation').trackLocation({enableHighAccuracy: true}, (geoObject) => {
-          applicationController.set('currentLocation', this.get('geolocation.currentLocation'));
+          mapController.set('currentLocation', this.get('geolocation.currentLocation'));
         });
       }
     }
   },
 
   trackLocationLine: Ember.observer('geolocation.currentLocation', function() {
-    let currentLocation = this.get('geolocation.currentLocation');
-    if (currentLocation) {
-      this.get('locations').pushObject({ lat: currentLocation[0], lng: currentLocation[1]});  
+    if (this.get("tracking")) {
+      let currentLocation = this.get('geolocation.currentLocation');
+      if (currentLocation) {
+        this.get('locations').pushObject({ lat: currentLocation[0], lng: currentLocation[1]});  
+      }
+      let mapController = this.controllerFor('application');
+      mapController.set('locations', this.get('locations'));
     }
-    let applicationController = this.controllerFor('application');
-    applicationController.set('locations', this.get('locations'));
   })
 });

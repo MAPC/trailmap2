@@ -1,0 +1,115 @@
+{{#if (or media.isMobile media.isTablet)}}
+<div class="ui segment track-route">
+  {{ui-checkbox class="ui toggle checkbox" onChange=(route-action 'getLocation') label="Track Your Route"}}
+</div>
+{{/if}}
+<nav class="filters">
+  <div class="ui link vertical menu">
+    {{#ui-accordion class="ui accordion"}}
+      <h3 class="ui parent active title item">
+        <i class="dropdown right floated icon"></i>
+        Trailmap Filters
+      </h3>
+
+      <div class="ui parent {{if (not media.isMobile) 'active'}} content">
+        {{#ui-accordion exclusive=true}}
+          <a class="ui child attached title item">
+            {{ui-checkbox
+              class='parent-checkbox'
+              label='Bike'
+              checked=(gt applicationController.bike_fac_type.length 0)
+              onChange=(action 'toggleCategories' 'bike_fac_type' '1,2,9' target=applicationController)}}
+            <i class="dropdown icon"></i>
+          </a>
+          <div class="child content link menu">
+            {{scoped-array-checklist 
+             checklistItems=applicationController.bikeFacChecklist
+             valuesList=applicationController.bike_fac_type}}
+          </div>
+        {{/ui-accordion}}
+        <a class="item" {{action 'toggleCategories' 'walk_fac_type' '1' target=applicationController}}>
+          {{ui-checkbox
+            label='Walk'
+            checked=applicationController.walk_fac_type}}
+          {{#if applicationController.walk_fac_type}}
+            <i class="minus icon" style='color: #db813f'></i>
+          {{/if}}
+        </a>
+        <a class="item" {{action 'toggleCategories' 'dual_fac_type' '5' target=applicationController}}>
+          {{ui-checkbox
+            label='Multi-Use Path'
+            checked=applicationController.dual_fac_type}}
+          {{#if applicationController.dual_fac_type}}
+            <i class="minus icon" style='color: #38A800;'></i>
+          {{/if}}
+        </a>
+        {{#if applicationController.dual_fac_type}}
+          <div class="menu">
+            <div class="item legend">
+              Unimproved <i class="minus icon" style='color: #a87000;'></i>
+            </div>
+          </div>
+        {{/if}}
+        <a class="item">
+          {{ui-checkbox
+            label='LandLine (Metro Greenway Network)'
+            checked=applicationController.land_line_type
+            onChange=(action (mut applicationController.land_line_type))}}
+        </a>
+
+        {{#if applicationController.land_line_type}}
+          <div class="menu">
+            <div class="item legend">
+              Greeway Route <i class="minus icon" style='color: #ffcc00'></i>
+            </div>
+            <div class="item legend">
+              Regional Walking Trail <i class="minus icon" style='color: #c696b7'></i>
+            </div>
+            <div class="item legend">
+              Combination <i class="minus icon" style='color: #d6a583'></i>
+            </div>
+          </div>
+        {{/if}}
+
+        {{#ui-accordion exclusive=true}}
+          <a class="ui child active attached title item">
+            Basemaps
+            <i class="dropdown icon"></i>
+          </a>
+          <div class="child active content">
+            {{#ui-radio
+              class="item icon"
+              name="default"
+              label="Default"
+              value="default"
+              current=applicationController.basemap
+              onChange=(action (mut applicationController.basemap))}}
+            {{/ui-radio}}
+            {{#ui-radio
+              class="item icon"
+              name="osm"
+              label="Open Street Map"
+              value="osm"
+              current=applicationController.basemap
+              onChange=(action (mut applicationController.basemap))}}
+            {{/ui-radio}}
+            {{#ui-radio
+              class="item icon"
+              name="satellite"
+              label="Satellite"
+              value="satellite"
+              current=applicationController.basemap
+              onChange=(action (mut applicationController.basemap))}}
+            {{/ui-radio}}
+          </div>
+        {{/ui-accordion}}
+        <div class="item">
+          {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut applicationController.showProposed)) checked=applicationController.showProposed label="Proposed Trails"}}
+          {{#if applicationController.showProposed}}
+            <i class="ellipsis horizontal icon"></i>
+          {{/if}}
+        </div>
+      </div>
+    {{/ui-accordion}}
+  </div>
+</nav>
