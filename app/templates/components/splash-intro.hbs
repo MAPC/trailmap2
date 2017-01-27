@@ -18,9 +18,9 @@
         </a>
       </div>
       <div class="column" style="display: none;">
-        {{#link-to 'filters' (query-params landline=true) class="option hidden"}}
+        {{#link-to 'filters' (query-params landline=true shared=false bike_lane=false walk=false multi_use_path=false) class="option hidden"}}
           <button class="ui massive inverted button"><i class="inverted map icon"></i>LandLine Network</button>
-        {{/link-to}}
+        {{/link-to}} shared=false bike_lane=false walk=false multi_use_path=false
       </div>
     </div>
   </div>
