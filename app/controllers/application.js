@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
   walk: true,
   multi_use_path: true,
   landline: false,
+  proposed: false,
   sublayers: function() {
     // order matters.
     return this.getProperties('protected','shared','bike_lane','walk','multi_use_path','landline');

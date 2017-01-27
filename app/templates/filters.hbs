@@ -123,6 +123,12 @@
             {{/ui-radio}}
           </div>
         {{/ui-accordion}}
+        <div class="item">
+          {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut applicationController.proposed)) checked=applicationController.proposed label="Proposed Trails"}}
+          {{#if applicationController.proposed}}
+            <i class="ellipsis horizontal icon"></i>
+          {{/if}}
+        </div>
       </div>
     {{/ui-accordion}}
   </div>
