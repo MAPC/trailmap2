@@ -47,6 +47,7 @@ h3:first-child {
 main {
   pointer-events: all;
 }
+
 /* components */
 .splash-intro {
   pointer-events: all;
@@ -91,6 +92,8 @@ h1.ui.inverted.header.logo {
   min-height: 100%;
 }
 
+
+
 .splash-intro .splash {
   min-height: 500px;
   padding: 5rem;
@@ -103,7 +106,7 @@ h1.ui.inverted.header.logo {
 }
 
 .splash-intro .column {
-  min-height: 200px;
+  /*min-height: 200px;*/
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -116,6 +119,15 @@ h1.ui.inverted.header.logo {
 footer {
   width: 100%;
   background-color: black;
+}
+
+@media screen and (max-width: 415px) {
+  .splash-intro .splash {
+    padding: 2rem;
+    min-height: auto;
+  }
+
+
 }
 
 /* special */
@@ -185,3 +197,6 @@ footer {
 .leaflet-control-attribution  {
   display: none;
 }
+
+
+

@@ -6,23 +6,22 @@
     <div class="ui inverted divider">
     </div>
     <p style="display: none;">Trailmap is a growing compendium of the region's walking and bicycling facilities. Trailmap hopes to provide a single place for planning and exploring the region by foot and on bicycle.
-</p>
+    </p>
+    <div class="ui stackable equal width center aligned two column grid">
+      <div class="column">
+        <button class="ui big inverted fluid button" {{action trackLocation}}><i class="inverted map pin icon"></i>Trails Near You</button>
+      </div>
+      <div class="column">
+        {{#link-to 'filters' (query-params landline=true shared=false bike_lane=false walk=false multi_use_path=false) class="ui big inverted fluid button" tagName="button"}}
+          <i class="inverted map icon"></i>LandLine Network
+        {{/link-to}}
+      </div>
+    </div>
   </div>
 </div>
 <div class="options">
   <div class="ui container">
-    <div class="ui stackable equal width center aligned padded two column grid">
-      <div class="column">
-        <a class="option hidden" {{action trackLocation}}>
-          <button class="ui massive inverted button"><i class="inverted map pin icon"></i>Trails Near You</button>
-        </a>
-      </div>
-      <div class="column" style="display: none;">
-        {{#link-to 'filters' (query-params landline=true shared=false bike_lane=false walk=false multi_use_path=false) class="option hidden"}}
-          <button class="ui massive inverted button"><i class="inverted map icon"></i>LandLine Network</button>
-        {{/link-to}} shared=false bike_lane=false walk=false multi_use_path=false
-      </div>
-    </div>
+
   </div>
   <div class="other-content">
     <div class="ui container">
