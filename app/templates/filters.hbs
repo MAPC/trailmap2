@@ -21,7 +21,7 @@
               {{ui-checkbox
                 label='Protected Bike Lane'
                 checked=applicationController.protected}}
-              {{#if protected}}
+              {{#if applicationController.protected}}
                 <i class="minus icon" style='color: #7f3193;'></i>
               {{/if}}
             </a>
@@ -29,7 +29,7 @@
               {{ui-checkbox
                 label='Shared Lane Marking'
                 checked=applicationController.shared}}
-              {{#if shared}}
+              {{#if applicationController.shared}}
                 <i class="minus icon" style='color: #82C5EC;'></i>
               {{/if}}
             </a>
@@ -37,7 +37,7 @@
               {{ui-checkbox
                 label='Bike Lane'
                 checked=applicationController.bike_lane}}
-              {{#if bike_lane}}
+              {{#if applicationController.bike_lane}}
                 <i class="minus icon" style='color: #0874b9;'></i>
               {{/if}}
             </a>
@@ -47,7 +47,7 @@
           {{ui-checkbox
             label='Walk'
             checked=applicationController.walk}}
-          {{#if walk}}
+          {{#if applicationController.walk}}
             <i class="minus icon" style='color: #db813f'></i>
           {{/if}}
         </a>
@@ -55,7 +55,7 @@
           {{ui-checkbox
             label='Multi-Use Path'
             checked=applicationController.multi_use_path}}
-          {{#if multi_use_path}}
+          {{#if applicationController.multi_use_path}}
             <i class="minus icon" style='color: #38A800;'></i>
           {{/if}}
         </a>
