@@ -180,13 +180,17 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
-  if (environment === 'production') {
+  if (environment === 'github') {
     ENV.locationType = 'hash';
     ENV.baseUrl = '/trailmap/';
     ENV.prepend = 'https://mapc.github.io/trailmap2/';
     ENV.trackJs.config.enabled = true;
   }
 
+  if (environment === 'production') {
+    ENV.locationType = 'hash';
+    ENV.trackJs.config.enabled = true;
+  }
   return ENV;
 };
 
