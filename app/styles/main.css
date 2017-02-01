@@ -1672,7 +1672,7 @@
 
 		}
 
-	a {
+/*	a {
 		-moz-transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
 		-webkit-transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
 		-ms-transition: color 0.2s ease-in-out, border-bottom-color 0.2s ease-in-out;
@@ -1680,8 +1680,8 @@
 		border-bottom: dotted 1px;
 		color: inherit;
 		text-decoration: none;
-	}
-
+	}*/
+/*
 		a:hover {
 			border-bottom-color: transparent;
 			color: #9bf1ff !important;
@@ -1689,7 +1689,7 @@
 
 		a:active {
 			color: #53e3fb !important;
-		}
+		}*/
 
 	strong, b {
 		color: #ffffff;
@@ -1929,7 +1929,7 @@
 
 		}
 
-	label {
+/*	label {
 		color: #ffffff;
 		display: block;
 		font-size: 0.8em;
@@ -1938,7 +1938,7 @@
 		margin: 0 0 1em 0;
 		text-transform: uppercase;
 	}
-
+*/
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],

@@ -22,19 +22,6 @@ module.exports = function(defaults) {
         javascript: true,
         images: true,
         fonts: true
-      },
-      // These settings allow you to specify the source of the Semantic files
-      source: {
-        css: 'bower_components/semantic-ui/dist',
-        javascript: 'bower_components/semantic-ui/dist',
-        images: 'bower_components/semantic-ui/dist/themes/default/assets/images',
-        fonts: 'bower_components/semantic-ui/dist/themes/default/assets/fonts'
-      },
-      // These settings allow you to specify the destination of the Semantic files
-      // This only applies to images and fonts, since those are assets
-      destination: {
-        images: 'assets/themes/default/assets/images',
-        fonts: 'assets/themes/default/assets/fonts'
       }
     }
   });
@@ -46,6 +33,21 @@ module.exports = function(defaults) {
   app.import('bower_components/semantic-ui-checkbox/checkbox.css');
   app.import('bower_components/semantic-ui-transition/transition.css');
   app.import('bower_components/semantic-ui-icon/icon.css');
+  app.import('bower_components/semantic-ui-icon/assets/fonts/icons.eot', {
+    destDir: 'assets/assets/fonts/'
+  });
+  app.import('bower_components/semantic-ui-icon/assets/fonts/icons.svg', {
+    destDir: 'assets/assets/fonts/'
+  });
+  app.import('bower_components/semantic-ui-icon/assets/fonts/icons.ttf', {
+    destDir: 'assets/assets/fonts/'
+  });
+  app.import('bower_components/semantic-ui-icon/assets/fonts/icons.woff', {
+    destDir: 'assets/assets/fonts/'
+  });
+  app.import('bower_components/semantic-ui-icon/assets/fonts/icons.woff2', {
+    destDir: 'assets/assets/fonts/'
+  });
   app.import('bower_components/semantic-ui-loader/loader.css');
   // Use `app.import` to add additional libraries to the generated
   // output files.
