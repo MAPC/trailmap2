@@ -14,12 +14,39 @@ module.exports = function(defaults) {
         'images/marker-icon.png',
         'images/marker-shadow.png'
       ]
+    },
+    SemanticUI: {
+      // These flags allow you do turn on or off auto imports for Semantic UI
+      import: {
+        css: false,
+        javascript: true,
+        images: true,
+        fonts: true
+      },
+      // These settings allow you to specify the source of the Semantic files
+      source: {
+        css: 'bower_components/semantic-ui/dist',
+        javascript: 'bower_components/semantic-ui/dist',
+        images: 'bower_components/semantic-ui/dist/themes/default/assets/images',
+        fonts: 'bower_components/semantic-ui/dist/themes/default/assets/fonts'
+      },
+      // These settings allow you to specify the destination of the Semantic files
+      // This only applies to images and fonts, since those are assets
+      destination: {
+        images: 'assets/themes/default/assets/images',
+        fonts: 'assets/themes/default/assets/fonts'
+      }
     }
-    // Add options here
   });
 
   app.import('bower_components/leaflet-icon-pulse/src/L.Icon.Pulse.js');
   app.import('bower_components/leaflet-icon-pulse/src/L.Icon.Pulse.css');
+  app.import('bower_components/semantic-ui-accordion/accordion.css');
+  app.import('bower_components/semantic-ui-menu/menu.css');
+  app.import('bower_components/semantic-ui-checkbox/checkbox.css');
+  app.import('bower_components/semantic-ui-transition/transition.css');
+  app.import('bower_components/semantic-ui-icon/icon.css');
+  app.import('bower_components/semantic-ui-loader/loader.css');
   // Use `app.import` to add additional libraries to the generated
   // output files.
   //

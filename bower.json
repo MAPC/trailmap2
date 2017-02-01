@@ -8,6 +8,15 @@
     "leaflet": "~0.7.7",
     "semantic-ui": "^2.2.6",
     "trackjs": "~2.3.1",
-    "leaflet-icon-pulse": "leaflet-pulse-icon#^0.1.0"
+    "leaflet-icon-pulse": "leaflet-pulse-icon#^0.1.0",
+    "semantic-ui-transition": "^2.2.6",
+    "semantic-ui-checkbox": "^2.2.6",
+    "semantic-ui-menu": "^2.2.6",
+    "semantic-ui-accordion": "^2.2.6",
+    "semantic-ui-icon": "^2.2.6",
+    "semantic-ui-loader": "^2.2.6"
+  },
+  "devDependencies": {
+    "semantic-ui-transition": "^2.2.6"
   }
 }

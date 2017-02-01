@@ -1,3 +1,5 @@
+@import 'main';
+
 html {
   height:100%;
   margin: 0;
@@ -62,6 +64,10 @@ main {
   z-index: 1;
 }
 
+/*main {
+  position: absolute;
+}
+*/
 .hidden {
   display: none;
 }
@@ -180,6 +186,12 @@ footer {
   .ui.segment.track-route {
     margin: 0;
   }
+}
+
+#wrapper {
+  z-index: 1000;
+  position: absolute;
+  pointer-events: all;
 }
 
 /* carto */
