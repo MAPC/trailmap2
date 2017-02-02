@@ -2964,7 +2964,7 @@ footer {
     z-index: 1;
     width: 100%; }
   .ui.vertical.menu {
-    min-width: 100%; }
+    max-width: 100%; }
   .ui.segment.track-route {
     margin: 0; } }
 
