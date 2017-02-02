@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { computed, observer } from 'ember-computed';
-const host = 'https://trailmap.siteleaf.net';
+const host = 'https://mapc.github.io/trailmap-about/';
 
 export default Ember.Route.extend({
   init() {
@@ -9,11 +9,15 @@ export default Ember.Route.extend({
   },
 
   model() {
-    // return $.getJSON(host);
+    return $.getJSON(host);
   },
 
-  afterModel() {
-    this.controllerFor('index').set('host', host);
+  afterModel(model) {
+    let indexController = this.controllerFor('index');
+    indexController.set('host', host);
+    if(model) {
+      indexController.set('aboutPage', model[0]);  
+    }
   },
 
   queryParams: { 
