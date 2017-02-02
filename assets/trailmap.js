@@ -4724,7 +4724,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
               },
               "end": {
                 "line": 39,
-                "column": 51
+                "column": 65
               }
             },
             "moduleName": "trailmap/templates/index.hbs"
@@ -4748,7 +4748,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
             morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
             return morphs;
           },
-          statements: [["content", "tile.body", ["loc", [null, [39, 37], [39, 50]]], 0, 0, 0, 0]],
+          statements: [["content", "tile.description", ["loc", [null, [39, 44], [39, 64]]], 0, 0, 0, 0]],
           locals: [],
           templates: []
         };
@@ -4761,11 +4761,11 @@ define("trailmap/templates/index", ["exports"], function (exports) {
               "source": null,
               "start": {
                 "line": 39,
-                "column": 51
+                "column": 65
               },
               "end": {
                 "line": 39,
-                "column": 81
+                "column": 95
               }
             },
             "moduleName": "trailmap/templates/index.hbs"
@@ -4860,7 +4860,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
           morphs[3] = dom.createMorphAt(dom.childAt(element1, [3]), 0, 0);
           return morphs;
         },
-        statements: [["attribute", "style", ["concat", ["background-image: url(", ["get", "host", ["loc", [null, [34, 52], [34, 56]]], 0, 0, 0, 0], ["get", "tile.background-image", ["loc", [null, [34, 60], [34, 81]]], 0, 0, 0, 0], ")"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["element", "action", ["transitionTo", "filters", ["get", "tile.config", ["loc", [null, [37, 77], [37, 88]]], 0, 0, 0, 0]], [], ["loc", [null, [37, 43], [37, 90]]], 0, 0], ["content", "tile.title", ["loc", [null, [37, 91], [37, 105]]], 0, 0, 0, 0], ["block", "if", [["get", "tile.body", ["loc", [null, [39, 25], [39, 34]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [39, 19], [39, 88]]]]],
+        statements: [["attribute", "style", ["concat", ["background-image: url(", ["get", "host", ["loc", [null, [34, 52], [34, 56]]], 0, 0, 0, 0], ["get", "tile.background-image", ["loc", [null, [34, 60], [34, 81]]], 0, 0, 0, 0], ")"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["element", "action", ["transitionTo", "filters", ["get", "tile.config", ["loc", [null, [37, 77], [37, 88]]], 0, 0, 0, 0]], [], ["loc", [null, [37, 43], [37, 90]]], 0, 0], ["content", "tile.title", ["loc", [null, [37, 91], [37, 105]]], 0, 0, 0, 0], ["block", "if", [["get", "tile.description", ["loc", [null, [39, 25], [39, 41]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [39, 19], [39, 102]]]]],
         locals: ["tile"],
         templates: [child0, child1]
       };
@@ -5435,7 +5435,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+97ace324"});
+  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+e60c5067"});
 }
 
 /* jshint ignore:end */
