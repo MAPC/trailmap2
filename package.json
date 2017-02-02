@@ -58,6 +58,7 @@
     "squel": "^5.5.1"
   },
   "dependencies": {
+    "object.values": "^1.0.4",
     "semantic-ui-loader": "^2.2.3"
   }
 }
