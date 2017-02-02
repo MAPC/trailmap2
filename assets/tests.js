@@ -279,6 +279,15 @@ define('trailmap/tests/initializers/ember-leaflet-gh-pages-image-fix.jshint', ['
     assert.ok(true, 'initializers/ember-leaflet-gh-pages-image-fix.js should pass jshint.');
   });
 });
+define('trailmap/tests/initializers/object-values-polyfill.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | initializers/object-values-polyfill.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'initializers/object-values-polyfill.js should pass jshint.');
+  });
+});
 define('trailmap/tests/initializers/responsive.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -1266,6 +1275,39 @@ define('trailmap/tests/unit/helpers/split-string-test.jshint', ['exports'], func
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/helpers/split-string-test.js should pass jshint.');
+  });
+});
+define('trailmap/tests/unit/initializers/application-test', ['exports', 'ember', 'trailmap/initializers/application', 'qunit', 'trailmap/tests/helpers/destroy-app'], function (exports, _ember, _trailmapInitializersApplication, _qunit, _trailmapTestsHelpersDestroyApp) {
+
+  (0, _qunit.module)('Unit | Initializer | application', {
+    beforeEach: function beforeEach() {
+      var _this = this;
+
+      _ember['default'].run(function () {
+        _this.application = _ember['default'].Application.create();
+        _this.application.deferReadiness();
+      });
+    },
+    afterEach: function afterEach() {
+      (0, _trailmapTestsHelpersDestroyApp['default'])(this.application);
+    }
+  });
+
+  // Replace this with your real tests.
+  (0, _qunit.test)('it works', function (assert) {
+    (0, _trailmapInitializersApplication.initialize)(this.application);
+
+    // you would normally confirm the results of the initializer here
+    assert.ok(true);
+  });
+});
+define('trailmap/tests/unit/initializers/application-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/initializers/application-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/initializers/application-test.js should pass jshint.');
   });
 });
 define('trailmap/tests/unit/initializers/ember-leaflet-gh-pages-image-fix-test', ['exports', 'ember', 'trailmap/initializers/ember-leaflet-gh-pages-image-fix', 'qunit', 'trailmap/tests/helpers/destroy-app'], function (exports, _ember, _trailmapInitializersEmberLeafletGhPagesImageFix, _qunit, _trailmapTestsHelpersDestroyApp) {
