@@ -1,3 +1,12 @@
+define('trailmap/tests/adapters/application.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | adapters/application.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'adapters/application.js should pass jshint.');
+  });
+});
 define('trailmap/tests/app.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -1143,6 +1152,24 @@ define('trailmap/tests/integration/components/ui-checkbox-test.jshint', ['export
     assert.ok(true, 'integration/components/ui-checkbox-test.js should pass jshint.');
   });
 });
+define('trailmap/tests/models/page.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | models/page.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/page.js should pass jshint.');
+  });
+});
+define('trailmap/tests/models/tile.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | models/tile.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/tile.js should pass jshint.');
+  });
+});
 define('trailmap/tests/resolver.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -1167,7 +1194,7 @@ define('trailmap/tests/routes/application.jshint', ['exports'], function (export
   QUnit.module('JSHint | routes/application.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 23, col 76, \'geoObject\' is defined but never used.\nroutes/application.js: line 2, col 10, \'computed\' is defined but never used.\nroutes/application.js: line 2, col 20, \'observer\' is defined but never used.\n\n3 errors');
+    assert.ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 45, col 76, \'geoObject\' is defined but never used.\nroutes/application.js: line 12, col 12, \'$\' is not defined.\nroutes/application.js: line 2, col 10, \'computed\' is defined but never used.\nroutes/application.js: line 2, col 20, \'observer\' is defined but never used.\n\n4 errors');
   });
 });
 define('trailmap/tests/test-helper', ['exports', 'trailmap/tests/helpers/resolver', 'trailmap/tests/helpers/responsive', 'ember-qunit'], function (exports, _trailmapTestsHelpersResolver, _trailmapTestsHelpersResponsive, _emberQunit) {
@@ -1374,6 +1401,50 @@ define('trailmap/tests/unit/initializers/ember-leaflet-pulse-icon-test.jshint', 
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/initializers/ember-leaflet-pulse-icon-test.js should pass jshint.');
+  });
+});
+define('trailmap/tests/unit/models/page-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForModel)('page', 'Unit | Model | page', {
+    // Specify the other units that are required for this test.
+    needs: []
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var model = this.subject();
+    // let store = this.store();
+    assert.ok(!!model);
+  });
+});
+define('trailmap/tests/unit/models/page-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/models/page-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/models/page-test.js should pass jshint.');
+  });
+});
+define('trailmap/tests/unit/models/tile-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForModel)('tile', 'Unit | Model | tile', {
+    // Specify the other units that are required for this test.
+    needs: []
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var model = this.subject();
+    // let store = this.store();
+    assert.ok(!!model);
+  });
+});
+define('trailmap/tests/unit/models/tile-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/models/tile-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/models/tile-test.js should pass jshint.');
   });
 });
 define('trailmap/tests/unit/routes/application-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {

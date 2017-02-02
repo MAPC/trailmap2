@@ -6,6 +6,17 @@
 
 /* jshint ignore:end */
 
+define('trailmap/adapters/application', ['exports', 'ember-data-contentful/adapters/contentful'], function (exports, _emberDataContentfulAdaptersContentful) {
+  exports['default'] = _emberDataContentfulAdaptersContentful['default'].extend({});
+});
+define('trailmap/adapters/contentful', ['exports', 'ember-data-contentful/adapters/contentful'], function (exports, _emberDataContentfulAdaptersContentful) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberDataContentfulAdaptersContentful['default'];
+    }
+  });
+});
 define('trailmap/app', ['exports', 'ember', 'trailmap/resolver', 'ember-load-initializers', 'trailmap/config/environment'], function (exports, _ember, _trailmapResolver, _emberLoadInitializers, _trailmapConfigEnvironment) {
 
   var App = undefined;
@@ -595,7 +606,7 @@ define('trailmap/components/wms-tile-layer', ['exports', 'ember-leaflet/componen
 });
 define('trailmap/controllers/application', ['exports', 'ember', 'ember-computed'], function (exports, _ember, _emberComputed) {
   exports['default'] = _ember['default'].Controller.extend({
-    queryParams: ['protected', 'shared', 'bike_lane', 'walk', 'multi_use_path', 'landline'],
+    queryParams: ['protected', 'shared', 'bike_lane', 'walk', 'multi_use_path', 'landline', 'zoom', 'lat', 'lng', 'proposed'],
 
     'protected': true,
     shared: true,
@@ -696,7 +707,16 @@ define('trailmap/controllers/filters', ['exports', 'ember'], function (exports, 
 });
 define('trailmap/controllers/index', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = _ember['default'].Controller.extend({
-    applicationController: _ember['default'].inject.controller('application')
+    applicationController: _ember['default'].inject.controller('application'),
+    aboutPage: _ember['default'].computed('model', function () {
+      return this.get('model')[0];
+    }),
+
+    actions: {
+      transitionTo: function transitionTo(route, config) {
+        this.transitionToRoute(route, { queryParams: config });
+      }
+    }
   });
 });
 define('trailmap/helpers/and', ['exports', 'ember', 'ember-truth-helpers/helpers/and'], function (exports, _ember, _emberTruthHelpersHelpersAnd) {
@@ -2010,6 +2030,40 @@ define('trailmap/mixins/promise-resolver', ['exports', 'ember-promise-tools/mixi
     }
   });
 });
+define('trailmap/models/contentful-asset', ['exports', 'ember-data-contentful/models/contentful-asset'], function (exports, _emberDataContentfulModelsContentfulAsset) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberDataContentfulModelsContentfulAsset['default'];
+    }
+  });
+});
+define('trailmap/models/contentful', ['exports', 'ember-data-contentful/models/contentful'], function (exports, _emberDataContentfulModelsContentful) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberDataContentfulModelsContentful['default'];
+    }
+  });
+});
+define('trailmap/models/page', ['exports', 'ember-data', 'ember-data-contentful/models/contentful'], function (exports, _emberData, _emberDataContentfulModelsContentful) {
+  exports['default'] = _emberDataContentfulModelsContentful['default'].extend({
+    title: _emberData['default'].attr('string'),
+    tagline: _emberData['default'].attr('string'),
+    description: _emberData['default'].attr('string'),
+    disclaimer: _emberData['default'].attr('string'),
+    tiles: _emberData['default'].hasMany('tile')
+  });
+});
+define('trailmap/models/tile', ['exports', 'ember-data', 'ember-data-contentful/models/contentful'], function (exports, _emberData, _emberDataContentfulModelsContentful) {
+  exports['default'] = _emberDataContentfulModelsContentful['default'].extend({
+    title: _emberData['default'].attr('string'),
+    description: _emberData['default'].attr('string'),
+    stateConfiguration: _emberData['default'].attr(),
+    background: _emberData['default'].belongsTo('contentful-asset')
+
+  });
+});
 define('trailmap/resolver', ['exports', 'ember-resolver'], function (exports, _emberResolver) {
   exports['default'] = _emberResolver['default'];
 });
@@ -2038,11 +2092,34 @@ define('trailmap/router', ['exports', 'ember', 'trailmap/config/environment'], f
   exports['default'] = Router;
 });
 define('trailmap/routes/application', ['exports', 'ember', 'ember-computed'], function (exports, _ember, _emberComputed) {
+  var host = 'http://trailmap.siteleaf.net';
+
   exports['default'] = _ember['default'].Route.extend({
     init: function init() {
       this._super.apply(this, arguments);
       this.set('locations', []);
     },
+
+    model: function model() {
+      return $.getJSON(host);
+    },
+
+    afterModel: function afterModel() {
+      this.controllerFor('index').set('host', host);
+    },
+
+    queryParams: {
+      'zoom': {
+        replace: true
+      },
+      'lat': {
+        replace: true
+      },
+      'lng': {
+        replace: true
+      }
+    },
+
     locations: null,
 
     geolocation: _ember['default'].inject.service(),
@@ -2076,6 +2153,14 @@ define('trailmap/routes/application', ['exports', 'ember', 'ember-computed'], fu
         mapController.set('locations', this.get('locations'));
       }
     })
+  });
+});
+define('trailmap/serializers/contentful', ['exports', 'ember-data-contentful/serializers/contentful'], function (exports, _emberDataContentfulSerializersContentful) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberDataContentfulSerializersContentful['default'];
+    }
   });
 });
 define('trailmap/services/ajax', ['exports', 'ember-ajax/services/ajax'], function (exports, _emberAjaxServicesAjax) {
@@ -4352,6 +4437,41 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           templates: []
         };
       })();
+      var child7 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.9.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 127,
+                "column": 8
+              },
+              "end": {
+                "line": 127,
+                "column": 47
+              }
+            },
+            "moduleName": "trailmap/templates/filters.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("Home");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
       return {
         meta: {
           "revision": "Ember@2.9.1",
@@ -4362,7 +4482,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
               "column": 4
             },
             "end": {
-              "line": 128,
+              "line": 129,
               "column": 4
             }
           },
@@ -4461,6 +4581,10 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           var el3 = dom.createTextNode("        ");
           dom.appendChild(el2, el3);
           dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createComment("");
+          dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
@@ -4474,7 +4598,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           var element7 = dom.childAt(element5, [5]);
           var element8 = dom.childAt(element5, [9]);
           var element9 = dom.childAt(element5, [15]);
-          var morphs = new Array(15);
+          var morphs = new Array(16);
           morphs[0] = dom.createAttrMorph(element5, 'class');
           morphs[1] = dom.createMorphAt(element5, 1, 1);
           morphs[2] = dom.createElementMorph(element6);
@@ -4490,11 +4614,12 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           morphs[12] = dom.createMorphAt(element5, 13, 13);
           morphs[13] = dom.createMorphAt(element9, 1, 1);
           morphs[14] = dom.createMorphAt(element9, 3, 3);
+          morphs[15] = dom.createMorphAt(element5, 17, 17);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["ui parent ", ["subexpr", "if", [["subexpr", "not", [["get", "media.isMobile", ["loc", [null, [9, 38], [9, 52]]], 0, 0, 0, 0]], [], ["loc", [null, [9, 33], [9, 53]]], 0, 0], "active"], [], ["loc", [null, [9, 28], [9, 64]]], 0, 0], " content"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["block", "ui-accordion", [], ["exclusive", true], 0, null, ["loc", [null, [10, 8], [45, 25]]]], ["element", "action", [["subexpr", "toggle", ["walk", ["get", "applicationController", ["loc", [null, [46, 48], [46, 69]]], 0, 0, 0, 0]], [], ["loc", [null, [46, 33], [46, 70]]], 0, 0]], [], ["loc", [null, [46, 24], [46, 72]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Walk", "checked", ["subexpr", "@mut", [["get", "applicationController.walk", ["loc", [null, [49, 20], [49, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [47, 10], [49, 48]]], 0, 0], ["block", "if", [["get", "applicationController.walk", ["loc", [null, [50, 16], [50, 42]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [50, 10], [52, 17]]]], ["element", "action", [["subexpr", "toggle", ["multi_use_path", ["get", "applicationController", ["loc", [null, [54, 58], [54, 79]]], 0, 0, 0, 0]], [], ["loc", [null, [54, 33], [54, 80]]], 0, 0]], [], ["loc", [null, [54, 24], [54, 82]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Multi-Use Path", "checked", ["subexpr", "@mut", [["get", "applicationController.multi_use_path", ["loc", [null, [57, 20], [57, 56]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [55, 10], [57, 58]]], 0, 0], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [58, 16], [58, 52]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [58, 10], [60, 17]]]], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [62, 14], [62, 50]]], 0, 0, 0, 0]], [], 3, null, ["loc", [null, [62, 8], [68, 15]]]], ["element", "action", [["subexpr", "toggle", ["landline", ["get", "applicationController", ["loc", [null, [69, 52], [69, 73]]], 0, 0, 0, 0]], [], ["loc", [null, [69, 33], [69, 74]]], 0, 0]], [], ["loc", [null, [69, 24], [69, 76]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "LandLine (Metro Greenway Network)", "checked", ["subexpr", "@mut", [["get", "applicationController.landline", ["loc", [null, [72, 20], [72, 50]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [70, 10], [72, 52]]], 0, 0], ["block", "if", [["get", "applicationController.landline", ["loc", [null, [75, 14], [75, 44]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [75, 8], [87, 15]]]], ["block", "ui-accordion", [], ["exclusive", true], 5, null, ["loc", [null, [89, 8], [120, 25]]]], ["inline", "ui-checkbox", [], ["class", "ui toggle checkbox", "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.proposed", ["loc", [null, [122, 73], [122, 103]]], 0, 0, 0, 0]], [], ["loc", [null, [122, 68], [122, 104]]], 0, 0]], [], ["loc", [null, [122, 60], [122, 105]]], 0, 0], "checked", ["subexpr", "@mut", [["get", "applicationController.proposed", ["loc", [null, [122, 114], [122, 144]]], 0, 0, 0, 0]], [], [], 0, 0], "label", "Proposed Trails"], ["loc", [null, [122, 10], [122, 170]]], 0, 0], ["block", "if", [["get", "applicationController.proposed", ["loc", [null, [123, 16], [123, 46]]], 0, 0, 0, 0]], [], 6, null, ["loc", [null, [123, 10], [125, 17]]]]],
+        statements: [["attribute", "class", ["concat", ["ui parent ", ["subexpr", "if", [["subexpr", "not", [["get", "media.isMobile", ["loc", [null, [9, 38], [9, 52]]], 0, 0, 0, 0]], [], ["loc", [null, [9, 33], [9, 53]]], 0, 0], "active"], [], ["loc", [null, [9, 28], [9, 64]]], 0, 0], " content"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["block", "ui-accordion", [], ["exclusive", true], 0, null, ["loc", [null, [10, 8], [45, 25]]]], ["element", "action", [["subexpr", "toggle", ["walk", ["get", "applicationController", ["loc", [null, [46, 48], [46, 69]]], 0, 0, 0, 0]], [], ["loc", [null, [46, 33], [46, 70]]], 0, 0]], [], ["loc", [null, [46, 24], [46, 72]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Walk", "checked", ["subexpr", "@mut", [["get", "applicationController.walk", ["loc", [null, [49, 20], [49, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [47, 10], [49, 48]]], 0, 0], ["block", "if", [["get", "applicationController.walk", ["loc", [null, [50, 16], [50, 42]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [50, 10], [52, 17]]]], ["element", "action", [["subexpr", "toggle", ["multi_use_path", ["get", "applicationController", ["loc", [null, [54, 58], [54, 79]]], 0, 0, 0, 0]], [], ["loc", [null, [54, 33], [54, 80]]], 0, 0]], [], ["loc", [null, [54, 24], [54, 82]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Multi-Use Path", "checked", ["subexpr", "@mut", [["get", "applicationController.multi_use_path", ["loc", [null, [57, 20], [57, 56]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [55, 10], [57, 58]]], 0, 0], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [58, 16], [58, 52]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [58, 10], [60, 17]]]], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [62, 14], [62, 50]]], 0, 0, 0, 0]], [], 3, null, ["loc", [null, [62, 8], [68, 15]]]], ["element", "action", [["subexpr", "toggle", ["landline", ["get", "applicationController", ["loc", [null, [69, 52], [69, 73]]], 0, 0, 0, 0]], [], ["loc", [null, [69, 33], [69, 74]]], 0, 0]], [], ["loc", [null, [69, 24], [69, 76]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "LandLine (Metro Greenway Network)", "checked", ["subexpr", "@mut", [["get", "applicationController.landline", ["loc", [null, [72, 20], [72, 50]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [70, 10], [72, 52]]], 0, 0], ["block", "if", [["get", "applicationController.landline", ["loc", [null, [75, 14], [75, 44]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [75, 8], [87, 15]]]], ["block", "ui-accordion", [], ["exclusive", true], 5, null, ["loc", [null, [89, 8], [120, 25]]]], ["inline", "ui-checkbox", [], ["class", "ui toggle checkbox", "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.proposed", ["loc", [null, [122, 73], [122, 103]]], 0, 0, 0, 0]], [], ["loc", [null, [122, 68], [122, 104]]], 0, 0]], [], ["loc", [null, [122, 60], [122, 105]]], 0, 0], "checked", ["subexpr", "@mut", [["get", "applicationController.proposed", ["loc", [null, [122, 114], [122, 144]]], 0, 0, 0, 0]], [], [], 0, 0], "label", "Proposed Trails"], ["loc", [null, [122, 10], [122, 170]]], 0, 0], ["block", "if", [["get", "applicationController.proposed", ["loc", [null, [123, 16], [123, 46]]], 0, 0, 0, 0]], [], 6, null, ["loc", [null, [123, 10], [125, 17]]]], ["block", "link-to", ["index"], ["class", "item"], 7, null, ["loc", [null, [127, 8], [127, 47]]]]],
         locals: [],
-        templates: [child0, child1, child2, child3, child4, child5, child6]
+        templates: [child0, child1, child2, child3, child4, child5, child6, child7]
       };
     })();
     return {
@@ -4507,7 +4632,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 130,
+            "line": 131,
             "column": 6
           }
         },
@@ -4542,7 +4667,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]), 1, 1);
         return morphs;
       },
-      statements: [["block", "ui-accordion", [], ["class", "ui accordion"], 0, null, ["loc", [null, [3, 4], [128, 21]]]]],
+      statements: [["block", "ui-accordion", [], ["class", "ui accordion"], 0, null, ["loc", [null, [3, 4], [129, 21]]]]],
       locals: [],
       templates: [child0]
     };
@@ -4550,6 +4675,195 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
 });
 define("trailmap/templates/index", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.9.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 21,
+              "column": 16
+            },
+            "end": {
+              "line": 21,
+              "column": 200
+            }
+          },
+          "moduleName": "trailmap/templates/index.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Regional LandLines");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child1 = (function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.9.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 39,
+                "column": 19
+              },
+              "end": {
+                "line": 39,
+                "column": 65
+              }
+            },
+            "moduleName": "trailmap/templates/index.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode(" ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode(" ");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+            return morphs;
+          },
+          statements: [["content", "tile.description", ["loc", [null, [39, 44], [39, 64]]], 0, 0, 0, 0]],
+          locals: [],
+          templates: []
+        };
+      })();
+      var child1 = (function () {
+        return {
+          meta: {
+            "revision": "Ember@2.9.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 39,
+                "column": 65
+              },
+              "end": {
+                "line": 39,
+                "column": 95
+              }
+            },
+            "moduleName": "trailmap/templates/index.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode(" Ipsum dolor sit amet ");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+      return {
+        meta: {
+          "revision": "Ember@2.9.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 33,
+              "column": 10
+            },
+            "end": {
+              "line": 42,
+              "column": 10
+            }
+          },
+          "moduleName": "trailmap/templates/index.hbs"
+        },
+        isEmpty: false,
+        arity: 1,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("            ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("article");
+          var el2 = dom.createTextNode("\n              ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("header");
+          dom.setAttribute(el2, "class", "major");
+          var el3 = dom.createTextNode("\n                ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("h3");
+          var el4 = dom.createTextNode("\n                  ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createElement("a");
+          dom.setAttribute(el4, "href", "#");
+          dom.setAttribute(el4, "class", "link");
+          var el5 = dom.createComment("");
+          dom.appendChild(el4, el5);
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n                ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n                ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("p");
+          var el4 = dom.createComment("");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode(" ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n              ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n            ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var element0 = dom.childAt(fragment, [1]);
+          var element1 = dom.childAt(element0, [1]);
+          var element2 = dom.childAt(element1, [1, 1]);
+          var morphs = new Array(4);
+          morphs[0] = dom.createAttrMorph(element0, 'style');
+          morphs[1] = dom.createElementMorph(element2);
+          morphs[2] = dom.createMorphAt(element2, 0, 0);
+          morphs[3] = dom.createMorphAt(dom.childAt(element1, [3]), 0, 0);
+          return morphs;
+        },
+        statements: [["attribute", "style", ["concat", ["background-image: url(", ["get", "host", ["loc", [null, [34, 52], [34, 56]]], 0, 0, 0, 0], ["get", "tile.background-image", ["loc", [null, [34, 60], [34, 81]]], 0, 0, 0, 0], ")"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["element", "action", ["transitionTo", "filters", ["get", "tile.config", ["loc", [null, [37, 77], [37, 88]]], 0, 0, 0, 0]], [], ["loc", [null, [37, 43], [37, 90]]], 0, 0], ["content", "tile.title", ["loc", [null, [37, 91], [37, 105]]], 0, 0, 0, 0], ["block", "if", [["get", "tile.description", ["loc", [null, [39, 25], [39, 41]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [39, 19], [39, 102]]]]],
+        locals: ["tile"],
+        templates: [child0, child1]
+      };
+    })();
     return {
       meta: {
         "revision": "Ember@2.9.1",
@@ -4560,8 +4874,8 @@ define("trailmap/templates/index", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 164,
-            "column": 0
+            "line": 93,
+            "column": 6
           }
         },
         "moduleName": "trailmap/templates/index.hbs"
@@ -4620,7 +4934,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("h1");
-        var el6 = dom.createTextNode("Welcome to Trailmap.");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
@@ -4633,7 +4947,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("p");
-        var el6 = dom.createTextNode("Trailmap is a growing compendium of the region's walking and bicycling facilities. Trailmap hopes to provide a single place for planning and exploring the region by foot and on bicycle.");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n          ");
@@ -4645,17 +4959,14 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el6 = dom.createElement("li");
         var el7 = dom.createElement("a");
         dom.setAttribute(el7, "class", "button next scrolly");
-        var el8 = dom.createTextNode("Get Started");
+        var el8 = dom.createTextNode("Trails Near You");
         dom.appendChild(el7, el8);
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n           ");
+        var el6 = dom.createTextNode("\n            ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "class", "button next scrolly");
-        var el8 = dom.createTextNode("Get Started");
-        dom.appendChild(el7, el8);
+        var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n          ");
@@ -4682,279 +4993,56 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         dom.appendChild(el2, el3);
         var el3 = dom.createComment(" One ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n        ");
+        var el3 = dom.createTextNode("\n\n        ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("section");
         dom.setAttribute(el3, "id", "one");
         dom.setAttribute(el3, "class", "tiles");
-        var el4 = dom.createTextNode("\n          ");
+        var el4 = dom.createTextNode("\n");
         dom.appendChild(el3, el4);
-        var el4 = dom.createElement("article");
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("span");
-        dom.setAttribute(el5, "class", "image");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("img");
-        dom.setAttribute(el6, "src", "images/pic01.jpg");
-        dom.setAttribute(el6, "alt", "");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("header");
-        dom.setAttribute(el5, "class", "major");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("h3");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "href", "landing.html");
-        dom.setAttribute(el7, "class", "link");
-        var el8 = dom.createTextNode("Biking");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("p");
-        var el7 = dom.createTextNode("Ipsum dolor sit amet");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
+        var el4 = dom.createComment("");
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n          ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("article");
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("span");
-        dom.setAttribute(el5, "class", "image");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("img");
-        dom.setAttribute(el6, "src", "images/pic02.jpg");
-        dom.setAttribute(el6, "alt", "");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("header");
-        dom.setAttribute(el5, "class", "major");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("h3");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "href", "landing.html");
-        dom.setAttribute(el7, "class", "link");
-        var el8 = dom.createTextNode("Hiking");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("p");
-        var el7 = dom.createTextNode("feugiat amet tempus");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n          ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("article");
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("span");
-        dom.setAttribute(el5, "class", "image");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("img");
-        dom.setAttribute(el6, "src", "images/pic03.jpg");
-        dom.setAttribute(el6, "alt", "");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("header");
-        dom.setAttribute(el5, "class", "major");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("h3");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "href", "landing.html");
-        dom.setAttribute(el7, "class", "link");
-        var el8 = dom.createTextNode("Multi-Use");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("p");
-        var el7 = dom.createTextNode("Lorem etiam nullam");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n          ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("article");
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("span");
-        dom.setAttribute(el5, "class", "image");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("img");
-        dom.setAttribute(el6, "src", "images/pic04.jpg");
-        dom.setAttribute(el6, "alt", "");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("header");
-        dom.setAttribute(el5, "class", "major");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("h3");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "href", "landing.html");
-        dom.setAttribute(el7, "class", "link");
-        var el8 = dom.createTextNode("Proposed");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("p");
-        var el7 = dom.createTextNode("Nisl sed aliquam");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n          ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("article");
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("span");
-        dom.setAttribute(el5, "class", "image");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("img");
-        dom.setAttribute(el6, "src", "images/pic04.jpg");
-        dom.setAttribute(el6, "alt", "");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("header");
-        dom.setAttribute(el5, "class", "major");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("h3");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "href", "landing.html");
-        dom.setAttribute(el7, "class", "link");
-        var el8 = dom.createTextNode("All Trails");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("p");
-        var el7 = dom.createTextNode("Nisl sed aliquam");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
+        var el4 = dom.createTextNode("        ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n\n      ");
         dom.appendChild(el2, el3);
         var el3 = dom.createComment(" Two ");
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n        ");
+        var el3 = dom.createTextNode("\n      ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("section");
         dom.setAttribute(el3, "id", "two");
-        var el4 = dom.createTextNode("\n          ");
+        var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
         dom.setAttribute(el4, "class", "inner");
-        var el5 = dom.createTextNode("\n            ");
+        var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("header");
         dom.setAttribute(el5, "class", "major");
-        var el6 = dom.createTextNode("\n              ");
+        var el6 = dom.createTextNode("\n            ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("h2");
-        var el7 = dom.createTextNode("Massa libero");
+        var el7 = dom.createTextNode("Disclaimer");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("p");
-        var el6 = dom.createTextNode("Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("ul");
-        dom.setAttribute(el5, "class", "actions");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("li");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "href", "landing.html");
-        dom.setAttribute(el7, "class", "button next");
-        var el8 = dom.createTextNode("Get Started");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
+        var el6 = dom.createTextNode("\n          ");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
+        var el5 = dom.createElement("p");
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
+        var el4 = dom.createTextNode("\n      ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n\n    ");
+        var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n\n  ");
@@ -4972,139 +5060,38 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("section");
+        var el5 = dom.createTextNode("\n            ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("div");
+        dom.setAttribute(el5, "class", "contact-method");
+        var el6 = dom.createTextNode("\n              ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("span");
+        dom.setAttribute(el6, "class", "icon alt fa-envelope");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n              ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("h3");
+        var el7 = dom.createTextNode("Email Us");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n              ");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("a");
+        dom.setAttribute(el6, "class", "button");
+        var el7 = dom.createComment("");
+        dom.appendChild(el6, el7);
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n            ");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("form");
-        dom.setAttribute(el5, "method", "post");
-        dom.setAttribute(el5, "action", "#");
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6, "class", "field half first");
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("label");
-        dom.setAttribute(el7, "for", "name");
-        var el8 = dom.createTextNode("Name");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("input");
-        dom.setAttribute(el7, "type", "text");
-        dom.setAttribute(el7, "name", "name");
-        dom.setAttribute(el7, "id", "name");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6, "class", "field half");
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("label");
-        dom.setAttribute(el7, "for", "email");
-        var el8 = dom.createTextNode("Email");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("input");
-        dom.setAttribute(el7, "type", "text");
-        dom.setAttribute(el7, "name", "email");
-        dom.setAttribute(el7, "id", "email");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6, "class", "field");
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("label");
-        dom.setAttribute(el7, "for", "message");
-        var el8 = dom.createTextNode("Message");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("textarea");
-        dom.setAttribute(el7, "name", "message");
-        dom.setAttribute(el7, "id", "message");
-        dom.setAttribute(el7, "rows", "6");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("ul");
-        dom.setAttribute(el6, "class", "actions");
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        var el8 = dom.createElement("input");
-        dom.setAttribute(el8, "type", "submit");
-        dom.setAttribute(el8, "value", "Send Message");
-        dom.setAttribute(el8, "class", "special");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("li");
-        var el8 = dom.createElement("input");
-        dom.setAttribute(el8, "type", "reset");
-        dom.setAttribute(el8, "value", "Clear");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
         var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("section");
         dom.setAttribute(el4, "class", "split");
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("section");
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6, "class", "contact-method");
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "icon alt fa-envelope");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("h3");
-        var el8 = dom.createTextNode("Email");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "href", "#");
-        var el8 = dom.createTextNode("information@untitled.tld");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("section");
@@ -5126,7 +5113,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el7 = dom.createTextNode("\n              ");
         dom.appendChild(el6, el7);
         var el7 = dom.createElement("span");
-        var el8 = dom.createTextNode("(000) 000-0000 x12387");
+        var el8 = dom.createComment("");
         dom.appendChild(el7, el8);
         dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n            ");
@@ -5156,15 +5143,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el7 = dom.createTextNode("\n              ");
         dom.appendChild(el6, el7);
         var el7 = dom.createElement("span");
-        var el8 = dom.createTextNode("1234 Somewhere Road #5432");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createElement("br");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createTextNode("\n              Nashville, TN 00000");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createElement("br");
-        dom.appendChild(el7, el8);
-        var el8 = dom.createTextNode("\n              United States of America");
+        var el8 = dom.createComment("");
         dom.appendChild(el7, el8);
         dom.appendChild(el6, el7);
         var el7 = dom.createTextNode("\n            ");
@@ -5197,83 +5176,11 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("ul");
-        dom.setAttribute(el4, "class", "icons");
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
-        dom.setAttribute(el6, "class", "icon alt fa-twitter");
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "label");
-        var el8 = dom.createTextNode("Twitter");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
-        dom.setAttribute(el6, "class", "icon alt fa-facebook");
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "label");
-        var el8 = dom.createTextNode("Facebook");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
-        dom.setAttribute(el6, "class", "icon alt fa-instagram");
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "label");
-        var el8 = dom.createTextNode("Instagram");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
-        dom.setAttribute(el6, "class", "icon alt fa-github");
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "label");
-        var el8 = dom.createTextNode("GitHub");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "#");
-        dom.setAttribute(el6, "class", "icon alt fa-linkedin");
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "label");
-        var el8 = dom.createTextNode("LinkedIn");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("ul");
         dom.setAttribute(el4, "class", "copyright");
         var el5 = dom.createTextNode("\n          ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
-        var el6 = dom.createTextNode("© Untitled");
+        var el6 = dom.createTextNode("© MAPC");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("li");
@@ -5294,25 +5201,37 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n");
+        var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0, 9, 1, 3, 3]);
-        var element1 = dom.childAt(element0, [1, 0]);
-        var element2 = dom.childAt(element0, [3, 0]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createElementMorph(element1);
-        morphs[1] = dom.createElementMorph(element2);
+        var element3 = dom.childAt(fragment, [0]);
+        var element4 = dom.childAt(element3, [9, 1]);
+        var element5 = dom.childAt(element4, [3]);
+        var element6 = dom.childAt(element5, [3]);
+        var element7 = dom.childAt(element6, [1, 0]);
+        var element8 = dom.childAt(element3, [13]);
+        var element9 = dom.childAt(element3, [17, 1]);
+        var element10 = dom.childAt(element9, [1, 1, 5]);
+        var element11 = dom.childAt(element9, [3]);
+        var morphs = new Array(10);
+        morphs[0] = dom.createMorphAt(dom.childAt(element4, [1, 1]), 0, 0);
+        morphs[1] = dom.createMorphAt(dom.childAt(element5, [1]), 0, 0);
+        morphs[2] = dom.createElementMorph(element7);
+        morphs[3] = dom.createMorphAt(dom.childAt(element6, [3]), 0, 0);
+        morphs[4] = dom.createMorphAt(dom.childAt(element8, [3]), 1, 1);
+        morphs[5] = dom.createMorphAt(dom.childAt(element8, [7, 1, 3]), 0, 0);
+        morphs[6] = dom.createAttrMorph(element10, 'href');
+        morphs[7] = dom.createMorphAt(element10, 0, 0);
+        morphs[8] = dom.createMorphAt(dom.childAt(element11, [1, 1, 5]), 0, 0);
+        morphs[9] = dom.createMorphAt(dom.childAt(element11, [3, 1, 5]), 0, 0);
         return morphs;
       },
-      statements: [["element", "action", ["trackLocation"], ["target", "applicationController"], ["loc", [null, [20, 19], [20, 76]]], 0, 0], ["element", "action", ["trackLocation"], ["target", "applicationController"], ["loc", [null, [21, 18], [21, 75]]], 0, 0]],
+      statements: [["content", "aboutPage.title", ["loc", [null, [15, 14], [15, 33]]], 0, 0, 0, 0], ["content", "aboutPage.tagline", ["loc", [null, [18, 13], [18, 34]]], 0, 0, 0, 0], ["element", "action", ["trackLocation"], ["target", "applicationController"], ["loc", [null, [20, 19], [20, 76]]], 0, 0], ["block", "link-to", ["filters", ["subexpr", "query-params", [], ["protected", false, "shared", false, "bike_lane", false, "walk", false, "multi_use_path", false, "landline", true, "zoom", 10], ["loc", [null, [21, 57], [21, 170]]], 0, 0]], ["class", "button next scrolly"], 0, null, ["loc", [null, [21, 16], [21, 200]]]], ["block", "each", [["get", "aboutPage.tiles", ["loc", [null, [33, 18], [33, 33]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [33, 10], [42, 19]]]], ["content", "aboutPage.disclaimer", ["loc", [null, [51, 13], [51, 37]]], 0, 0, 0, 0], ["attribute", "href", ["concat", ["mailto:", ["get", "aboutPage.email", ["loc", [null, [63, 32], [63, 47]]], 0, 0, 0, 0]], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["content", "aboutPage.email", ["loc", [null, [63, 66], [63, 85]]], 0, 0, 0, 0], ["content", "aboutPage.phone", ["loc", [null, [71, 20], [71, 39]]], 0, 0, 0, 0], ["content", "aboutPage.address", ["loc", [null, [78, 20], [78, 41]]], 0, 0, 0, 0]],
       locals: [],
-      templates: []
+      templates: [child0, child1]
     };
   })());
 });
@@ -5515,7 +5434,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+c5070fd0"});
+  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+edc40f69"});
 }
 
 /* jshint ignore:end */
