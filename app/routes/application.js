@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { computed, observer } from 'ember-computed';
-const host = 'http://trailmap.siteleaf.net';
+const host = 'https://trailmap.siteleaf.net';
 
 export default Ember.Route.extend({
   init() {
@@ -9,7 +9,7 @@ export default Ember.Route.extend({
   },
 
   model() {
-    return $.getJSON(host);
+    // return $.getJSON(host);
   },
 
   afterModel() {
