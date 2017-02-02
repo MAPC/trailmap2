@@ -1194,7 +1194,7 @@ define('trailmap/tests/routes/application.jshint', ['exports'], function (export
   QUnit.module('JSHint | routes/application.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 45, col 76, \'geoObject\' is defined but never used.\nroutes/application.js: line 12, col 12, \'$\' is not defined.\nroutes/application.js: line 2, col 10, \'computed\' is defined but never used.\nroutes/application.js: line 2, col 20, \'observer\' is defined but never used.\n\n4 errors');
+    assert.ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 45, col 76, \'geoObject\' is defined but never used.\nroutes/application.js: line 2, col 10, \'computed\' is defined but never used.\nroutes/application.js: line 2, col 20, \'observer\' is defined but never used.\n\n3 errors');
   });
 });
 define('trailmap/tests/test-helper', ['exports', 'trailmap/tests/helpers/resolver', 'trailmap/tests/helpers/responsive', 'ember-qunit'], function (exports, _trailmapTestsHelpersResolver, _trailmapTestsHelpersResponsive, _emberQunit) {
