@@ -2,7 +2,7 @@ import Ember from 'ember';
 import computed from 'ember-computed';
 
 export default Ember.Controller.extend({
-  queryParams: ['protected','shared','bike_lane','walk','multi_use_path','landline'],
+  queryParams: ['protected','shared','bike_lane','walk','multi_use_path','landline','zoom','lat','lng', 'proposed'],
 
   protected: true,
   shared: true,

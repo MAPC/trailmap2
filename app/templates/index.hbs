@@ -12,13 +12,13 @@
     <section id="banner" class="major">
       <div class="inner">
         <header class="major">
-          <h1>Welcome to Trailmap.</h1>
+          <h1>{{aboutPage.title}}</h1>
         </header>
         <div class="content">
-          <p>Trailmap is a growing compendium of the region's walking and bicycling facilities. Trailmap hopes to provide a single place for planning and exploring the region by foot and on bicycle.</p>
+          <p>{{aboutPage.tagline}}</p>
           <ul class="actions">
-            <li><a {{action 'trackLocation' target="applicationController"}} class="button next scrolly">Get Started</a></li>
-           <li><a {{action 'trackLocation' target="applicationController"}} class="button next scrolly">Get Started</a></li>
+            <li><a {{action 'trackLocation' target="applicationController"}} class="button next scrolly">Trails Near You</a></li>
+            <li>{{link-to 'Regional LandLines' 'filters' (query-params protected=false shared=false bike_lane=false walk=false multi_use_path=false landline=true zoom=10) class="button next scrolly"}}</li>
           </ul>
         </div>
       </div>
@@ -28,114 +28,54 @@
     <div id="main">
 
       <!-- One -->
+
         <section id="one" class="tiles">
-          <article>
-            <span class="image">
-              <img src="images/pic01.jpg" alt="" />
-            </span>
-            <header class="major">
-              <h3><a href="landing.html" class="link">Biking</a></h3>
-              <p>Ipsum dolor sit amet</p>
-            </header>
-          </article>
-          <article>
-            <span class="image">
-              <img src="images/pic02.jpg" alt="" />
-            </span>
-            <header class="major">
-              <h3><a href="landing.html" class="link">Hiking</a></h3>
-              <p>feugiat amet tempus</p>
-            </header>
-          </article>
-          <article>
-            <span class="image">
-              <img src="images/pic03.jpg" alt="" />
-            </span>
-            <header class="major">
-              <h3><a href="landing.html" class="link">Multi-Use</a></h3>
-              <p>Lorem etiam nullam</p>
-            </header>
-          </article>
-          <article>
-            <span class="image">
-              <img src="images/pic04.jpg" alt="" />
-            </span>
-            <header class="major">
-              <h3><a href="landing.html" class="link">Proposed</a></h3>
-              <p>Nisl sed aliquam</p>
-            </header>
-          </article>
-          <article>
-            <span class="image">
-              <img src="images/pic04.jpg" alt="" />
-            </span>
-            <header class="major">
-              <h3><a href="landing.html" class="link">All Trails</a></h3>
-              <p>Nisl sed aliquam</p>
-            </header>
-          </article>
+          {{#each aboutPage.tiles as |tile|}}
+            <article style="background-image: url({{host}}{{tile.background-image}})">
+              <header class="major">
+                <h3>
+                  <a href="#" class="link" {{action "transitionTo" "filters" tile.config}}>{{tile.title}}</a>
+                </h3>
+                <p>{{#if tile.description}} {{tile.description}} {{else}} Ipsum dolor sit amet {{/if}} </p>
+              </header>
+            </article>
+          {{/each}}
         </section>
 
       <!-- Two -->
-        <section id="two">
-          <div class="inner">
-            <header class="major">
-              <h2>Massa libero</h2>
-            </header>
-            <p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus pharetra. Pellentesque condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra et feugiat tempus.</p>
-            <ul class="actions">
-              <li><a href="landing.html" class="button next">Get Started</a></li>
-            </ul>
-          </div>
-        </section>
-
+      <section id="two">
+        <div class="inner">
+          <header class="major">
+            <h2>Disclaimer</h2>
+          </header>
+          <p>{{aboutPage.disclaimer}}</p>
+        </div>
+      </section>
     </div>
 
   <!-- Contact -->
     <section id="contact">
       <div class="inner">
         <section>
-          <form method="post" action="#">
-            <div class="field half first">
-              <label for="name">Name</label>
-              <input type="text" name="name" id="name" />
-            </div>
-            <div class="field half">
-              <label for="email">Email</label>
-              <input type="text" name="email" id="email" />
-            </div>
-            <div class="field">
-              <label for="message">Message</label>
-              <textarea name="message" id="message" rows="6"></textarea>
-            </div>
-            <ul class="actions">
-              <li><input type="submit" value="Send Message" class="special" /></li>
-              <li><input type="reset" value="Clear" /></li>
-            </ul>
-          </form>
-        </section>
-        <section class="split">
-          <section>
             <div class="contact-method">
               <span class="icon alt fa-envelope"></span>
-              <h3>Email</h3>
-              <a href="#">information@untitled.tld</a>
+              <h3>Email Us</h3>
+              <a href="mailto:{{aboutPage.email}}" class="button">{{aboutPage.email}}</a>
             </div>
           </section>
+        <section class="split">
           <section>
             <div class="contact-method">
               <span class="icon alt fa-phone"></span>
               <h3>Phone</h3>
-              <span>(000) 000-0000 x12387</span>
+              <span>{{aboutPage.phone}}</span>
             </div>
           </section>
           <section>
             <div class="contact-method">
               <span class="icon alt fa-home"></span>
               <h3>Address</h3>
-              <span>1234 Somewhere Road #5432<br />
-              Nashville, TN 00000<br />
-              United States of America</span>
+              <span>{{aboutPage.address}}</span>
             </div>
           </section>
         </section>
@@ -145,19 +85,9 @@
   <!-- Footer -->
     <footer id="footer">
       <div class="inner">
-        <ul class="icons">
-          <li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
-          <li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
-          <li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
-          <li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-          <li><a href="#" class="icon alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
-        </ul>
         <ul class="copyright">
-          <li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+          <li>&copy; MAPC</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
         </ul>
       </div>
     </footer>
-
 </div>
-
-{{!-- {{splash-intro trackLocation=(action 'trackLocation' target=applicationController)}} --}}

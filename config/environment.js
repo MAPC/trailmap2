@@ -18,6 +18,12 @@ module.exports = function(environment) {
         application: "trailmap"
       }
     },
+    contentful: {
+      space: 'cocfzkpbepix',
+      accessToken: 'ca9619d49b58704a5fdd9f16d787d76281e6af48773d78d26a31fc16cf7fe8ff',
+      previewAccessToken: 'YOUR-CONTENTFUL-PREVIEW-ACCESS-TOKEN',
+      usePreviewApi: false
+    },
     APP: {
       filters: [
       {

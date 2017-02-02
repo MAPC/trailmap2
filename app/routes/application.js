@@ -1,11 +1,33 @@
 import Ember from 'ember';
 import { computed, observer } from 'ember-computed';
+const host = 'http://trailmap.siteleaf.net';
 
 export default Ember.Route.extend({
   init() {
     this._super(...arguments);
     this.set('locations', []);
   },
+
+  model() {
+    return $.getJSON(host);
+  },
+
+  afterModel() {
+    this.controllerFor('index').set('host', host);
+  },
+
+  queryParams: { 
+    'zoom': { 
+      replace: true 
+    },
+    'lat': { 
+      replace: true 
+    },
+    'lng': { 
+      replace: true 
+    }
+  },
+
   locations: null, 
 
   geolocation: Ember.inject.service(),
