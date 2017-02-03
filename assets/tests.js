@@ -85,7 +85,7 @@ define('trailmap/tests/controllers/application.jshint', ['exports'], function (e
   QUnit.module('JSHint | controllers/application.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/application.js should pass jshint.\ncontrollers/application.js: line 58, col 74, \'geoObject\' is defined but never used.\ncontrollers/application.js: line 29, col 12, \'L\' is not defined.\ncontrollers/application.js: line 2, col 8, \'computed\' is defined but never used.\n\n3 errors');
+    assert.ok(false, 'controllers/application.js should pass jshint.\ncontrollers/application.js: line 58, col 68, \'status\' is defined but never used.\ncontrollers/application.js: line 58, col 63, \'data\' is defined but never used.\ncontrollers/application.js: line 93, col 74, \'geoObject\' is defined but never used.\ncontrollers/application.js: line 29, col 12, \'L\' is not defined.\ncontrollers/application.js: line 58, col 7, \'$\' is not defined.\ncontrollers/application.js: line 2, col 8, \'computed\' is defined but never used.\n\n6 errors');
   });
 });
 define('trailmap/tests/controllers/filters.jshint', ['exports'], function (exports) {

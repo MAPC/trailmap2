@@ -1022,7 +1022,7 @@ body.is-loading *, body.is-loading *:before, body.is-loading *:after {
   transition: none !important; }
 
 /* Type */
-body, input, select, textarea {
+body, select {
   color: #ffffff;
   font-family: "Source Sans Pro", Helvetica, sans-serif;
   font-size: 17pt;
@@ -1031,15 +1031,15 @@ body, input, select, textarea {
   line-height: 1.65; }
 
 @media screen and (max-width: 1680px) {
-  body, input, select, textarea {
+  body, select {
     font-size: 14pt; } }
 
 @media screen and (max-width: 1280px) {
-  body, input, select, textarea {
+  body, select {
     font-size: 12pt; } }
 
 @media screen and (max-width: 360px) {
-  body, input, select, textarea {
+  body, select {
     font-size: 11pt; } }
 
 /*	a {
@@ -1250,8 +1250,7 @@ input[type="email"],
 input[type="tel"],
 input[type="search"],
 input[type="url"],
-select,
-textarea {
+selectt {
   -moz-appearance: none;
   -webkit-appearance: none;
   -ms-appearance: none;
@@ -1282,11 +1281,7 @@ input[type="email"]:focus,
 input[type="tel"]:focus,
 input[type="search"]:focus,
 input[type="url"]:focus,
-select:focus,
-textarea:focus {
-  border-color: #9bf1ff;
-  box-shadow: 0 0 0 2px #9bf1ff; }
-
+select:focus
 .select-wrapper {
   text-decoration: none;
   display: block;
@@ -1324,9 +1319,6 @@ input[type="search"],
 input[type="url"],
 select {
   height: 2.75em; }
-
-textarea {
-  padding: 0.75em 1em; }
 
 ::-webkit-input-placeholder {
   color: rgba(244, 244, 255, 0.2) !important;

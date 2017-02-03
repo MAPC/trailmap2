@@ -632,20 +632,57 @@ define('trailmap/controllers/application', ['exports', 'ember', 'ember-computed'
       return L.icon.pulse({ iconSize: [20, 20], color: 'blue' });
     }),
 
+    feedback_adding: false,
+    feedback_lat: null,
+    feedback_lng: null,
+    feedback_name: null,
+    feedback_email: null,
+    feedback_text: null,
+    feedback_status: false,
+
     actions: {
-      toggleAll: function toggleAll(props) {
+      updateFeedbackLocation: function updateFeedbackLocation(e) {
+        var location = e.target.getLatLng();
+        this.setProperties({
+          feedback_lat: location.lat,
+          feedback_lng: location.lng
+        });
+      },
+
+      submitFeedback: function submitFeedback() {
         var _this = this;
+
+        this.set('feedback_status', 'loading');
+        var geojson = {
+          "type": "Point",
+          "coordinates": [this.get('feedback_lng'), this.get('feedback_lat')]
+        };
+
+        var sql = "SELECT osm2_upsert_trailmap_userdata(ARRAY[-1], ARRAY['" + JSON.stringify(geojson) + "'],'" + this.get('feedback_name') + "','" + this.get('feedback_email') + "', '" + this.get('feedback_text') + "' )";
+
+        $.post('//mapc-admin.carto.com/api/v2/sql', { "q": sql }, function (data, status) {
+          _this.set('feedback_status', 'success');
+        }).fail(function () {
+          _this.set('feedback_status', 'fail');
+        });
+      },
+      resetFeedback: function resetFeedback() {
+        this.set('feedback_status', false);
+      },
+
+      toggleAll: function toggleAll(props) {
+        var _this2 = this;
 
         var properties = this.getProperties(props);
         var values = Object.values(properties);
         var keys = Object.keys(properties);
         if (values.includes(true)) {
           keys.forEach(function (key) {
-            _this.set(key, false);
+            _this2.set(key, false);
           });
         } else {
           keys.forEach(function (key) {
-            _this.set(key, true);
+            _this2.set(key, true);
           });
         }
       },
@@ -654,23 +691,22 @@ define('trailmap/controllers/application', ['exports', 'ember', 'ember-computed'
         var map = e.target;
         this.setProperties({
           lat: map.getCenter().lat,
-          lng: map.getCenter().lng,
-          zoom: map.getZoom()
+          lng: map.getCenter().lng
         });
       },
 
       trackLocation: function trackLocation() {
-        var _this2 = this;
+        var _this3 = this;
 
         this.get('geolocation').trackLocation({ enableHighAccuracy: true }, function (geoObject) {
-          _this2.set('currentLocation', _this2.get('geolocation.currentLocation'));
+          _this3.set('currentLocation', _this3.get('geolocation.currentLocation'));
         });
         this.get('geolocation').getLocation().then(function (geoObject) {
           var _geoObject$coords = geoObject.coords;
           var latitude = _geoObject$coords.latitude;
           var longitude = _geoObject$coords.longitude;
 
-          _this2.setProperties({ lat: latitude, lng: longitude, zoom: 18 });
+          _this3.setProperties({ lat: latitude, lng: longitude, zoom: 18 });
         });
 
         this.transitionToRoute('filters', { queryParams: { bike_lane: false,
@@ -2444,6 +2480,279 @@ define("trailmap/templates/application", ["exports"], function (exports) {
           templates: [child0]
         };
       })();
+      var child5 = (function () {
+        var child0 = (function () {
+          var child0 = (function () {
+            var child0 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@2.9.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 42,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 44,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "trailmap/templates/application.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("              ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("button");
+                  dom.setAttribute(el1, "type", "submit");
+                  var el2 = dom.createTextNode("Submit");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element1 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(2);
+                  morphs[0] = dom.createAttrMorph(element1, 'class');
+                  morphs[1] = dom.createElementMorph(element1);
+                  return morphs;
+                },
+                statements: [["attribute", "class", ["concat", ["ui button special fit ", ["subexpr", "if", [["subexpr", "eq", [["get", "feedback_status", ["loc", [null, [43, 60], [43, 75]]], 0, 0, 0, 0], "loading"], [], ["loc", [null, [43, 56], [43, 86]]], 0, 0], "loading"], [], ["loc", [null, [43, 51], [43, 98]]], 0, 0]], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["element", "action", ["submitFeedback"], [], ["loc", [null, [43, 114], [43, 141]]], 0, 0]],
+                locals: [],
+                templates: []
+              };
+            })();
+            var child1 = (function () {
+              return {
+                meta: {
+                  "revision": "Ember@2.9.1",
+                  "loc": {
+                    "source": null,
+                    "start": {
+                      "line": 44,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 46,
+                      "column": 12
+                    }
+                  },
+                  "moduleName": "trailmap/templates/application.hbs"
+                },
+                isEmpty: false,
+                arity: 0,
+                cachedFragment: null,
+                hasRendered: false,
+                buildFragment: function buildFragment(dom) {
+                  var el0 = dom.createDocumentFragment();
+                  var el1 = dom.createTextNode("              ");
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createElement("button");
+                  dom.setAttribute(el1, "class", "ui button special fit");
+                  var el2 = dom.createTextNode("Thank you! ");
+                  dom.appendChild(el1, el2);
+                  dom.appendChild(el0, el1);
+                  var el1 = dom.createTextNode("\n");
+                  dom.appendChild(el0, el1);
+                  return el0;
+                },
+                buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                  var element0 = dom.childAt(fragment, [1]);
+                  var morphs = new Array(1);
+                  morphs[0] = dom.createElementMorph(element0);
+                  return morphs;
+                },
+                statements: [["element", "action", ["resetFeedback"], [], ["loc", [null, [45, 52], [45, 78]]], 0, 0]],
+                locals: [],
+                templates: []
+              };
+            })();
+            return {
+              meta: {
+                "revision": "Ember@2.9.1",
+                "loc": {
+                  "source": null,
+                  "start": {
+                    "line": 28,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 48,
+                    "column": 8
+                  }
+                },
+                "moduleName": "trailmap/templates/application.hbs"
+              },
+              isEmpty: false,
+              arity: 0,
+              cachedFragment: null,
+              hasRendered: false,
+              buildFragment: function buildFragment(dom) {
+                var el0 = dom.createDocumentFragment();
+                var el1 = dom.createTextNode("          ");
+                dom.appendChild(el0, el1);
+                var el1 = dom.createElement("div");
+                dom.setAttribute(el1, "class", "ui form");
+                dom.setAttribute(el1, "style", "color: black");
+                var el2 = dom.createTextNode("\n            ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "field");
+                var el3 = dom.createTextNode("\n              ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("label");
+                var el4 = dom.createTextNode("Name");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n              ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n            ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n            ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "field");
+                var el3 = dom.createTextNode("\n              ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("label");
+                var el4 = dom.createTextNode("E-Mail");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n              ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n            ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n            ");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createElement("div");
+                dom.setAttribute(el2, "class", "field");
+                var el3 = dom.createTextNode("\n              ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createElement("label");
+                var el4 = dom.createTextNode("Feedback");
+                dom.appendChild(el3, el4);
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n              ");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createComment("");
+                dom.appendChild(el2, el3);
+                var el3 = dom.createTextNode("\n            ");
+                dom.appendChild(el2, el3);
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("\n");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createComment("");
+                dom.appendChild(el1, el2);
+                var el2 = dom.createTextNode("          ");
+                dom.appendChild(el1, el2);
+                dom.appendChild(el0, el1);
+                var el1 = dom.createTextNode("\n");
+                dom.appendChild(el0, el1);
+                return el0;
+              },
+              buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+                var element2 = dom.childAt(fragment, [1]);
+                var morphs = new Array(4);
+                morphs[0] = dom.createMorphAt(dom.childAt(element2, [1]), 3, 3);
+                morphs[1] = dom.createMorphAt(dom.childAt(element2, [3]), 3, 3);
+                morphs[2] = dom.createMorphAt(dom.childAt(element2, [5]), 3, 3);
+                morphs[3] = dom.createMorphAt(element2, 7, 7);
+                return morphs;
+              },
+              statements: [["inline", "input", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "feedback_name", ["loc", [null, [32, 40], [32, 53]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [32, 14], [32, 55]]], 0, 0], ["inline", "input", [], ["type", "text", "value", ["subexpr", "@mut", [["get", "feedback_email", ["loc", [null, [36, 40], [36, 54]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [36, 14], [36, 56]]], 0, 0], ["inline", "textarea", [], ["value", ["subexpr", "@mut", [["get", "feedback_text", ["loc", [null, [40, 31], [40, 44]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [40, 14], [40, 46]]], 0, 0], ["block", "if", [["subexpr", "not_eq", [["get", "feedback_status", ["loc", [null, [42, 26], [42, 41]]], 0, 0, 0, 0], "success"], [], ["loc", [null, [42, 18], [42, 52]]], 0, 0]], [], 0, 1, ["loc", [null, [42, 12], [46, 19]]]]],
+              locals: [],
+              templates: [child0, child1]
+            };
+          })();
+          return {
+            meta: {
+              "revision": "Ember@2.9.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 27,
+                  "column": 6
+                },
+                "end": {
+                  "line": 49,
+                  "column": 6
+                }
+              },
+              "moduleName": "trailmap/templates/application.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createComment("");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+              var morphs = new Array(1);
+              morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+              dom.insertBoundary(fragment, 0);
+              dom.insertBoundary(fragment, null);
+              return morphs;
+            },
+            statements: [["block", "popup-layer", [], ["popupOpen", ["subexpr", "readonly", [true], [], ["loc", [null, [28, 33], [28, 48]]], 0, 0], "minWidth", 400, "autoClose", false], 0, null, ["loc", [null, [28, 8], [48, 24]]]]],
+            locals: [],
+            templates: [child0]
+          };
+        })();
+        return {
+          meta: {
+            "revision": "Ember@2.9.1",
+            "loc": {
+              "source": null,
+              "start": {
+                "line": 26,
+                "column": 4
+              },
+              "end": {
+                "line": 50,
+                "column": 4
+              }
+            },
+            "moduleName": "trailmap/templates/application.hbs"
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+            var morphs = new Array(1);
+            morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+            dom.insertBoundary(fragment, 0);
+            dom.insertBoundary(fragment, null);
+            return morphs;
+          },
+          statements: [["block", "marker-layer", [], ["location", ["subexpr", "array", [42, -71], [], ["loc", [null, [27, 31], [27, 45]]], 0, 0], "draggable", true, "onDragend", ["subexpr", "action", ["updateFeedbackLocation"], [], ["loc", [null, [27, 71], [27, 104]]], 0, 0]], 0, null, ["loc", [null, [27, 6], [49, 23]]]]],
+          locals: [],
+          templates: [child0]
+        };
+      })();
       return {
         meta: {
           "revision": "Ember@2.9.1",
@@ -2454,7 +2763,7 @@ define("trailmap/templates/application", ["exports"], function (exports) {
               "column": 2
             },
             "end": {
-              "line": 25,
+              "line": 51,
               "column": 2
             }
           },
@@ -2476,22 +2785,27 @@ define("trailmap/templates/application", ["exports"], function (exports) {
           dom.appendChild(el0, el1);
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(5);
+          var morphs = new Array(6);
           morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
           morphs[1] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           morphs[2] = dom.createMorphAt(fragment, 2, 2, contextualElement);
           morphs[3] = dom.createMorphAt(fragment, 3, 3, contextualElement);
           morphs[4] = dom.createMorphAt(fragment, 4, 4, contextualElement);
+          morphs[5] = dom.createMorphAt(fragment, 6, 6, contextualElement);
           dom.insertBoundary(fragment, 0);
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [["block", "if", [["subexpr", "eq", [["get", "basemap", ["loc", [null, [5, 14], [5, 21]]], 0, 0, 0, 0], "default"], [], ["loc", [null, [5, 10], [5, 32]]], 0, 0]], [], 0, null, ["loc", [null, [5, 4], [7, 11]]]], ["block", "if", [["subexpr", "eq", [["get", "basemap", ["loc", [null, [8, 14], [8, 21]]], 0, 0, 0, 0], "osm"], [], ["loc", [null, [8, 10], [8, 28]]], 0, 0]], [], 1, null, ["loc", [null, [8, 4], [10, 11]]]], ["block", "if", [["subexpr", "eq", [["get", "basemap", ["loc", [null, [11, 14], [11, 21]]], 0, 0, 0, 0], "satellite"], [], ["loc", [null, [11, 10], [11, 34]]], 0, 0]], [], 2, null, ["loc", [null, [11, 4], [13, 11]]]], ["block", "cartodb-layer", [], ["sublayers", ["subexpr", "@mut", [["get", "sublayers", ["loc", [null, [15, 16], [15, 25]]], 0, 0, 0, 0]], [], [], 0, 0], "proposed", ["subexpr", "@mut", [["get", "proposed", ["loc", [null, [15, 35], [15, 43]]], 0, 0, 0, 0]], [], [], 0, 0], "https", true, "onLoad", "getLayer", "url", "https://mapc.carto.com/u/mapc-admin/api/v2/viz/ffb06642-d6ab-11e6-b416-0e233c30368f/viz.json", "zIndex", 1, "legends", false, "search", true], 3, null, ["loc", [null, [14, 4], [18, 22]]]], ["block", "if", [["get", "currentLocation", ["loc", [null, [19, 10], [19, 25]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [19, 4], [24, 11]]]]],
+        statements: [["block", "if", [["subexpr", "eq", [["get", "basemap", ["loc", [null, [5, 14], [5, 21]]], 0, 0, 0, 0], "default"], [], ["loc", [null, [5, 10], [5, 32]]], 0, 0]], [], 0, null, ["loc", [null, [5, 4], [7, 11]]]], ["block", "if", [["subexpr", "eq", [["get", "basemap", ["loc", [null, [8, 14], [8, 21]]], 0, 0, 0, 0], "osm"], [], ["loc", [null, [8, 10], [8, 28]]], 0, 0]], [], 1, null, ["loc", [null, [8, 4], [10, 11]]]], ["block", "if", [["subexpr", "eq", [["get", "basemap", ["loc", [null, [11, 14], [11, 21]]], 0, 0, 0, 0], "satellite"], [], ["loc", [null, [11, 10], [11, 34]]], 0, 0]], [], 2, null, ["loc", [null, [11, 4], [13, 11]]]], ["block", "cartodb-layer", [], ["sublayers", ["subexpr", "@mut", [["get", "sublayers", ["loc", [null, [15, 16], [15, 25]]], 0, 0, 0, 0]], [], [], 0, 0], "proposed", ["subexpr", "@mut", [["get", "proposed", ["loc", [null, [15, 35], [15, 43]]], 0, 0, 0, 0]], [], [], 0, 0], "https", true, "onLoad", "getLayer", "url", "https://mapc.carto.com/u/mapc-admin/api/v2/viz/ffb06642-d6ab-11e6-b416-0e233c30368f/viz.json", "zIndex", 1, "legends", false, "search", true], 3, null, ["loc", [null, [14, 4], [18, 22]]]], ["block", "if", [["get", "currentLocation", ["loc", [null, [19, 10], [19, 25]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [19, 4], [24, 11]]]], ["block", "if", [["get", "feedback_adding", ["loc", [null, [26, 10], [26, 25]]], 0, 0, 0, 0]], [], 5, null, ["loc", [null, [26, 4], [50, 11]]]]],
         locals: ["layers"],
-        templates: [child0, child1, child2, child3, child4]
+        templates: [child0, child1, child2, child3, child4, child5]
       };
     })();
     return {
@@ -2504,7 +2818,7 @@ define("trailmap/templates/application", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 27,
+            "line": 53,
             "column": 0
           }
         },
@@ -2537,7 +2851,7 @@ define("trailmap/templates/application", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "liquid-outlet", ["loc", [null, [1, 0], [1, 17]]], 0, 0, 0, 0], ["block", "leaflet-map", [], ["lat", ["subexpr", "@mut", [["get", "lat", ["loc", [null, [4, 21], [4, 24]]], 0, 0, 0, 0]], [], [], 0, 0], "lng", ["subexpr", "@mut", [["get", "lng", ["loc", [null, [4, 29], [4, 32]]], 0, 0, 0, 0]], [], [], 0, 0], "zoom", ["subexpr", "@mut", [["get", "zoom", ["loc", [null, [4, 38], [4, 42]]], 0, 0, 0, 0]], [], [], 0, 0], "zoomControl", false, "onMoveend", ["subexpr", "action", ["updatePosition"], [], ["loc", [null, [4, 71], [4, 96]]], 0, 0]], 0, null, ["loc", [null, [4, 2], [25, 18]]]]],
+      statements: [["content", "liquid-outlet", ["loc", [null, [1, 0], [1, 17]]], 0, 0, 0, 0], ["block", "leaflet-map", [], ["lat", ["subexpr", "@mut", [["get", "lat", ["loc", [null, [4, 21], [4, 24]]], 0, 0, 0, 0]], [], [], 0, 0], "lng", ["subexpr", "@mut", [["get", "lng", ["loc", [null, [4, 29], [4, 32]]], 0, 0, 0, 0]], [], [], 0, 0], "zoom", ["subexpr", "@mut", [["get", "zoom", ["loc", [null, [4, 38], [4, 42]]], 0, 0, 0, 0]], [], [], 0, 0], "zoomControl", false, "onMoveend", ["subexpr", "action", ["updatePosition"], [], ["loc", [null, [4, 71], [4, 96]]], 0, 0]], 0, null, ["loc", [null, [4, 2], [51, 18]]]]],
       locals: [],
       templates: [child0]
     };
@@ -4445,11 +4759,11 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 127,
+                "line": 130,
                 "column": 8
               },
               "end": {
-                "line": 127,
+                "line": 130,
                 "column": 47
               }
             },
@@ -4483,7 +4797,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
               "column": 4
             },
             "end": {
-              "line": 129,
+              "line": 132,
               "column": 4
             }
           },
@@ -4584,6 +4898,17 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n        ");
           dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2, "class", "item");
+          var el3 = dom.createTextNode("\n          ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createComment("");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n        ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n        ");
+          dom.appendChild(el1, el2);
           var el2 = dom.createComment("");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n      ");
@@ -4599,7 +4924,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           var element7 = dom.childAt(element5, [5]);
           var element8 = dom.childAt(element5, [9]);
           var element9 = dom.childAt(element5, [15]);
-          var morphs = new Array(16);
+          var morphs = new Array(17);
           morphs[0] = dom.createAttrMorph(element5, 'class');
           morphs[1] = dom.createMorphAt(element5, 1, 1);
           morphs[2] = dom.createElementMorph(element6);
@@ -4615,10 +4940,11 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           morphs[12] = dom.createMorphAt(element5, 13, 13);
           morphs[13] = dom.createMorphAt(element9, 1, 1);
           morphs[14] = dom.createMorphAt(element9, 3, 3);
-          morphs[15] = dom.createMorphAt(element5, 17, 17);
+          morphs[15] = dom.createMorphAt(dom.childAt(element5, [17]), 1, 1);
+          morphs[16] = dom.createMorphAt(element5, 19, 19);
           return morphs;
         },
-        statements: [["attribute", "class", ["concat", ["ui parent ", ["subexpr", "if", [["subexpr", "not", [["get", "media.isMobile", ["loc", [null, [9, 38], [9, 52]]], 0, 0, 0, 0]], [], ["loc", [null, [9, 33], [9, 53]]], 0, 0], "active"], [], ["loc", [null, [9, 28], [9, 64]]], 0, 0], " content"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["block", "ui-accordion", [], ["exclusive", true], 0, null, ["loc", [null, [10, 8], [45, 25]]]], ["element", "action", [["subexpr", "toggle", ["walk", ["get", "applicationController", ["loc", [null, [46, 48], [46, 69]]], 0, 0, 0, 0]], [], ["loc", [null, [46, 33], [46, 70]]], 0, 0]], [], ["loc", [null, [46, 24], [46, 72]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Walk", "checked", ["subexpr", "@mut", [["get", "applicationController.walk", ["loc", [null, [49, 20], [49, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [47, 10], [49, 48]]], 0, 0], ["block", "if", [["get", "applicationController.walk", ["loc", [null, [50, 16], [50, 42]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [50, 10], [52, 17]]]], ["element", "action", [["subexpr", "toggle", ["multi_use_path", ["get", "applicationController", ["loc", [null, [54, 58], [54, 79]]], 0, 0, 0, 0]], [], ["loc", [null, [54, 33], [54, 80]]], 0, 0]], [], ["loc", [null, [54, 24], [54, 82]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Multi-Use Path", "checked", ["subexpr", "@mut", [["get", "applicationController.multi_use_path", ["loc", [null, [57, 20], [57, 56]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [55, 10], [57, 58]]], 0, 0], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [58, 16], [58, 52]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [58, 10], [60, 17]]]], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [62, 14], [62, 50]]], 0, 0, 0, 0]], [], 3, null, ["loc", [null, [62, 8], [68, 15]]]], ["element", "action", [["subexpr", "toggle", ["landline", ["get", "applicationController", ["loc", [null, [69, 52], [69, 73]]], 0, 0, 0, 0]], [], ["loc", [null, [69, 33], [69, 74]]], 0, 0]], [], ["loc", [null, [69, 24], [69, 76]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "LandLine (Metro Greenway Network)", "checked", ["subexpr", "@mut", [["get", "applicationController.landline", ["loc", [null, [72, 20], [72, 50]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [70, 10], [72, 52]]], 0, 0], ["block", "if", [["get", "applicationController.landline", ["loc", [null, [75, 14], [75, 44]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [75, 8], [87, 15]]]], ["block", "ui-accordion", [], ["exclusive", true], 5, null, ["loc", [null, [89, 8], [120, 25]]]], ["inline", "ui-checkbox", [], ["class", "ui toggle checkbox", "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.proposed", ["loc", [null, [122, 73], [122, 103]]], 0, 0, 0, 0]], [], ["loc", [null, [122, 68], [122, 104]]], 0, 0]], [], ["loc", [null, [122, 60], [122, 105]]], 0, 0], "checked", ["subexpr", "@mut", [["get", "applicationController.proposed", ["loc", [null, [122, 114], [122, 144]]], 0, 0, 0, 0]], [], [], 0, 0], "label", "Proposed Trails"], ["loc", [null, [122, 10], [122, 170]]], 0, 0], ["block", "if", [["get", "applicationController.proposed", ["loc", [null, [123, 16], [123, 46]]], 0, 0, 0, 0]], [], 6, null, ["loc", [null, [123, 10], [125, 17]]]], ["block", "link-to", ["index"], ["class", "item"], 7, null, ["loc", [null, [127, 8], [127, 47]]]]],
+        statements: [["attribute", "class", ["concat", ["ui parent ", ["subexpr", "if", [["subexpr", "not", [["get", "media.isMobile", ["loc", [null, [9, 38], [9, 52]]], 0, 0, 0, 0]], [], ["loc", [null, [9, 33], [9, 53]]], 0, 0], "active"], [], ["loc", [null, [9, 28], [9, 64]]], 0, 0], " content"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["block", "ui-accordion", [], ["exclusive", true], 0, null, ["loc", [null, [10, 8], [45, 25]]]], ["element", "action", [["subexpr", "toggle", ["walk", ["get", "applicationController", ["loc", [null, [46, 48], [46, 69]]], 0, 0, 0, 0]], [], ["loc", [null, [46, 33], [46, 70]]], 0, 0]], [], ["loc", [null, [46, 24], [46, 72]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Walk", "checked", ["subexpr", "@mut", [["get", "applicationController.walk", ["loc", [null, [49, 20], [49, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [47, 10], [49, 48]]], 0, 0], ["block", "if", [["get", "applicationController.walk", ["loc", [null, [50, 16], [50, 42]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [50, 10], [52, 17]]]], ["element", "action", [["subexpr", "toggle", ["multi_use_path", ["get", "applicationController", ["loc", [null, [54, 58], [54, 79]]], 0, 0, 0, 0]], [], ["loc", [null, [54, 33], [54, 80]]], 0, 0]], [], ["loc", [null, [54, 24], [54, 82]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Multi-Use Path", "checked", ["subexpr", "@mut", [["get", "applicationController.multi_use_path", ["loc", [null, [57, 20], [57, 56]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [55, 10], [57, 58]]], 0, 0], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [58, 16], [58, 52]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [58, 10], [60, 17]]]], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [62, 14], [62, 50]]], 0, 0, 0, 0]], [], 3, null, ["loc", [null, [62, 8], [68, 15]]]], ["element", "action", [["subexpr", "toggle", ["landline", ["get", "applicationController", ["loc", [null, [69, 52], [69, 73]]], 0, 0, 0, 0]], [], ["loc", [null, [69, 33], [69, 74]]], 0, 0]], [], ["loc", [null, [69, 24], [69, 76]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "LandLine (Metro Greenway Network)", "checked", ["subexpr", "@mut", [["get", "applicationController.landline", ["loc", [null, [72, 20], [72, 50]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [70, 10], [72, 52]]], 0, 0], ["block", "if", [["get", "applicationController.landline", ["loc", [null, [75, 14], [75, 44]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [75, 8], [87, 15]]]], ["block", "ui-accordion", [], ["exclusive", true], 5, null, ["loc", [null, [89, 8], [120, 25]]]], ["inline", "ui-checkbox", [], ["class", "ui toggle checkbox", "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.proposed", ["loc", [null, [122, 73], [122, 103]]], 0, 0, 0, 0]], [], ["loc", [null, [122, 68], [122, 104]]], 0, 0]], [], ["loc", [null, [122, 60], [122, 105]]], 0, 0], "checked", ["subexpr", "@mut", [["get", "applicationController.proposed", ["loc", [null, [122, 114], [122, 144]]], 0, 0, 0, 0]], [], [], 0, 0], "label", "Proposed Trails"], ["loc", [null, [122, 10], [122, 170]]], 0, 0], ["block", "if", [["get", "applicationController.proposed", ["loc", [null, [123, 16], [123, 46]]], 0, 0, 0, 0]], [], 6, null, ["loc", [null, [123, 10], [125, 17]]]], ["inline", "ui-checkbox", [], ["class", "ui toggle checkbox", "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.feedback_adding", ["loc", [null, [128, 73], [128, 110]]], 0, 0, 0, 0]], [], ["loc", [null, [128, 68], [128, 111]]], 0, 0]], [], ["loc", [null, [128, 60], [128, 112]]], 0, 0], "checked", ["subexpr", "@mut", [["get", "applicationController.feedback_adding", ["loc", [null, [128, 121], [128, 158]]], 0, 0, 0, 0]], [], [], 0, 0], "label", "Submit Feedback"], ["loc", [null, [128, 10], [128, 184]]], 0, 0], ["block", "link-to", ["index"], ["class", "item"], 7, null, ["loc", [null, [130, 8], [130, 47]]]]],
         locals: [],
         templates: [child0, child1, child2, child3, child4, child5, child6, child7]
       };
@@ -4633,7 +4959,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 131,
+            "line": 134,
             "column": 6
           }
         },
@@ -4668,7 +4994,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
         morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1]), 1, 1);
         return morphs;
       },
-      statements: [["block", "ui-accordion", [], ["class", "ui accordion"], 0, null, ["loc", [null, [3, 4], [129, 21]]]]],
+      statements: [["block", "ui-accordion", [], ["class", "ui accordion"], 0, null, ["loc", [null, [3, 4], [132, 21]]]]],
       locals: [],
       templates: [child0]
     };
@@ -5435,7 +5761,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+e60c5067"});
+  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+e3c3e8a1"});
 }
 
 /* jshint ignore:end */
