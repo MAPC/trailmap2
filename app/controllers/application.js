@@ -29,7 +29,43 @@ export default Ember.Controller.extend({
     return L.icon.pulse({iconSize:[20,20],color:'blue'});
   }),
 
+  feedback_adding: false,
+  feedback_lat: null,
+  feedback_lng: null,
+  feedback_name: null,
+  feedback_email: null,
+  feedback_text: null,
+  feedback_status: false,
+
   actions: {
+    updateFeedbackLocation(e) {
+      let location = e.target.getLatLng();
+      this.setProperties({
+        feedback_lat: location.lat,
+        feedback_lng: location.lng
+      });
+    },
+
+    submitFeedback() {
+      this.set('feedback_status', 'loading');
+      var geojson = {
+        "type": "Point",
+        "coordinates":[this.get('feedback_lng'),this.get('feedback_lat')] 
+      };
+
+      var sql = "SELECT osm2_upsert_trailmap_userdata(ARRAY[-1], ARRAY['" + JSON.stringify(geojson) + "'],'" + this.get('feedback_name') + "','" + this.get('feedback_email') + "', '"  + this.get('feedback_text')  +  "' )";
+
+      $.post('//mapc-admin.carto.com/api/v2/sql', {"q":sql}, (data,status) => {
+        this.set('feedback_status', 'success');
+      }).
+      fail(() => {
+        this.set('feedback_status', 'fail');
+      });
+    },
+    resetFeedback() {
+      this.set('feedback_status', false);
+    },
+
     toggleAll(props) {
       let properties = this.getProperties(props);
       let values = Object.values(properties);
@@ -49,8 +85,7 @@ export default Ember.Controller.extend({
       let map = e.target;
       this.setProperties({
         lat: map.getCenter().lat,
-        lng: map.getCenter().lng,
-        zoom: map.getZoom()
+        lng: map.getCenter().lng
       });
     },
 

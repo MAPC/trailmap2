@@ -22,5 +22,31 @@
       {{/if}}
       {{marker-layer location=currentLocation icon=customIcon}}
     {{/if}}
+
+    {{#if feedback_adding}}
+      {{#marker-layer location=(array 42 -71) draggable=true onDragend=(action "updateFeedbackLocation")}}
+        {{#popup-layer popupOpen=(readonly true) minWidth=400 autoClose=false}}
+          <div class="ui form" style="color: black">
+            <div class="field">
+              <label>Name</label>
+              {{input type='text' value=feedback_name}}
+            </div>
+            <div class="field">
+              <label>E-Mail</label>
+              {{input type='text' value=feedback_email}}
+            </div>
+            <div class="field">
+              <label>Feedback</label>
+              {{textarea value=feedback_text}}
+            </div>
+            {{#if (not_eq feedback_status 'success')}}
+              <button class="ui button special fit {{if (eq feedback_status 'loading') 'loading'}}" type="submit" {{action 'submitFeedback'}}>Submit</button>
+            {{else}}
+              <button class="ui button special fit" {{action 'resetFeedback'}}>Thank you! </button>
+            {{/if}}
+          </div>
+        {{/popup-layer}}
+      {{/marker-layer}}
+    {{/if}}
   {{/leaflet-map}}
 </main>

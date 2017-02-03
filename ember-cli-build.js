@@ -33,6 +33,9 @@ module.exports = function(defaults) {
   app.import('bower_components/semantic-ui-checkbox/checkbox.css');
   app.import('bower_components/semantic-ui-transition/transition.css');
   app.import('bower_components/semantic-ui-icon/icon.css');
+  app.import('bower_components/semantic-ui-form/form.css');
+  app.import('bower_components/semantic-ui-button/button.css');
+  app.import('bower_components/semantic-ui-input/input.css');
   app.import('bower_components/semantic-ui-icon/assets/fonts/icons.eot', {
     destDir: 'assets/assets/fonts/'
   });

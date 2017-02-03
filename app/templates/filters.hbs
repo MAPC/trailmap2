@@ -124,6 +124,9 @@
             <i class="ellipsis horizontal icon"></i>
           {{/if}}
         </div>
+        <div class="item">
+          {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut applicationController.feedback_adding)) checked=applicationController.feedback_adding label="Submit Feedback"}}
+        </div>
         {{link-to 'Home' 'index' class='item'}}
       </div>
     {{/ui-accordion}}

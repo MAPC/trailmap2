@@ -61,6 +61,7 @@
   },
   "dependencies": {
     "object.values": "^1.0.4",
+    "semantic-ui-form": "^2.2.3",
     "semantic-ui-loader": "^2.2.3"
   }
 }
