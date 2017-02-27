@@ -96,7 +96,7 @@ export default CartoDbLayer.extend({
 
     layer.createSubLayer({
       sql: "select * from landline_regional_greenways WHERE fac_stat IN (2,3)",
-      cartocss: "\/** category visualization *\/\n\n#landline_regional_greenways {\n   line-width: 4;\n   line-opacity: 0.7;\n}\n\n#landline_regional_greenways[reg_ll_type=\"GR\"] {\n   line-color: #ffcc00;\n}\n#landline_regional_greenways[reg_ll_type=\"GR_WT\"] {\n   line-color: #d6a583;\n}\n#landline_regional_greenways[reg_ll_type=\"WT\"] {\n   line-color: #c696b7;\n}\n\n#landline_regional_greenways[fac_stat=2] {\n\tline-dasharray: 5, 5;\n}\n\n#landline_regional_greenways[fac_stat=3] {\n\tline-dasharray: 5, 5;\n}"
+      cartocss: '/** category visualization */#landline_regional_greenways {   line-width: 4;   line-opacity: 0.7;}#landline_regional_greenways[reg_ll_type="GR"] {   line-color: #BC9DD6;}#landline_regional_greenways[reg_ll_type="GR_WT"] {  ::case {    line-width: 5;  line-color: #BC9DD6;  }  ::fill {    line-width: 1.5;    line-color: #ffd37f;  }}#landline_regional_greenways[reg_ll_type="WT"] {   line-color: #ffd37f;}#landline_regional_greenways[fac_stat=2] {  line-dasharray: 5, 5;}#landline_regional_greenways[fac_stat=3] {  line-dasharray: 5, 5;}'
     });
 
   },
