@@ -167,7 +167,7 @@ define('trailmap/components/cartodb-layer', ['exports', 'ember', 'ember-leaflet-
 
       layer.createSubLayer({
         sql: "select * from landline_regional_greenways WHERE fac_stat IN (2,3)",
-        cartocss: "\/** category visualization *\/\n\n#landline_regional_greenways {\n   line-width: 4;\n   line-opacity: 0.7;\n}\n\n#landline_regional_greenways[reg_ll_type=\"GR\"] {\n   line-color: #ffcc00;\n}\n#landline_regional_greenways[reg_ll_type=\"GR_WT\"] {\n   line-color: #d6a583;\n}\n#landline_regional_greenways[reg_ll_type=\"WT\"] {\n   line-color: #c696b7;\n}\n\n#landline_regional_greenways[fac_stat=2] {\n\tline-dasharray: 5, 5;\n}\n\n#landline_regional_greenways[fac_stat=3] {\n\tline-dasharray: 5, 5;\n}"
+        cartocss: '/** category visualization */#landline_regional_greenways {   line-width: 4;   line-opacity: 0.7;}#landline_regional_greenways[reg_ll_type="GR"] {   line-color: #BC9DD6;}#landline_regional_greenways[reg_ll_type="GR_WT"] {  ::case {    line-width: 5;  line-color: #BC9DD6;  }  ::fill {    line-width: 1.5;    line-color: #ffd37f;  }}#landline_regional_greenways[reg_ll_type="WT"] {   line-color: #ffd37f;}#landline_regional_greenways[fac_stat=2] {  line-dasharray: 5, 5;}#landline_regional_greenways[fac_stat=3] {  line-dasharray: 5, 5;}'
       });
     },
 
@@ -4500,7 +4500,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             dom.appendChild(el2, el3);
             var el3 = dom.createElement("i");
             dom.setAttribute(el3, "class", "minus icon");
-            dom.setAttribute(el3, "style", "color: #A6CEE3");
+            dom.setAttribute(el3, "style", "color: #BC9DD6");
             dom.appendChild(el2, el3);
             var el3 = dom.createTextNode("\n            ");
             dom.appendChild(el2, el3);
@@ -4534,7 +4534,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             dom.appendChild(el4, el5);
             var el5 = dom.createElement("i");
             dom.setAttribute(el5, "class", "big minus icon icon");
-            dom.setAttribute(el5, "style", "color: #A6CEE3");
+            dom.setAttribute(el5, "style", "color: #BC9DD6");
             dom.appendChild(el4, el5);
             var el5 = dom.createTextNode("\n                  ");
             dom.appendChild(el4, el5);
@@ -5781,7 +5781,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+8f03dba5"});
+  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+26134119"});
 }
 
 /* jshint ignore:end */
