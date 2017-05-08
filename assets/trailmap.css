@@ -2852,6 +2852,13 @@ h3:first-child {
   z-index: 1;
   pointer-events: all; }
 
+.feedback {
+  position: absolute;
+  margin: 1em;
+  z-index: 1;
+  pointer-events: all;
+  right: 0; }
+
 main {
   pointer-events: all; }
 
