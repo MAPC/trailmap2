@@ -17,20 +17,14 @@
             <i class="dropdown icon"></i>
           </a>
           <div class="child content link menu">
+
             <a class="item" {{action (toggle 'protected' applicationController)}}>
               {{ui-checkbox
                 label='Protected Bike Lane'
                 checked=applicationController.protected}}
               {{#if applicationController.protected}}
-                <i class="minus icon" style='color: #7f3193;'></i>
-              {{/if}}
-            </a>
-            <a class="item" {{action (toggle 'shared' applicationController)}}>
-              {{ui-checkbox
-                label='Shared Lane Marking'
-                checked=applicationController.shared}}
-              {{#if applicationController.shared}}
-                <i class="minus icon" style='color: #82C5EC;'></i>
+                {{ui-popup position="right center" tagName="i" class="minus icon legend-bike-protected" 
+                content="Protected Bike Lane: Bicycle lane that is physically separated from the travel lane"}}
               {{/if}}
             </a>
             <a class="item" {{action (toggle 'bike_lane' applicationController)}}>
@@ -38,7 +32,17 @@
                 label='Bike Lane'
                 checked=applicationController.bike_lane}}
               {{#if applicationController.bike_lane}}
-                <i class="minus icon" style='color: #0874b9;'></i>
+                {{!-- <i class="minus icon" style='color: #0874b9;'></i> --}}
+                {{ui-popup position="right center" tagName="i" class="minus icon legend-bike-lane" content="Bike Lane: Sharrow indicating a priority bicycle route shared with motor vehicles"}}
+              {{/if}}
+            </a>
+            <a class="item" {{action (toggle 'shared' applicationController)}}>
+              {{ui-checkbox
+                label='Shared Lane Marking'
+                checked=applicationController.shared}}
+              {{#if applicationController.shared}}
+                {{!-- <i class="minus icon" style='color: #82C5EC;'></i> --}}
+                {{ui-popup position="right center" tagName="i" class="minus icon legend-bike-shared" content="Shared Lane Marking: Striped bicycle lane on the roadway"}}
               {{/if}}
             </a>
           </div>
@@ -48,7 +52,7 @@
             label='Walk'
             checked=applicationController.walk}}
           {{#if applicationController.walk}}
-            <i class="minus icon" style='color: #db813f'></i>
+            {{ui-popup position="right center" tagName="i" class="minus icon legend-walk-foot" content="Foot path: Natural surface or paved path primarily for walking"}}
           {{/if}}
         </a>
         <a class="item" {{action (toggle 'multi_use_path' applicationController)}}>
@@ -56,13 +60,16 @@
             label='Multi-Use Path'
             checked=applicationController.multi_use_path}}
           {{#if applicationController.multi_use_path}}
-            <i class="minus icon" style='color: #38A800;'></i>
+            {{ui-popup position="right center" tagName="i" class="minus icon legend-multi" content="​Paved: Path is paved with a firm stable surface, typically asphalt or stone dust"}}
+
+            {{!-- <i class="minus icon" style='color: #38A800;'></i> --}}
           {{/if}}
         </a>
         {{#if applicationController.multi_use_path}}
           <div class="menu">
             <div class="item legend">
-              Unimproved <i class="minus icon" style='color: #a87000;'></i>
+              Unimproved
+              {{ui-popup position="right center" tagName="i" class="minus icon legend-multi-unimproved" content="Unimproved: Future paved path that is currently passable by foot"}}
             </div>
           </div>
         {{/if}}
@@ -75,19 +82,21 @@
         {{#if applicationController.landline}}
           <div class="menu">
             <div class="item legend">
-              Greeway Route <i class="minus icon" style='color: #BC9DD6'></i>
+              Greeway Route
+              {{ui-popup position="right center" tagName="i" class="minus icon legend-landline-greenway" content="Greenway Route: Priority route for cycling and walking with priority for separation from traffic"}}
             </div>
             <div class="item legend">
-              Regional Walking Trail <i class="minus icon" style='color: #ffd37f'></i>
+              Regional Foot path
+              {{ui-popup position="right center" tagName="i" class="minus icon legend-landline-regional" content="Regional Foot path: Regional trail for walking, either through conservation areas, or urban trails"}}
             </div>
             <div class="item legend">
               Combination 
-              <i class='icon'>
+              {{#ui-popup position="right center" tagName="i" class="icon" content="​Combination: Greenway and foot path routes overlap in this sections"}}
                 <i class="icons">
                   <i class="big minus icon icon" style='color: #BC9DD6'></i>
                   <i class="minus icon" style='color: #ffd37f'></i>
                 </i>
-              </i>
+              {{/ui-popup}}
             </div>
           </div>
         {{/if}}

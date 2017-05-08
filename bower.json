@@ -6,7 +6,7 @@
     "ember-cli-test-loader": "0.2.2",
     "ember-qunit-notifications": "0.1.0",
     "leaflet": "~0.7.7",
-    "semantic-ui": "^2.2.6",
+    "semantic-ui": "^2.2.10",
     "trackjs": "~2.3.1",
     "leaflet-icon-pulse": "leaflet-pulse-icon#^0.1.0",
     "semantic-ui-transition": "^2.2.6",
@@ -17,7 +17,8 @@
     "semantic-ui-loader": "^2.2.6",
     "semantic-ui-form": "^2.2.6",
     "semantic-ui-input": "^2.2.6",
-    "semantic-ui-button": "^2.2.6"
+    "semantic-ui-button": "^2.2.6",
+    "semantic-ui-popup": "^2.2.6"
   },
   "devDependencies": {
     "semantic-ui-transition": "^2.2.6"
