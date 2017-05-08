@@ -5,14 +5,14 @@
         <i class="dropdown right floated icon"></i>
         Trailmap Filters
       </h3>
-      <div class="item">
-        {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut applicationController.proposed)) checked=applicationController.proposed label="Proposed Trails"}}
-        {{#if applicationController.proposed}}
-          <i class="ellipsis horizontal icon"></i>
-        {{/if}}
-      </div>
       <div class="ui parent {{if (not media.isMobile) 'active'}} content">
         {{#ui-accordion exclusive=true}}
+          <div class="item">
+            {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut applicationController.proposed)) checked=applicationController.proposed label="Proposed Trails"}}
+            {{#if applicationController.proposed}}
+              <i class="ellipsis horizontal icon"></i>
+            {{/if}}
+          </div>
           <a class="ui child attached title item">
             {{ui-checkbox
               class='parent-checkbox'
