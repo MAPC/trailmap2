@@ -130,11 +130,16 @@
             <i class="ellipsis horizontal icon"></i>
           {{/if}}
         </div>
-        <div class="item">
-          {{ui-checkbox class="ui toggle checkbox" onChange=(action (mut applicationController.feedback_adding)) checked=applicationController.feedback_adding label="Submit Feedback"}}
-        </div>
         {{link-to 'Home' 'index' class='item'}}
       </div>
     {{/ui-accordion}}
+  </div>
+</nav>
+<nav class="feedback">
+  <div class="ui link menu">
+    <div class="item" onClick={{action (mut applicationController.feedback_adding)}}>
+      Submit Feedback
+    </div>
+{{!--     {{ui-checkbox class="item" onChange=(action (mut applicationController.feedback_adding)) checked=applicationController.feedback_adding label="Submit Feedback"}} --}}
   </div>
 </nav>
