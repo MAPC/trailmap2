@@ -3961,47 +3961,47 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
       var child0 = (function () {
-        return {
-          meta: {
-            "revision": "Ember@2.9.1",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 10,
-                "column": 8
-              },
-              "end": {
-                "line": 12,
-                "column": 8
-              }
-            },
-            "moduleName": "trailmap/templates/filters.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode("          ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createElement("i");
-            dom.setAttribute(el1, "class", "ellipsis horizontal icon");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode("\n");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-      var child1 = (function () {
         var child0 = (function () {
+          return {
+            meta: {
+              "revision": "Ember@2.9.1",
+              "loc": {
+                "source": null,
+                "start": {
+                  "line": 12,
+                  "column": 12
+                },
+                "end": {
+                  "line": 14,
+                  "column": 12
+                }
+              },
+              "moduleName": "trailmap/templates/filters.hbs"
+            },
+            isEmpty: false,
+            arity: 0,
+            cachedFragment: null,
+            hasRendered: false,
+            buildFragment: function buildFragment(dom) {
+              var el0 = dom.createDocumentFragment();
+              var el1 = dom.createTextNode("              ");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createElement("i");
+              dom.setAttribute(el1, "class", "ellipsis horizontal icon");
+              dom.appendChild(el0, el1);
+              var el1 = dom.createTextNode("\n");
+              dom.appendChild(el0, el1);
+              return el0;
+            },
+            buildRenderNodes: function buildRenderNodes() {
+              return [];
+            },
+            statements: [],
+            locals: [],
+            templates: []
+          };
+        })();
+        var child1 = (function () {
           return {
             meta: {
               "revision": "Ember@2.9.1",
@@ -4042,7 +4042,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             templates: []
           };
         })();
-        var child1 = (function () {
+        var child2 = (function () {
           return {
             meta: {
               "revision": "Ember@2.9.1",
@@ -4083,7 +4083,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             templates: []
           };
         })();
-        var child2 = (function () {
+        var child3 = (function () {
           return {
             meta: {
               "revision": "Ember@2.9.1",
@@ -4130,7 +4130,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             "loc": {
               "source": null,
               "start": {
-                "line": 15,
+                "line": 9,
                 "column": 8
               },
               "end": {
@@ -4147,6 +4147,21 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           buildFragment: function buildFragment(dom) {
             var el0 = dom.createDocumentFragment();
             var el1 = dom.createTextNode("          ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createElement("div");
+            dom.setAttribute(el1, "class", "item");
+            var el2 = dom.createTextNode("\n            ");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("\n");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createComment("");
+            dom.appendChild(el1, el2);
+            var el2 = dom.createTextNode("          ");
+            dom.appendChild(el1, el2);
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n          ");
             dom.appendChild(el0, el1);
             var el1 = dom.createElement("a");
             dom.setAttribute(el1, "class", "ui child attached title item");
@@ -4219,29 +4234,32 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             return el0;
           },
           buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var element2 = dom.childAt(fragment, [3]);
-            var element3 = dom.childAt(element2, [1]);
-            var element4 = dom.childAt(element2, [3]);
-            var element5 = dom.childAt(element2, [5]);
-            var morphs = new Array(10);
-            morphs[0] = dom.createMorphAt(dom.childAt(fragment, [1]), 1, 1);
-            morphs[1] = dom.createElementMorph(element3);
-            morphs[2] = dom.createMorphAt(element3, 1, 1);
-            morphs[3] = dom.createMorphAt(element3, 3, 3);
-            morphs[4] = dom.createElementMorph(element4);
-            morphs[5] = dom.createMorphAt(element4, 1, 1);
-            morphs[6] = dom.createMorphAt(element4, 3, 3);
-            morphs[7] = dom.createElementMorph(element5);
-            morphs[8] = dom.createMorphAt(element5, 1, 1);
-            morphs[9] = dom.createMorphAt(element5, 3, 3);
+            var element2 = dom.childAt(fragment, [1]);
+            var element3 = dom.childAt(fragment, [5]);
+            var element4 = dom.childAt(element3, [1]);
+            var element5 = dom.childAt(element3, [3]);
+            var element6 = dom.childAt(element3, [5]);
+            var morphs = new Array(12);
+            morphs[0] = dom.createMorphAt(element2, 1, 1);
+            morphs[1] = dom.createMorphAt(element2, 3, 3);
+            morphs[2] = dom.createMorphAt(dom.childAt(fragment, [3]), 1, 1);
+            morphs[3] = dom.createElementMorph(element4);
+            morphs[4] = dom.createMorphAt(element4, 1, 1);
+            morphs[5] = dom.createMorphAt(element4, 3, 3);
+            morphs[6] = dom.createElementMorph(element5);
+            morphs[7] = dom.createMorphAt(element5, 1, 1);
+            morphs[8] = dom.createMorphAt(element5, 3, 3);
+            morphs[9] = dom.createElementMorph(element6);
+            morphs[10] = dom.createMorphAt(element6, 1, 1);
+            morphs[11] = dom.createMorphAt(element6, 3, 3);
             return morphs;
           },
-          statements: [["inline", "ui-checkbox", [], ["class", "parent-checkbox", "label", "Bike", "checked", ["subexpr", "or", [["get", "applicationController.protected", ["loc", [null, [20, 26], [20, 57]]], 0, 0, 0, 0], ["get", "applicationController.shared", ["loc", [null, [20, 58], [20, 86]]], 0, 0, 0, 0], ["get", "applicationController.bike_lane", ["loc", [null, [20, 87], [20, 118]]], 0, 0, 0, 0]], [], ["loc", [null, [20, 22], [20, 119]]], 0, 0], "onChange", ["subexpr", "action", ["toggleAll", ["subexpr", "array", ["protected", "shared", "bike_lane"], [], ["loc", [null, [21, 43], [21, 83]]], 0, 0]], [], ["loc", [null, [21, 23], [21, 84]]], 0, 0]], ["loc", [null, [17, 12], [21, 86]]], 0, 0], ["element", "action", [["subexpr", "toggle", ["protected", ["get", "applicationController", ["loc", [null, [26, 57], [26, 78]]], 0, 0, 0, 0]], [], ["loc", [null, [26, 37], [26, 79]]], 0, 0]], [], ["loc", [null, [26, 28], [26, 81]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Protected Bike Lane", "checked", ["subexpr", "@mut", [["get", "applicationController.protected", ["loc", [null, [29, 24], [29, 55]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [27, 14], [29, 57]]], 0, 0], ["block", "if", [["get", "applicationController.protected", ["loc", [null, [30, 20], [30, 51]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [30, 14], [33, 21]]]], ["element", "action", [["subexpr", "toggle", ["bike_lane", ["get", "applicationController", ["loc", [null, [35, 57], [35, 78]]], 0, 0, 0, 0]], [], ["loc", [null, [35, 37], [35, 79]]], 0, 0]], [], ["loc", [null, [35, 28], [35, 81]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Bike Lane", "checked", ["subexpr", "@mut", [["get", "applicationController.bike_lane", ["loc", [null, [38, 24], [38, 55]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [36, 14], [38, 57]]], 0, 0], ["block", "if", [["get", "applicationController.bike_lane", ["loc", [null, [39, 20], [39, 51]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [39, 14], [42, 21]]]], ["element", "action", [["subexpr", "toggle", ["shared", ["get", "applicationController", ["loc", [null, [44, 54], [44, 75]]], 0, 0, 0, 0]], [], ["loc", [null, [44, 37], [44, 76]]], 0, 0]], [], ["loc", [null, [44, 28], [44, 78]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Shared Lane Marking", "checked", ["subexpr", "@mut", [["get", "applicationController.shared", ["loc", [null, [47, 24], [47, 52]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [45, 14], [47, 54]]], 0, 0], ["block", "if", [["get", "applicationController.shared", ["loc", [null, [48, 20], [48, 48]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [48, 14], [51, 21]]]]],
+          statements: [["inline", "ui-checkbox", [], ["class", "ui toggle checkbox", "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.proposed", ["loc", [null, [11, 75], [11, 105]]], 0, 0, 0, 0]], [], ["loc", [null, [11, 70], [11, 106]]], 0, 0]], [], ["loc", [null, [11, 62], [11, 107]]], 0, 0], "checked", ["subexpr", "@mut", [["get", "applicationController.proposed", ["loc", [null, [11, 116], [11, 146]]], 0, 0, 0, 0]], [], [], 0, 0], "label", "Proposed Trails"], ["loc", [null, [11, 12], [11, 172]]], 0, 0], ["block", "if", [["get", "applicationController.proposed", ["loc", [null, [12, 18], [12, 48]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [12, 12], [14, 19]]]], ["inline", "ui-checkbox", [], ["class", "parent-checkbox", "label", "Bike", "checked", ["subexpr", "or", [["get", "applicationController.protected", ["loc", [null, [20, 26], [20, 57]]], 0, 0, 0, 0], ["get", "applicationController.shared", ["loc", [null, [20, 58], [20, 86]]], 0, 0, 0, 0], ["get", "applicationController.bike_lane", ["loc", [null, [20, 87], [20, 118]]], 0, 0, 0, 0]], [], ["loc", [null, [20, 22], [20, 119]]], 0, 0], "onChange", ["subexpr", "action", ["toggleAll", ["subexpr", "array", ["protected", "shared", "bike_lane"], [], ["loc", [null, [21, 43], [21, 83]]], 0, 0]], [], ["loc", [null, [21, 23], [21, 84]]], 0, 0]], ["loc", [null, [17, 12], [21, 86]]], 0, 0], ["element", "action", [["subexpr", "toggle", ["protected", ["get", "applicationController", ["loc", [null, [26, 57], [26, 78]]], 0, 0, 0, 0]], [], ["loc", [null, [26, 37], [26, 79]]], 0, 0]], [], ["loc", [null, [26, 28], [26, 81]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Protected Bike Lane", "checked", ["subexpr", "@mut", [["get", "applicationController.protected", ["loc", [null, [29, 24], [29, 55]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [27, 14], [29, 57]]], 0, 0], ["block", "if", [["get", "applicationController.protected", ["loc", [null, [30, 20], [30, 51]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [30, 14], [33, 21]]]], ["element", "action", [["subexpr", "toggle", ["bike_lane", ["get", "applicationController", ["loc", [null, [35, 57], [35, 78]]], 0, 0, 0, 0]], [], ["loc", [null, [35, 37], [35, 79]]], 0, 0]], [], ["loc", [null, [35, 28], [35, 81]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Bike Lane", "checked", ["subexpr", "@mut", [["get", "applicationController.bike_lane", ["loc", [null, [38, 24], [38, 55]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [36, 14], [38, 57]]], 0, 0], ["block", "if", [["get", "applicationController.bike_lane", ["loc", [null, [39, 20], [39, 51]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [39, 14], [42, 21]]]], ["element", "action", [["subexpr", "toggle", ["shared", ["get", "applicationController", ["loc", [null, [44, 54], [44, 75]]], 0, 0, 0, 0]], [], ["loc", [null, [44, 37], [44, 76]]], 0, 0]], [], ["loc", [null, [44, 28], [44, 78]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Shared Lane Marking", "checked", ["subexpr", "@mut", [["get", "applicationController.shared", ["loc", [null, [47, 24], [47, 52]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [45, 14], [47, 54]]], 0, 0], ["block", "if", [["get", "applicationController.shared", ["loc", [null, [48, 20], [48, 48]]], 0, 0, 0, 0]], [], 3, null, ["loc", [null, [48, 14], [51, 21]]]]],
           locals: [],
-          templates: [child0, child1, child2]
+          templates: [child0, child1, child2, child3]
         };
       })();
-      var child2 = (function () {
+      var child1 = (function () {
         return {
           meta: {
             "revision": "Ember@2.9.1",
@@ -4282,7 +4300,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           templates: []
         };
       })();
-      var child3 = (function () {
+      var child2 = (function () {
         return {
           meta: {
             "revision": "Ember@2.9.1",
@@ -4323,7 +4341,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           templates: []
         };
       })();
-      var child4 = (function () {
+      var child3 = (function () {
         return {
           meta: {
             "revision": "Ember@2.9.1",
@@ -4378,7 +4396,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           templates: []
         };
       })();
-      var child5 = (function () {
+      var child4 = (function () {
         var child0 = (function () {
           return {
             meta: {
@@ -4512,7 +4530,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           templates: [child0]
         };
       })();
-      var child6 = (function () {
+      var child5 = (function () {
         var child0 = (function () {
           return {
             meta: {
@@ -4678,7 +4696,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           templates: [child0, child1, child2]
         };
       })();
-      var child7 = (function () {
+      var child6 = (function () {
         return {
           meta: {
             "revision": "Ember@2.9.1",
@@ -4745,21 +4763,6 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           dom.setAttribute(el2, "class", "dropdown right floated icon");
           dom.appendChild(el1, el2);
           var el2 = dom.createTextNode("\n        Trailmap Filters\n      ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n      ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("div");
-          dom.setAttribute(el1, "class", "item");
-          var el2 = dom.createTextNode("\n        ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createComment("");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("      ");
           dom.appendChild(el1, el2);
           dom.appendChild(el0, el1);
           var el1 = dom.createTextNode("\n      ");
@@ -4834,33 +4837,30 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
           return el0;
         },
         buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element6 = dom.childAt(fragment, [3]);
-          var element7 = dom.childAt(fragment, [5]);
+          var element7 = dom.childAt(fragment, [3]);
           var element8 = dom.childAt(element7, [3]);
           var element9 = dom.childAt(element7, [5]);
           var element10 = dom.childAt(element7, [9]);
-          var morphs = new Array(16);
-          morphs[0] = dom.createMorphAt(element6, 1, 1);
-          morphs[1] = dom.createMorphAt(element6, 3, 3);
-          morphs[2] = dom.createAttrMorph(element7, 'class');
-          morphs[3] = dom.createMorphAt(element7, 1, 1);
-          morphs[4] = dom.createElementMorph(element8);
-          morphs[5] = dom.createMorphAt(element8, 1, 1);
-          morphs[6] = dom.createMorphAt(element8, 3, 3);
-          morphs[7] = dom.createElementMorph(element9);
-          morphs[8] = dom.createMorphAt(element9, 1, 1);
-          morphs[9] = dom.createMorphAt(element9, 3, 3);
-          morphs[10] = dom.createMorphAt(element7, 7, 7);
-          morphs[11] = dom.createElementMorph(element10);
-          morphs[12] = dom.createMorphAt(element10, 1, 1);
-          morphs[13] = dom.createMorphAt(element7, 11, 11);
-          morphs[14] = dom.createMorphAt(element7, 13, 13);
-          morphs[15] = dom.createMorphAt(element7, 15, 15);
+          var morphs = new Array(14);
+          morphs[0] = dom.createAttrMorph(element7, 'class');
+          morphs[1] = dom.createMorphAt(element7, 1, 1);
+          morphs[2] = dom.createElementMorph(element8);
+          morphs[3] = dom.createMorphAt(element8, 1, 1);
+          morphs[4] = dom.createMorphAt(element8, 3, 3);
+          morphs[5] = dom.createElementMorph(element9);
+          morphs[6] = dom.createMorphAt(element9, 1, 1);
+          morphs[7] = dom.createMorphAt(element9, 3, 3);
+          morphs[8] = dom.createMorphAt(element7, 7, 7);
+          morphs[9] = dom.createElementMorph(element10);
+          morphs[10] = dom.createMorphAt(element10, 1, 1);
+          morphs[11] = dom.createMorphAt(element7, 11, 11);
+          morphs[12] = dom.createMorphAt(element7, 13, 13);
+          morphs[13] = dom.createMorphAt(element7, 15, 15);
           return morphs;
         },
-        statements: [["inline", "ui-checkbox", [], ["class", "ui toggle checkbox", "onChange", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.proposed", ["loc", [null, [9, 71], [9, 101]]], 0, 0, 0, 0]], [], ["loc", [null, [9, 66], [9, 102]]], 0, 0]], [], ["loc", [null, [9, 58], [9, 103]]], 0, 0], "checked", ["subexpr", "@mut", [["get", "applicationController.proposed", ["loc", [null, [9, 112], [9, 142]]], 0, 0, 0, 0]], [], [], 0, 0], "label", "Proposed Trails"], ["loc", [null, [9, 8], [9, 168]]], 0, 0], ["block", "if", [["get", "applicationController.proposed", ["loc", [null, [10, 14], [10, 44]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [10, 8], [12, 15]]]], ["attribute", "class", ["concat", ["ui parent ", ["subexpr", "if", [["subexpr", "not", [["get", "media.isMobile", ["loc", [null, [14, 38], [14, 52]]], 0, 0, 0, 0]], [], ["loc", [null, [14, 33], [14, 53]]], 0, 0], "active"], [], ["loc", [null, [14, 28], [14, 64]]], 0, 0], " content"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["block", "ui-accordion", [], ["exclusive", true], 1, null, ["loc", [null, [15, 8], [54, 25]]]], ["element", "action", [["subexpr", "toggle", ["walk", ["get", "applicationController", ["loc", [null, [55, 48], [55, 69]]], 0, 0, 0, 0]], [], ["loc", [null, [55, 33], [55, 70]]], 0, 0]], [], ["loc", [null, [55, 24], [55, 72]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Walk", "checked", ["subexpr", "@mut", [["get", "applicationController.walk", ["loc", [null, [58, 20], [58, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [56, 10], [58, 48]]], 0, 0], ["block", "if", [["get", "applicationController.walk", ["loc", [null, [59, 16], [59, 42]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [59, 10], [61, 17]]]], ["element", "action", [["subexpr", "toggle", ["multi_use_path", ["get", "applicationController", ["loc", [null, [63, 58], [63, 79]]], 0, 0, 0, 0]], [], ["loc", [null, [63, 33], [63, 80]]], 0, 0]], [], ["loc", [null, [63, 24], [63, 82]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Multi-Use Path", "checked", ["subexpr", "@mut", [["get", "applicationController.multi_use_path", ["loc", [null, [66, 20], [66, 56]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [64, 10], [66, 58]]], 0, 0], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [67, 16], [67, 52]]], 0, 0, 0, 0]], [], 3, null, ["loc", [null, [67, 10], [71, 17]]]], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [73, 14], [73, 50]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [73, 8], [80, 15]]]], ["element", "action", [["subexpr", "toggle", ["landline", ["get", "applicationController", ["loc", [null, [81, 52], [81, 73]]], 0, 0, 0, 0]], [], ["loc", [null, [81, 33], [81, 74]]], 0, 0]], [], ["loc", [null, [81, 24], [81, 76]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "LandLine (Metro Greenway Network)", "checked", ["subexpr", "@mut", [["get", "applicationController.landline", ["loc", [null, [84, 20], [84, 50]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [82, 10], [84, 52]]], 0, 0], ["block", "if", [["get", "applicationController.landline", ["loc", [null, [87, 14], [87, 44]]], 0, 0, 0, 0]], [], 5, null, ["loc", [null, [87, 8], [107, 15]]]], ["block", "ui-accordion", [], ["exclusive", true], 6, null, ["loc", [null, [109, 8], [140, 25]]]], ["block", "link-to", ["index"], ["class", "item"], 7, null, ["loc", [null, [141, 8], [141, 47]]]]],
+        statements: [["attribute", "class", ["concat", ["ui parent ", ["subexpr", "if", [["subexpr", "not", [["get", "media.isMobile", ["loc", [null, [8, 38], [8, 52]]], 0, 0, 0, 0]], [], ["loc", [null, [8, 33], [8, 53]]], 0, 0], "active"], [], ["loc", [null, [8, 28], [8, 64]]], 0, 0], " content"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["block", "ui-accordion", [], ["exclusive", true], 0, null, ["loc", [null, [9, 8], [54, 25]]]], ["element", "action", [["subexpr", "toggle", ["walk", ["get", "applicationController", ["loc", [null, [55, 48], [55, 69]]], 0, 0, 0, 0]], [], ["loc", [null, [55, 33], [55, 70]]], 0, 0]], [], ["loc", [null, [55, 24], [55, 72]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Walk", "checked", ["subexpr", "@mut", [["get", "applicationController.walk", ["loc", [null, [58, 20], [58, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [56, 10], [58, 48]]], 0, 0], ["block", "if", [["get", "applicationController.walk", ["loc", [null, [59, 16], [59, 42]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [59, 10], [61, 17]]]], ["element", "action", [["subexpr", "toggle", ["multi_use_path", ["get", "applicationController", ["loc", [null, [63, 58], [63, 79]]], 0, 0, 0, 0]], [], ["loc", [null, [63, 33], [63, 80]]], 0, 0]], [], ["loc", [null, [63, 24], [63, 82]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "Multi-Use Path", "checked", ["subexpr", "@mut", [["get", "applicationController.multi_use_path", ["loc", [null, [66, 20], [66, 56]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [64, 10], [66, 58]]], 0, 0], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [67, 16], [67, 52]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [67, 10], [71, 17]]]], ["block", "if", [["get", "applicationController.multi_use_path", ["loc", [null, [73, 14], [73, 50]]], 0, 0, 0, 0]], [], 3, null, ["loc", [null, [73, 8], [80, 15]]]], ["element", "action", [["subexpr", "toggle", ["landline", ["get", "applicationController", ["loc", [null, [81, 52], [81, 73]]], 0, 0, 0, 0]], [], ["loc", [null, [81, 33], [81, 74]]], 0, 0]], [], ["loc", [null, [81, 24], [81, 76]]], 0, 0], ["inline", "ui-checkbox", [], ["label", "LandLine (Metro Greenway Network)", "checked", ["subexpr", "@mut", [["get", "applicationController.landline", ["loc", [null, [84, 20], [84, 50]]], 0, 0, 0, 0]], [], [], 0, 0]], ["loc", [null, [82, 10], [84, 52]]], 0, 0], ["block", "if", [["get", "applicationController.landline", ["loc", [null, [87, 14], [87, 44]]], 0, 0, 0, 0]], [], 4, null, ["loc", [null, [87, 8], [107, 15]]]], ["block", "ui-accordion", [], ["exclusive", true], 5, null, ["loc", [null, [109, 8], [140, 25]]]], ["block", "link-to", ["index"], ["class", "item"], 6, null, ["loc", [null, [141, 8], [141, 47]]]]],
         locals: [],
-        templates: [child0, child1, child2, child3, child4, child5, child6, child7]
+        templates: [child0, child1, child2, child3, child4, child5, child6]
       };
     })();
     return {
@@ -5588,7 +5588,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+034c2964"});
+  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+79305bef"});
 }
 
 /* jshint ignore:end */
