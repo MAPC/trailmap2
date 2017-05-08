@@ -30,6 +30,7 @@ module.exports = function(defaults) {
   app.import('bower_components/leaflet-icon-pulse/src/L.Icon.Pulse.css');
   app.import('bower_components/semantic-ui-accordion/accordion.css');
   app.import('bower_components/semantic-ui-menu/menu.css');
+  app.import('bower_components/semantic-ui-popup/popup.css');
   app.import('bower_components/semantic-ui-checkbox/checkbox.css');
   app.import('bower_components/semantic-ui-transition/transition.css');
   app.import('bower_components/semantic-ui-icon/icon.css');
