@@ -26,6 +26,9 @@
     {{#if feedback_adding}}
       {{#marker-layer location=(array 42 -71) draggable=true onDragend=(action "updateFeedbackLocation")}}
         {{#popup-layer popupOpen=(readonly true) minWidth=400 autoClose=false}}
+          <div class="ui basic segment">
+            <h3 class="ui header" style="color: black">Move the green feedback marker to a location on the map, add a short description of the issue and click "Submit" below to save your feedback.</h3>
+          </div>
           <div class="ui form" style="color: black">
             <div class="field">
               <label>Name</label>

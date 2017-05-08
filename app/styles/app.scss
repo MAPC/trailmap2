@@ -46,6 +46,14 @@ h3:first-child {
   pointer-events: all;
 }
 
+.feedback {
+  position: absolute;
+  margin: 1em;
+  z-index: 1;
+  pointer-events: all;
+  right: 0;
+}
+
 main {
   pointer-events: all;
 }
