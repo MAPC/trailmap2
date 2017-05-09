@@ -7,6 +7,8 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('filters', { path: '/map' });
+  this.route('desktop');
+  this.route('mobile');
 });
 
 Router.reopen({
