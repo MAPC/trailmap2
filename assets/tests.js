@@ -1185,7 +1185,7 @@ define('trailmap/tests/router.jshint', ['exports'], function (exports) {
   QUnit.module('JSHint | router.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'router.js should pass jshint.\nrouter.js: line 14, col 25, Expected \'!==\' and instead saw \'!=\'.\nrouter.js: line 15, col 16, \'ga\' is not defined.\n\n2 errors');
+    assert.ok(false, 'router.js should pass jshint.\nrouter.js: line 16, col 25, Expected \'!==\' and instead saw \'!=\'.\nrouter.js: line 17, col 16, \'ga\' is not defined.\n\n2 errors');
   });
 });
 define('trailmap/tests/routes/application.jshint', ['exports'], function (exports) {
@@ -1195,6 +1195,24 @@ define('trailmap/tests/routes/application.jshint', ['exports'], function (export
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 49, col 76, \'geoObject\' is defined but never used.\nroutes/application.js: line 12, col 12, \'$\' is not defined.\nroutes/application.js: line 2, col 10, \'computed\' is defined but never used.\nroutes/application.js: line 2, col 20, \'observer\' is defined but never used.\n\n4 errors');
+  });
+});
+define('trailmap/tests/routes/desktop.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | routes/desktop.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'routes/desktop.js should pass jshint.\nroutes/desktop.js: line 15, col 7, Missing semicolon.\n\n1 error');
+  });
+});
+define('trailmap/tests/routes/mobile.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | routes/mobile.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'routes/mobile.js should pass jshint.\nroutes/mobile.js: line 7, col 72, \'geoObject\' is defined but never used.\n\n1 error');
   });
 });
 define('trailmap/tests/test-helper', ['exports', 'trailmap/tests/helpers/resolver', 'trailmap/tests/helpers/responsive', 'ember-qunit'], function (exports, _trailmapTestsHelpersResolver, _trailmapTestsHelpersResponsive, _emberQunit) {
@@ -1468,6 +1486,27 @@ define('trailmap/tests/unit/routes/application-test.jshint', ['exports'], functi
     assert.ok(true, 'unit/routes/application-test.js should pass jshint.');
   });
 });
+define('trailmap/tests/unit/routes/desktop-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:desktop', 'Unit | Route | desktop', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('trailmap/tests/unit/routes/desktop-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/desktop-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/desktop-test.js should pass jshint.');
+  });
+});
 define('trailmap/tests/unit/routes/map-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('route:map', 'Unit | Route | map', {
@@ -1487,6 +1526,27 @@ define('trailmap/tests/unit/routes/map-test.jshint', ['exports'], function (expo
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/map-test.js should pass jshint.');
+  });
+});
+define('trailmap/tests/unit/routes/mobile-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:mobile', 'Unit | Route | mobile', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('trailmap/tests/unit/routes/mobile-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/mobile-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/mobile-test.js should pass jshint.');
   });
 });
 define('trailmap/tests/unit/utils/cartodb-sql-test', ['exports', 'trailmap/utils/cartodb-sql', 'qunit'], function (exports, _trailmapUtilsCartodbSql, _qunit) {

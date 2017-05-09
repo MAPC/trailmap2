@@ -1969,6 +1969,8 @@ define('trailmap/router', ['exports', 'ember', 'trailmap/config/environment'], f
 
   Router.map(function () {
     this.route('filters', { path: '/map' });
+    this.route('desktop');
+    this.route('mobile');
   });
 
   Router.reopen({
@@ -2051,6 +2053,50 @@ define('trailmap/routes/application', ['exports', 'ember', 'ember-computed'], fu
         mapController.set('locations', this.get('locations'));
       }
     })
+  });
+});
+define('trailmap/routes/desktop', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({
+    beforeModel: function beforeModel() {
+      this.transitionTo('filters', {
+        queryParams: {
+          'protected': false,
+          shared: false,
+          bike_lane: false,
+          walk: false,
+          multi_use_path: false,
+          landline: true,
+          zoom: 10
+        }
+      });
+    }
+  });
+});
+define('trailmap/routes/mobile', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Route.extend({
+    geolocation: _ember['default'].inject.service(),
+    beforeModel: function beforeModel() {
+      var _this = this;
+
+      var applicationController = this.controllerFor('application');
+      this.get('geolocation').trackLocation({ enableHighAccuracy: true }, function (geoObject) {
+        applicationController.set('currentLocation', _this.get('geolocation.currentLocation'));
+      });
+      this.get('geolocation').getLocation().then(function (geoObject) {
+        var _geoObject$coords = geoObject.coords;
+        var latitude = _geoObject$coords.latitude;
+        var longitude = _geoObject$coords.longitude;
+
+        applicationController.setProperties({ lat: latitude, lng: longitude, zoom: 18 });
+      });
+
+      this.transitionTo('filters', { queryParams: { bike_lane: false,
+          'protected': false,
+          shared: false,
+          walk: true,
+          multi_use_path: false,
+          landline: false } });
+    }
   });
 });
 define('trailmap/serializers/contentful', ['exports', 'ember-data-contentful/serializers/contentful'], function (exports, _emberDataContentfulSerializersContentful) {
@@ -3957,6 +4003,48 @@ define("trailmap/templates/components/ui-sticky", ["exports"], function (exports
     };
   })());
 });
+define("trailmap/templates/desktop", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@2.9.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "trailmap/templates/desktop.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0]],
+      locals: [],
+      templates: []
+    };
+  })());
+});
 define("trailmap/templates/filters", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
     var child0 = (function () {
@@ -4948,12 +5036,12 @@ define("trailmap/templates/index", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 21,
+              "line": 20,
               "column": 16
             },
             "end": {
-              "line": 21,
-              "column": 200
+              "line": 20,
+              "column": 73
             }
           },
           "moduleName": "trailmap/templates/index.hbs"
@@ -4964,7 +5052,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Regional LandLines");
+          var el1 = dom.createTextNode("Mobile");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -4977,6 +5065,41 @@ define("trailmap/templates/index", ["exports"], function (exports) {
       };
     })();
     var child1 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.9.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 21,
+              "column": 16
+            },
+            "end": {
+              "line": 21,
+              "column": 75
+            }
+          },
+          "moduleName": "trailmap/templates/index.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Desktop");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child2 = (function () {
       var child0 = (function () {
         return {
           meta: {
@@ -5223,10 +5346,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var el6 = dom.createTextNode("\n            ");
         dom.appendChild(el5, el6);
         var el6 = dom.createElement("li");
-        var el7 = dom.createElement("a");
-        dom.setAttribute(el7, "class", "button next scrolly");
-        var el8 = dom.createTextNode("Trails Near You");
-        dom.appendChild(el7, el8);
+        var el7 = dom.createComment("");
         dom.appendChild(el6, el7);
         dom.appendChild(el5, el6);
         var el6 = dom.createTextNode("\n            ");
@@ -5477,27 +5597,68 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         var element4 = dom.childAt(element3, [9, 1]);
         var element5 = dom.childAt(element4, [3]);
         var element6 = dom.childAt(element5, [3]);
-        var element7 = dom.childAt(element6, [1, 0]);
-        var element8 = dom.childAt(element3, [13]);
-        var element9 = dom.childAt(element3, [17, 1]);
-        var element10 = dom.childAt(element9, [1, 1, 5]);
-        var element11 = dom.childAt(element9, [3]);
+        var element7 = dom.childAt(element3, [13]);
+        var element8 = dom.childAt(element3, [17, 1]);
+        var element9 = dom.childAt(element8, [1, 1, 5]);
+        var element10 = dom.childAt(element8, [3]);
         var morphs = new Array(10);
         morphs[0] = dom.createMorphAt(dom.childAt(element4, [1, 1]), 0, 0);
         morphs[1] = dom.createMorphAt(dom.childAt(element5, [1]), 0, 0);
-        morphs[2] = dom.createElementMorph(element7);
+        morphs[2] = dom.createMorphAt(dom.childAt(element6, [1]), 0, 0);
         morphs[3] = dom.createMorphAt(dom.childAt(element6, [3]), 0, 0);
-        morphs[4] = dom.createMorphAt(dom.childAt(element8, [3]), 1, 1);
-        morphs[5] = dom.createMorphAt(dom.childAt(element8, [7, 1, 3]), 0, 0);
-        morphs[6] = dom.createAttrMorph(element10, 'href');
-        morphs[7] = dom.createMorphAt(element10, 0, 0);
-        morphs[8] = dom.createMorphAt(dom.childAt(element11, [1, 1, 5]), 0, 0);
-        morphs[9] = dom.createMorphAt(dom.childAt(element11, [3, 1, 5]), 0, 0);
+        morphs[4] = dom.createMorphAt(dom.childAt(element7, [3]), 1, 1);
+        morphs[5] = dom.createMorphAt(dom.childAt(element7, [7, 1, 3]), 0, 0);
+        morphs[6] = dom.createAttrMorph(element9, 'href');
+        morphs[7] = dom.createMorphAt(element9, 0, 0);
+        morphs[8] = dom.createMorphAt(dom.childAt(element10, [1, 1, 5]), 0, 0);
+        morphs[9] = dom.createMorphAt(dom.childAt(element10, [3, 1, 5]), 0, 0);
         return morphs;
       },
-      statements: [["content", "aboutPage.title", ["loc", [null, [15, 14], [15, 33]]], 0, 0, 0, 0], ["content", "aboutPage.tagline", ["loc", [null, [18, 13], [18, 34]]], 0, 0, 0, 0], ["element", "action", ["trackLocation"], ["target", "applicationController"], ["loc", [null, [20, 19], [20, 76]]], 0, 0], ["block", "link-to", ["filters", ["subexpr", "query-params", [], ["protected", false, "shared", false, "bike_lane", false, "walk", false, "multi_use_path", false, "landline", true, "zoom", 10], ["loc", [null, [21, 57], [21, 170]]], 0, 0]], ["class", "button next scrolly"], 0, null, ["loc", [null, [21, 16], [21, 200]]]], ["block", "each", [["get", "aboutPage.tiles", ["loc", [null, [33, 18], [33, 33]]], 0, 0, 0, 0]], [], 1, null, ["loc", [null, [33, 10], [42, 19]]]], ["content", "aboutPage.disclaimer", ["loc", [null, [51, 13], [51, 37]]], 0, 0, 0, 0], ["attribute", "href", ["concat", ["mailto:", ["get", "aboutPage.email", ["loc", [null, [63, 32], [63, 47]]], 0, 0, 0, 0]], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["content", "aboutPage.email", ["loc", [null, [63, 66], [63, 85]]], 0, 0, 0, 0], ["content", "aboutPage.phone", ["loc", [null, [71, 20], [71, 39]]], 0, 0, 0, 0], ["content", "aboutPage.address", ["loc", [null, [78, 20], [78, 41]]], 0, 0, 0, 0]],
+      statements: [["content", "aboutPage.title", ["loc", [null, [15, 14], [15, 33]]], 0, 0, 0, 0], ["content", "aboutPage.tagline", ["loc", [null, [18, 13], [18, 34]]], 0, 0, 0, 0], ["block", "link-to", ["mobile"], ["class", "button next scrolly"], 0, null, ["loc", [null, [20, 16], [20, 73]]]], ["block", "link-to", ["desktop"], ["class", "button next scrolly"], 1, null, ["loc", [null, [21, 16], [21, 75]]]], ["block", "each", [["get", "aboutPage.tiles", ["loc", [null, [33, 18], [33, 33]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [33, 10], [42, 19]]]], ["content", "aboutPage.disclaimer", ["loc", [null, [51, 13], [51, 37]]], 0, 0, 0, 0], ["attribute", "href", ["concat", ["mailto:", ["get", "aboutPage.email", ["loc", [null, [63, 32], [63, 47]]], 0, 0, 0, 0]], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["content", "aboutPage.email", ["loc", [null, [63, 66], [63, 85]]], 0, 0, 0, 0], ["content", "aboutPage.phone", ["loc", [null, [71, 20], [71, 39]]], 0, 0, 0, 0], ["content", "aboutPage.address", ["loc", [null, [78, 20], [78, 41]]], 0, 0, 0, 0]],
       locals: [],
-      templates: [child0, child1]
+      templates: [child0, child1, child2]
+    };
+  })());
+});
+define("trailmap/templates/mobile", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    return {
+      meta: {
+        "revision": "Ember@2.9.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 0
+          }
+        },
+        "moduleName": "trailmap/templates/mobile.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createComment("");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+        dom.insertBoundary(fragment, 0);
+        return morphs;
+      },
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0]],
+      locals: [],
+      templates: []
     };
   })());
 });
@@ -5588,7 +5749,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+79305bef"});
+  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+244fa4ab"});
 }
 
 /* jshint ignore:end */
