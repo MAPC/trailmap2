@@ -9,6 +9,8 @@ Router.map(function() {
   this.route('filters', { path: '/map' });
   this.route('desktop');
   this.route('mobile');
+  this.route('about');
+  this.route('contribute');
 });
 
 Router.reopen({
