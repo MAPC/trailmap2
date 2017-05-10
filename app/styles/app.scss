@@ -195,11 +195,12 @@ footer {
     margin: 0;
   }
 
-  .ui.centered.tiny.image.mapc-logo {
-    bottom: 0;
-    left: 0;
-    position: fixed;
-    margin: 0.5em;
+  .ui.left.floated.tiny.image.mapc-logo {
+    display: none;
+  }
+
+  .feedback {
+    display: none;
   }
 }
 
