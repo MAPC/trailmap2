@@ -142,12 +142,15 @@
       </div>
     {{/ui-accordion}}
   </div>
+  <a href="http://mapc.org" target="_blank">
+    <img class="ui left floated tiny image mapc-logo" src="assets/mapc-logo.png" />
+  </a>
+  <img class="ui left floated tiny image mapc-logo" src="assets/landline-network.png" />
 </nav>
 <nav class="feedback">
   <div class="ui link menu">
     <div class="item" onClick={{action (mut applicationController.feedback_adding)}}>
       Submit Feedback
     </div>
-{{!--     {{ui-checkbox class="item" onChange=(action (mut applicationController.feedback_adding)) checked=applicationController.feedback_adding label="Submit Feedback"}} --}}
   </div>
 </nav>
