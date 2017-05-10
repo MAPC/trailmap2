@@ -1,93 +1,30 @@
-<div id="wrapper">
+  <div id="wrapper">
 
   <!-- Header -->
-    <header id="header" class="alt">
-      <a href="index.html" class="logo"><strong>MAPC</strong></a>
-    </header>
-
-  <!-- Menu -->
-
-
-  <!-- Banner -->
-    <section id="banner" class="major">
+  <header id="header">
+    <div class="content">
       <div class="inner">
-        <header class="major">
-          <h1>{{aboutPage.title}}</h1>
-        </header>
-        <div class="content">
-          <p>{{aboutPage.tagline}}</p>
-          <ul class="actions">
-            <li>{{link-to 'Mobile' 'mobile' class="button next scrolly"}}</li>
-            <li>{{link-to 'Desktop' 'desktop' class="button next scrolly"}}</li>
-          </ul>
-        </div>
+        <h1 class="htmlup">MAPC Trailmap</h1>
+        <p>Explore a comprehensive network of foot trails and bicycle paths across metro Boston</p>
       </div>
-    </section>
-
-  <!-- Main -->
-    <div id="main">
-
-      <!-- One -->
-
-        <section id="one" class="tiles">
-          {{#each aboutPage.tiles as |tile|}}
-            <article style="background-image: url({{host}}{{tile.background-image}})">
-              <header class="major">
-                <h3>
-                  <a href="#" class="link" {{action "transitionTo" "filters" tile.config}}>{{tile.title}}</a>
-                </h3>
-                <p>{{#if tile.description}} {{tile.description}} {{else}} Ipsum dolor sit amet {{/if}} </p>
-              </header>
-            </article>
-          {{/each}}
-        </section>
-
-      <!-- Two -->
-      <section id="two">
-        <div class="inner">
-          <header class="major">
-            <h2>Disclaimer</h2>
-          </header>
-          <p>{{aboutPage.disclaimer}}</p>
-        </div>
-      </section>
     </div>
+    <nav>
+      <ul>
+        <li>{{link-to 'Desktop: View the Map' 'desktop' class="button next scrolly"}}</li>
+        <li>{{link-to 'Mobile: Your GPS Location' 'mobile' class="button next scrolly"}}</li>
+        <li>{{link-to 'About' 'about'}}</li>
+        <li>{{link-to 'Add & Export Trails Data' 'contribute'}}</li>
+      </ul>
+    </nav>
+  </header>
 
-  <!-- Contact -->
-    <section id="contact">
-      <div class="inner">
-        <section>
-            <div class="contact-method">
-              <span class="icon alt fa-envelope"></span>
-              <h3>Email Us</h3>
-              <a href="mailto:{{aboutPage.email}}" class="button">{{aboutPage.email}}</a>
-            </div>
-          </section>
-        <section class="split">
-          <section>
-            <div class="contact-method">
-              <span class="icon alt fa-phone"></span>
-              <h3>Phone</h3>
-              <span>{{aboutPage.phone}}</span>
-            </div>
-          </section>
-          <section>
-            <div class="contact-method">
-              <span class="icon alt fa-home"></span>
-              <h3>Address</h3>
-              <span>{{aboutPage.address}}</span>
-            </div>
-          </section>
-        </section>
-      </div>
-    </section>
 
   <!-- Footer -->
-    <footer id="footer">
-      <div class="inner">
-        <ul class="copyright">
-          <li>&copy; MAPC</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
-        </ul>
-      </div>
-    </footer>
+  <footer id="footer">
+    <p class="copyright">&copy; Metropolitan Area Planning Council</p>
+  </footer>
+
 </div>
+
+<!-- BG -->
+<div id="bg"></div>
