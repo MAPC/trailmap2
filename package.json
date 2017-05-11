@@ -48,6 +48,7 @@
     "ember-leaflet": "3.0.0",
     "ember-leaflet-cartodb": "git://github.com/allthesignals/ember-leaflet-cartodb.git#3355b767d796567c8c55bfcbe849a98972aea198",
     "ember-load-initializers": "^0.5.1",
+    "ember-metrics": "0.10.0",
     "ember-network": "0.3.1",
     "ember-pagefront": "0.11.2",
     "ember-resolver": "^2.0.3",

@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import trackPage from '../mixins/track-page';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(trackPage, {
   geolocation: Ember.inject.service(),
   beforeModel() {
     let applicationController = this.controllerFor('application');

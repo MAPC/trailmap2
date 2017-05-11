@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import { computed, observer } from 'ember-computed';
+import trackPage from '../mixins/track-page';
+
 const host = 'https://mapc.github.io/trailmap-about/';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(trackPage, {
   init() {
     this._super(...arguments);
     this.set('locations', []);
