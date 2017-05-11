@@ -12,11 +12,11 @@ export default Ember.Route.extend({
       applicationController.setProperties({lat: latitude, lng: longitude, zoom: 18 });
     });
     
-    this.transitionTo('filters', { queryParams: { bike_lane: false, 
+    this.transitionTo('filters', { queryParams: {       bike_lane: true, 
                                                         protected: false, 
                                                         shared: false,
                                                         walk: true,
-                                                        multi_use_path: false,
+                                                        multi_use_path: true,
                                                         landline: false } });
   }
 });
