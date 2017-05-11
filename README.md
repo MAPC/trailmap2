@@ -1,7 +1,6 @@
 # Trailmap
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Trailmap helps uses find bike, walking, hiking, and other trails in the Metro Boston region.
 
 ## Prerequisites
 
@@ -25,29 +24,12 @@ You will need the following things properly installed on your computer.
 * `ember server`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
 
 ### Deploying
 
-Specify what it takes to deploy your app.
+This app deploys with [Pagefront](https://pagefrontapp.com). To be able to deploy to trailmap.mapc.org, you need access to the app on 
+Pagefront. Once you have access (through an MAPC admin or member of Digital Services), you need to create a file called `.env.deploy.production`. In there, you will need to specify your Pagefront key. The file will simply look something like this:
 
-## Further Reading / Useful Links
+`PAGEFRONT_KEY=asdfb-12345-random-characters-12345`
 
-* [ember.js](http://emberjs.com/)
-* [ember-cli](http://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
+From there, run `ember deploy production`. 
