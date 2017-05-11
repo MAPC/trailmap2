@@ -3,6 +3,7 @@
 html {
   height:100%;
   margin: 0;
+  font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -15,6 +16,9 @@ main {
   margin:0;
 }
 
+p,h1,h2,h3,h4,h5,h6,span,div {
+  font-family: 'Open Sans', sans-serif !important;
+}
 
 
 .ember-application > .ember-view {

@@ -17,6 +17,9 @@ module.exports = function(environment) {
         }
       }
     ],
+    googleFonts: [
+      'Open+Sans'
+    ],
     modulePrefix: 'trailmap',
     environment: environment,
     baseURL: '/',
