@@ -30,12 +30,7 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
-    trackJs: {
-      config: {
-        token: "d3652eff27744c068ec692baace6a7d4",
-        application: "trailmap"
-      }
-    },
+
     APP: {
       filters: [
       {
@@ -202,7 +197,6 @@ module.exports = function(environment) {
     ENV.locationType = 'auto';
     ENV.baseUrl = '/trailmap/';
     ENV.prepend = 'https://mapc.github.io/trailmap2/';
-    ENV.trackJs.config.enabled = true;
   }
 
   if (environment === 'production') {

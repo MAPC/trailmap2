@@ -39,8 +39,6 @@
     "ember-cli-release": "^0.2.9",
     "ember-cli-sass": "6.1.1",
     "ember-cli-sri": "^2.1.0",
-    "ember-cli-surge": "1.1.17",
-    "ember-cli-trackjs": "2.0.0",
     "ember-cli-uglify": "^1.2.0",
     "ember-composable-helpers": "1.1.2",
     "ember-data": "^2.6.0",
