@@ -169,16 +169,29 @@ module.exports = function(environment) {
       }
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+
+    sentry: {
+      dsn: 'https://b3d3cc0fb17741daad6df5c790fa1e0d@sentry.io/268942',
+      debug: true,
+      development: false,
+      exposedPropertyName: 'raven',
+      globalErrorCatching: true,
+      includePaths: [],
+      whitelistUrls: [],
+      ravenOptions: {},
     }
   };
 
-  if (environment === 'development') {
-    // ENV.APP.LOG_RESOLVER = true;
-    // ENV.APP.LOG_ACTIVE_GENERATION = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    // ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.trackJs.config.enabled = false;
+  ENV.contentSecurityPolicy = {
+    // Deny everything by default
+    'default-src': "'unsafe-inline'",
+    'script-src': ["'self'", "https://www.google-analytics.com", "http://mapc.carto.com", "https://mapc-admin.carto.com", "https://cartocdn-ashbu.global.ssl.fastly.net", "'unsafe-inline'"],
+    'font-src': ["'self'", "http://themes.googleusercontent.com", "http://fonts.gstatic.com/", "data: application/font-woff"],
+    'connect-src': ["'self'", "app.getsentry.com", "https://mapc.github.io/trailmap-about/", "http://www.google-analytics.com", "https://mapc-admin.carto.com"],
+    'img-src': ["'self'", "data: app.getsentry.com", "http://www.google-analytics.com", "https://cartocdn-ashbu.global.ssl.fastly.net", "https://cartodb-basemaps-b.global.ssl.fastly.net", "https://cartodb-basemaps-a.global.ssl.fastly.net", "https://cartodb-basemaps-c.global.ssl.fastly.net/", "http://cartodb.s3.amazonaws.com" ],
+    'style-src': ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+    'media-src': null
   }
 
   if (environment === 'test') {
@@ -201,7 +214,6 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.locationType = 'auto';
-    ENV.trackJs.config.enabled = true;
   }
   return ENV;
 };

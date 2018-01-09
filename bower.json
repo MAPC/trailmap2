@@ -17,7 +17,8 @@
     "semantic-ui-form": "^2.2.6",
     "semantic-ui-input": "^2.2.6",
     "semantic-ui-button": "^2.2.6",
-    "semantic-ui-popup": "^2.2.6"
+    "semantic-ui-popup": "^2.2.6",
+    "raven-js": "~3.3"
   },
   "devDependencies": {
     "semantic-ui-transition": "^2.2.6"
