@@ -347,18 +347,6 @@ define('trailmap/components/scoped-array-checklist', ['exports', 'ember', 'ember
     }
   });
 });
-define('trailmap/components/splash-intro', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Component.extend({
-    classNames: ['splash-intro'],
-    didInsertElement: function didInsertElement() {
-      $('.logo').transition('fade down', { duration: 1750 });
-      $('p').transition('fade down', { duration: 1750 });
-      // $('.option')
-      //   .transition('fade down', { duration: 1750 })
-      // ;
-    }
-  });
-});
 define('trailmap/components/tile-layer', ['exports', 'ember-leaflet/components/tile-layer'], function (exports, _emberLeafletComponentsTileLayer) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -1599,8 +1587,7 @@ define('trailmap/initializers/container-debug-adapter', ['exports', 'ember-resol
     }
   };
 });
-define('trailmap/initializers/data-adapter', ['exports', 'ember'], function (exports, _ember) {
-
+define('trailmap/initializers/data-adapter', ['exports'], function (exports) {
   /*
     This initializer is here to keep backwards compatibility with code depending
     on the `data-adapter` initializer (before Ember Data was an addon).
@@ -1714,8 +1701,7 @@ define('trailmap/initializers/export-application-global', ['exports', 'ember', '
     initialize: initialize
   };
 });
-define('trailmap/initializers/injectStore', ['exports', 'ember'], function (exports, _ember) {
-
+define('trailmap/initializers/injectStore', ['exports'], function (exports) {
   /*
     This initializer is here to keep backwards compatibility with code depending
     on the `injectStore` initializer (before Ember Data was an addon).
@@ -1742,6 +1728,27 @@ define('trailmap/initializers/leaflet-assets', ['exports', 'ember-leaflet/initia
       return _emberLeafletInitializersLeafletAssets.initialize;
     }
   });
+});
+define('trailmap/initializers/metrics', ['exports', 'trailmap/config/environment'], function (exports, _trailmapConfigEnvironment) {
+  exports.initialize = initialize;
+
+  function initialize() {
+    var application = arguments[1] || arguments[0];
+    var _config$metricsAdapters = _trailmapConfigEnvironment['default'].metricsAdapters;
+    var metricsAdapters = _config$metricsAdapters === undefined ? [] : _config$metricsAdapters;
+    var _config$environment = _trailmapConfigEnvironment['default'].environment;
+    var environment = _config$environment === undefined ? 'development' : _config$environment;
+
+    var options = { metricsAdapters: metricsAdapters, environment: environment };
+
+    application.register('config:metrics', options, { instantiate: false });
+    application.inject('service:metrics', 'options', 'config:metrics');
+  }
+
+  exports['default'] = {
+    name: 'metrics',
+    initialize: initialize
+  };
 });
 define('trailmap/initializers/object-values-polyfill', ['exports', 'npm:object.values'], function (exports, _npmObjectValues) {
   exports.initialize = initialize;
@@ -1771,6 +1778,29 @@ define('trailmap/initializers/pagefront-beacon', ['exports', 'ember-pagefront/in
     }
   });
 });
+define('trailmap/initializers/raven', ['exports', 'trailmap/config/environment'], function (exports, _trailmapConfigEnvironment) {
+  exports.initialize = initialize;
+
+  function initialize() {
+    var application = arguments[1] || arguments[0];
+    var _config$sentry$serviceName = _trailmapConfigEnvironment['default'].sentry.serviceName;
+    var serviceName = _config$sentry$serviceName === undefined ? 'raven' : _config$sentry$serviceName;
+
+    var lookupName = 'service:' + serviceName;
+    var _config$sentry$exposedPropertyName = _trailmapConfigEnvironment['default'].sentry.exposedPropertyName;
+    var exposedPropertyName = _config$sentry$exposedPropertyName === undefined ? 'raven' : _config$sentry$exposedPropertyName;
+
+    application.inject('route', exposedPropertyName, lookupName);
+    application.inject('component', exposedPropertyName, lookupName);
+    application.inject('controller', exposedPropertyName, lookupName);
+    application.inject('model', exposedPropertyName, lookupName);
+  }
+
+  exports['default'] = {
+    initialize: initialize,
+    name: 'raven'
+  };
+});
 define('trailmap/initializers/responsive', ['exports', 'ember-responsive/initializers/responsive'], function (exports, _emberResponsiveInitializersResponsive) {
 
   /**
@@ -1787,8 +1817,7 @@ define('trailmap/initializers/responsive', ['exports', 'ember-responsive/initial
     initialize: _emberResponsiveInitializersResponsive.initialize
   };
 });
-define('trailmap/initializers/store', ['exports', 'ember'], function (exports, _ember) {
-
+define('trailmap/initializers/store', ['exports'], function (exports) {
   /*
     This initializer is here to keep backwards compatibility with code depending
     on the `store` initializer (before Ember Data was an addon).
@@ -1802,22 +1831,7 @@ define('trailmap/initializers/store', ['exports', 'ember'], function (exports, _
     initialize: function initialize() {}
   };
 });
-define('trailmap/initializers/trackjs-service', ['exports'], function (exports) {
-  exports.initialize = initialize;
-
-  function initialize() {
-    var application = arguments[1] || arguments[0];
-    application.inject('route', 'trackjs', 'service:trackjs');
-    application.inject('controller', 'trackjs', 'service:trackjs');
-  }
-
-  exports['default'] = {
-    name: 'trackjs-service',
-    initialize: initialize
-  };
-});
-define('trailmap/initializers/transforms', ['exports', 'ember'], function (exports, _ember) {
-
+define('trailmap/initializers/transforms', ['exports'], function (exports) {
   /*
     This initializer is here to keep backwards compatibility with code depending
     on the `transforms` initializer (before Ember Data was an addon).
@@ -1859,39 +1873,10 @@ define('trailmap/initializers/truth-helpers', ['exports', 'ember', 'ember-truth-
     initialize: initialize
   };
 });
-define('trailmap/instance-initializers/configure-trackjs', ['exports', 'ember', 'trailmap/utils/error-handler'], function (exports, _ember, _trailmapUtilsErrorHandler) {
-  exports.initialize = initialize;
-
-  function initialize(app) {
-    // Guard against Ember.onerror hiding test failures
-    // http://raytiley.com/posts/ember-onerror-troll
-    if (_ember['default'].testing) {
-      return;
-    }
-
-    var instance = app.lookup ? app : app.container;
-
-    var trackJs = instance.lookup('service:trackjs');
-    var appVersion = instance.lookup('application:main').get('version');
-
-    trackJs.configure({
-      version: appVersion
-    });
-
-    var handler = new _trailmapUtilsErrorHandler['default'](trackJs);
-
-    _ember['default'].onerror = handler.report.bind(handler);
-  }
-
-  exports['default'] = {
-    name: 'configure-trackjs',
-    initialize: initialize
-  };
-});
-define("trailmap/instance-initializers/ember-data", ["exports", "ember-data/-private/instance-initializers/initialize-store-service"], function (exports, _emberDataPrivateInstanceInitializersInitializeStoreService) {
+define("trailmap/instance-initializers/ember-data", ["exports", "ember-data/instance-initializers/initialize-store-service"], function (exports, _emberDataInstanceInitializersInitializeStoreService) {
   exports["default"] = {
     name: "ember-data",
-    initialize: _emberDataPrivateInstanceInitializersInitializeStoreService["default"]
+    initialize: _emberDataInstanceInitializersInitializeStoreService["default"]
   };
 });
 define('trailmap/instance-initializers/pagefront-beacon', ['exports', 'ember-pagefront/instance-initializers/pagefront-beacon'], function (exports, _emberPagefrontInstanceInitializersPagefrontBeacon) {
@@ -1908,6 +1893,35 @@ define('trailmap/instance-initializers/pagefront-beacon', ['exports', 'ember-pag
     }
   });
 });
+define('trailmap/instance-initializers/raven-setup', ['exports', 'ember', 'trailmap/config/environment'], function (exports, _ember, _trailmapConfigEnvironment) {
+  exports.initialize = initialize;
+
+  function initialize(application) {
+    if (_ember['default'].get(_trailmapConfigEnvironment['default'], 'sentry.development') === true) {
+      if (_ember['default'].get(_trailmapConfigEnvironment['default'], 'sentry.debug') === true) {
+        _ember['default'].Logger.info('`sentry` is configured for development mode.');
+      }
+      return;
+    }
+
+    if (!_trailmapConfigEnvironment['default'].sentry) {
+      throw new Error('`sentry` should be configured when not in development mode.');
+    }
+
+    var _config$sentry$serviceName = _trailmapConfigEnvironment['default'].sentry.serviceName;
+    var serviceName = _config$sentry$serviceName === undefined ? 'raven' : _config$sentry$serviceName;
+
+    var lookupName = 'service:' + serviceName;
+    var service = application.lookup ? application.lookup(lookupName) : application.container.lookup(lookupName);
+
+    service.setup(_trailmapConfigEnvironment['default']);
+  }
+
+  exports['default'] = {
+    initialize: initialize,
+    name: 'sentry-setup'
+  };
+});
 define('trailmap/mixins/base', ['exports', 'semantic-ui-ember/mixins/base'], function (exports, _semanticUiEmberMixinsBase) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -1921,6 +1935,27 @@ define('trailmap/mixins/promise-resolver', ['exports', 'ember-promise-tools/mixi
     enumerable: true,
     get: function get() {
       return _emberPromiseToolsMixinsPromiseResolver['default'];
+    }
+  });
+});
+define('trailmap/mixins/track-page', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Mixin.create({
+    metrics: _ember['default'].inject.service(),
+    actions: {
+      didTransition: function didTransition() {
+        this._super.apply(this, arguments);
+        this._trackPage();
+      }
+    },
+    _trackPage: function _trackPage() {
+      var _this = this;
+
+      _ember['default'].run.scheduleOnce('afterRender', this, function () {
+        var page = _this.get('url');
+        var title = _this.getWithDefault('currentRouteName', 'unknown');
+
+        _ember['default'].get(_this, 'metrics').trackPage({ page: page, title: title });
+      });
     }
   });
 });
@@ -1971,6 +2006,8 @@ define('trailmap/router', ['exports', 'ember', 'trailmap/config/environment'], f
     this.route('filters', { path: '/map' });
     this.route('desktop');
     this.route('mobile');
+    this.route('about');
+    this.route('contribute');
   });
 
   Router.reopen({
@@ -1987,10 +2024,14 @@ define('trailmap/router', ['exports', 'ember', 'trailmap/config/environment'], f
 
   exports['default'] = Router;
 });
-define('trailmap/routes/application', ['exports', 'ember', 'ember-computed'], function (exports, _ember, _emberComputed) {
+define('trailmap/routes/about', ['exports', 'ember', 'trailmap/mixins/track-page'], function (exports, _ember, _trailmapMixinsTrackPage) {
+  exports['default'] = _ember['default'].Route.extend(_trailmapMixinsTrackPage['default'], {});
+});
+define('trailmap/routes/application', ['exports', 'ember', 'ember-computed', 'trailmap/mixins/track-page'], function (exports, _ember, _emberComputed, _trailmapMixinsTrackPage) {
+
   var host = 'https://mapc.github.io/trailmap-about/';
 
-  exports['default'] = _ember['default'].Route.extend({
+  exports['default'] = _ember['default'].Route.extend(_trailmapMixinsTrackPage['default'], {
     init: function init() {
       this._super.apply(this, arguments);
       this.set('locations', []);
@@ -2055,8 +2096,11 @@ define('trailmap/routes/application', ['exports', 'ember', 'ember-computed'], fu
     })
   });
 });
-define('trailmap/routes/desktop', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Route.extend({
+define('trailmap/routes/contribute', ['exports', 'ember', 'trailmap/mixins/track-page'], function (exports, _ember, _trailmapMixinsTrackPage) {
+  exports['default'] = _ember['default'].Route.extend(_trailmapMixinsTrackPage['default'], {});
+});
+define('trailmap/routes/desktop', ['exports', 'ember', 'trailmap/mixins/track-page'], function (exports, _ember, _trailmapMixinsTrackPage) {
+  exports['default'] = _ember['default'].Route.extend(_trailmapMixinsTrackPage['default'], {
     beforeModel: function beforeModel() {
       this.transitionTo('filters', {
         queryParams: {
@@ -2072,8 +2116,8 @@ define('trailmap/routes/desktop', ['exports', 'ember'], function (exports, _embe
     }
   });
 });
-define('trailmap/routes/mobile', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Route.extend({
+define('trailmap/routes/mobile', ['exports', 'ember', 'trailmap/mixins/track-page'], function (exports, _ember, _trailmapMixinsTrackPage) {
+  exports['default'] = _ember['default'].Route.extend(_trailmapMixinsTrackPage['default'], {
     geolocation: _ember['default'].inject.service(),
     beforeModel: function beforeModel() {
       var _this = this;
@@ -2090,11 +2134,11 @@ define('trailmap/routes/mobile', ['exports', 'ember'], function (exports, _ember
         applicationController.setProperties({ lat: latitude, lng: longitude, zoom: 18 });
       });
 
-      this.transitionTo('filters', { queryParams: { bike_lane: false,
+      this.transitionTo('filters', { queryParams: { bike_lane: true,
           'protected': false,
           shared: false,
           walk: true,
-          multi_use_path: false,
+          multi_use_path: true,
           landline: false } });
     }
   });
@@ -2126,6 +2170,14 @@ define('trailmap/services/geolocation', ['exports', 'ember-cli-geo/services/geol
 define('trailmap/services/media', ['exports', 'ember-responsive/media'], function (exports, _emberResponsiveMedia) {
   exports['default'] = _emberResponsiveMedia['default'];
 });
+define('trailmap/services/metrics', ['exports', 'ember-metrics/services/metrics'], function (exports, _emberMetricsServicesMetrics) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberMetricsServicesMetrics['default'];
+    }
+  });
+});
 define('trailmap/services/pagefront-beacon', ['exports', 'ember-pagefront/services/pagefront-beacon'], function (exports, _emberPagefrontServicesPagefrontBeacon) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
@@ -2134,8 +2186,195 @@ define('trailmap/services/pagefront-beacon', ['exports', 'ember-pagefront/servic
     }
   });
 });
-define('trailmap/services/trackjs', ['exports', 'ember-cli-trackjs/services/trackjs'], function (exports, _emberCliTrackjsServicesTrackjs) {
-  exports['default'] = _emberCliTrackjsServicesTrackjs['default'];
+define('trailmap/services/raven', ['exports', 'ember-cli-sentry/services/raven'], function (exports, _emberCliSentryServicesRaven) {
+  exports['default'] = _emberCliSentryServicesRaven['default'].extend({
+
+    unhandledPromiseErrorMessage: '',
+
+    captureException: function captureException() /* error */{
+      this._super.apply(this, arguments);
+    },
+
+    captureMessage: function captureMessage() /* message */{
+      return this._super.apply(this, arguments);
+    },
+
+    enableGlobalErrorCatching: function enableGlobalErrorCatching() {
+      return this._super.apply(this, arguments);
+    },
+
+    ignoreError: function ignoreError() {
+      return this._super();
+    },
+
+    callRaven: function callRaven() /* methodName, ...optional */{
+      return this._super.apply(this, arguments);
+    }
+  });
+});
+define("trailmap/templates/about", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.9.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 4,
+              "column": 6
+            },
+            "end": {
+              "line": 4,
+              "column": 61
+            }
+          },
+          "moduleName": "trailmap/templates/about.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Close");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.9.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 23,
+            "column": 19
+          }
+        },
+        "moduleName": "trailmap/templates/about.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "wrapper");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "main");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("article");
+        dom.setAttribute(el3, "id", "about");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h2");
+        dom.setAttribute(el4, "class", "major");
+        var el5 = dom.createTextNode("About");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("<span class=\"image main\"><img src=\"images/pic03.jpg\" alt=\"\" /></span>");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("h3");
+        var el6 = dom.createTextNode("What Trailmap Includes");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        \n        This map is a comprehensive map of pedestrian and bicycle facilities throughout the MAPC region and beyond. The data on this map tool has been collected from a number of sources including city/town trail data, land trusts, DCR, MassDOT, openstreetmap, and other sources.  The information provided includes:");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createTextNode("Foot Trails through parks and other open spaces, paths through campuses, and generally all areas accessible by foot that are not along a roadway");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createTextNode("Bicycle Facilities on roadways including protected bike lanes, bike lanes and shared lane markings");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createTextNode("Multi-use paths that accommodate foot, bike, and other non motorized uses. Includes rail trails, river path systems and other similar trails");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n        ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("li");
+        var el5 = dom.createTextNode("LandLine Network: The LandLine vision is an overlay or network of connected trails, bike facilities and roadways.For further information on LandLine,  MAPC’s plan to develop Metro Boston’s greenway network can be found ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5, "href", "http://mapc.org/landline");
+        var el6 = dom.createTextNode("mapc.org/landline");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n        ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("i");
+        var el6 = dom.createTextNode("Disclaimer\n        The data herein is provided for informational purposes only. MAPC makes no warranties, either expressed or implied, and assumes no responsibility for its completeness or accuracy. Users assume all responsibility and risk associated with use of the map and agree to indemnify and hold harmless MAPC with respect to any and all claims and demands that may arise resulting from use of this map.​");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment(" BG ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "bg");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]), 1, 1);
+        return morphs;
+      },
+      statements: [["block", "link-to", ["index"], ["tagName", "div", "class", "close"], 0, null, ["loc", [null, [4, 6], [4, 61]]]]],
+      locals: [],
+      templates: [child0]
+    };
+  })());
 });
 define("trailmap/templates/application", ["exports"], function (exports) {
   exports["default"] = Ember.HTMLBars.template((function () {
@@ -2509,7 +2748,7 @@ define("trailmap/templates/application", ["exports"], function (exports) {
                 var el2 = dom.createElement("h3");
                 dom.setAttribute(el2, "class", "ui header");
                 dom.setAttribute(el2, "style", "color: black");
-                var el3 = dom.createTextNode("Move the green feedback marker to a location on the map, add a short description of the issue and click \"Submit\" below to save your feedback.");
+                var el3 = dom.createTextNode("Move the blue feedback marker to a location on the map, add a short description of the issue and click \"Submit\" below to save your feedback.");
                 dom.appendChild(el2, el3);
                 dom.appendChild(el1, el2);
                 var el2 = dom.createTextNode("\n          ");
@@ -2770,7 +3009,7 @@ define("trailmap/templates/application", ["exports"], function (exports) {
         dom.insertBoundary(fragment, 0);
         return morphs;
       },
-      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "leaflet-map", [], ["lat", ["subexpr", "@mut", [["get", "lat", ["loc", [null, [4, 21], [4, 24]]], 0, 0, 0, 0]], [], [], 0, 0], "lng", ["subexpr", "@mut", [["get", "lng", ["loc", [null, [4, 29], [4, 32]]], 0, 0, 0, 0]], [], [], 0, 0], "zoom", ["subexpr", "@mut", [["get", "zoom", ["loc", [null, [4, 38], [4, 42]]], 0, 0, 0, 0]], [], [], 0, 0], "zoomControl", false, "onMoveend", ["subexpr", "action", ["updatePosition"], [], ["loc", [null, [4, 71], [4, 96]]], 0, 0]], 0, null, ["loc", [null, [4, 2], [54, 18]]]]],
+      statements: [["content", "outlet", ["loc", [null, [1, 0], [1, 10]]], 0, 0, 0, 0], ["block", "leaflet-map", [], ["lat", ["subexpr", "@mut", [["get", "lat", ["loc", [null, [4, 21], [4, 24]]], 0, 0, 0, 0]], [], [], 0, 0], "lng", ["subexpr", "@mut", [["get", "lng", ["loc", [null, [4, 29], [4, 32]]], 0, 0, 0, 0]], [], [], 0, 0], "zoom", ["subexpr", "@mut", [["get", "zoom", ["loc", [null, [4, 38], [4, 42]]], 0, 0, 0, 0]], [], [], 0, 0], "onMoveend", ["subexpr", "action", ["updatePosition"], [], ["loc", [null, [4, 53], [4, 78]]], 0, 0]], 0, null, ["loc", [null, [4, 2], [54, 18]]]]],
       locals: [],
       templates: [child0]
     };
@@ -3001,261 +3240,6 @@ define("trailmap/templates/components/scoped-array-checklist", ["exports"], func
         return morphs;
       },
       statements: [["block", "each", [["get", "checklistItems", ["loc", [null, [1, 8], [1, 22]]], 0, 0, 0, 0]], [], 0, null, ["loc", [null, [1, 0], [11, 9]]]]],
-      locals: [],
-      templates: [child0]
-    };
-  })());
-});
-define("trailmap/templates/components/splash-intro", ["exports"], function (exports) {
-  exports["default"] = Ember.HTMLBars.template((function () {
-    var child0 = (function () {
-      return {
-        meta: {
-          "revision": "Ember@2.9.1",
-          "loc": {
-            "source": null,
-            "start": {
-              "line": 15,
-              "column": 8
-            },
-            "end": {
-              "line": 17,
-              "column": 8
-            }
-          },
-          "moduleName": "trailmap/templates/components/splash-intro.hbs"
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("          ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("i");
-          dom.setAttribute(el1, "class", "inverted map icon");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("LandLine Network\n");
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes() {
-          return [];
-        },
-        statements: [],
-        locals: [],
-        templates: []
-      };
-    })();
-    return {
-      meta: {
-        "revision": "Ember@2.9.1",
-        "loc": {
-          "source": null,
-          "start": {
-            "line": 1,
-            "column": 0
-          },
-          "end": {
-            "line": 58,
-            "column": 0
-          }
-        },
-        "moduleName": "trailmap/templates/components/splash-intro.hbs"
-      },
-      isEmpty: false,
-      arity: 0,
-      cachedFragment: null,
-      hasRendered: false,
-      buildFragment: function buildFragment(dom) {
-        var el0 = dom.createDocumentFragment();
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "splash");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "ui container");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("h1");
-        dom.setAttribute(el3, "class", "ui inverted header logo");
-        dom.setAttribute(el3, "style", "display: none;");
-        var el4 = dom.createTextNode("\n      Welcome to Trailmap\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "ui inverted divider");
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("p");
-        dom.setAttribute(el3, "style", "display: none;");
-        var el4 = dom.createTextNode("Trailmap is a growing compendium of the region's walking and bicycling facilities. Trailmap hopes to provide a single place for planning and exploring the region by foot and on bicycle.\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "ui stackable equal width center aligned two column grid");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "column");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("button");
-        dom.setAttribute(el5, "class", "ui big inverted fluid button");
-        var el6 = dom.createElement("i");
-        dom.setAttribute(el6, "class", "inverted map pin icon");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("Trails Near You");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "column");
-        var el5 = dom.createTextNode("\n");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createComment("");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        var el1 = dom.createElement("div");
-        dom.setAttribute(el1, "class", "options");
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "ui container");
-        var el3 = dom.createTextNode("\n\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "class", "other-content");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "ui container");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "ui basic segment");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("h2");
-        dom.setAttribute(el5, "class", "ui inverted header");
-        var el6 = dom.createTextNode("\n          Who made this map?\n        ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("p");
-        dom.setAttribute(el5, "style", "display: none;");
-        var el6 = dom.createTextNode("This map was created by MAPC with contributions from cities, towns, state agencies, land trusts, other organizations, and individuals. This map is updated on a regular basis, incorporating new data and corrections. However, Data gaps exist, particularly with walking trails.\n       ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "ui basic segment");
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("h2");
-        dom.setAttribute(el5, "class", "ui inverted header");
-        var el6 = dom.createTextNode("\n         What is the data on this map?\n        ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("p");
-        dom.setAttribute(el5, "style", "display: none;");
-        var el6 = dom.createTextNode("Walking Facilities - include hiking trails in conservation lands, paths through campuses, institutions, city parks, and other pedestrian facilities that are not along roadways. Bicycle Facilities – includes on-road designated facilities including bicycle lanes, shared lane markings, cycle tracks, and select on-road connections. Shared Use Paths – includes trails on former railroad rights-of-way, rivers, and other corridors which are designed for shared use by cyclists, walkers, and other nonmotorized transport. Improved paths are either paved, or with a stabilized firm surface, ideal for use by road bicycles, wheelchairs, strollers etc. Unimproved paths have a rough surface, and are therefore generally limited to hiking and mountain biking uses. Regional Networks – includes linear corridors that have been signed or otherwise designated. Walking trails include the Bay Circuit, Charles River Link, Warner Trail, Western Greenway, and proposed Metrowest aqueduct trail system. Bicycle routes include the East Coast Greenway and the Claire Saltonstall Bikeway.\n        ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("footer");
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "ui stackable equal width center aligned padded three column grid");
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "column");
-        var el5 = dom.createTextNode("\n        MAPC\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "column");
-        var el5 = dom.createTextNode("\n        MAPC\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "column");
-        var el5 = dom.createTextNode("\n        MAPC\n      ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n    ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n  ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
-        dom.appendChild(el1, el2);
-        dom.appendChild(el0, el1);
-        var el1 = dom.createTextNode("\n");
-        dom.appendChild(el0, el1);
-        return el0;
-      },
-      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element0 = dom.childAt(fragment, [0, 1, 7]);
-        var element1 = dom.childAt(element0, [1, 1]);
-        var morphs = new Array(2);
-        morphs[0] = dom.createElementMorph(element1);
-        morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 1, 1);
-        return morphs;
-      },
-      statements: [["element", "action", [["get", "trackLocation", ["loc", [null, [12, 62], [12, 75]]], 0, 0, 0, 0]], [], ["loc", [null, [12, 53], [12, 77]]], 0, 0], ["block", "link-to", ["filters", ["subexpr", "query-params", [], ["landline", true, "shared", false, "bike_lane", false, "walk", false, "multi_use_path", false], ["loc", [null, [15, 29], [15, 118]]], 0, 0]], ["class", "ui big inverted fluid button", "tagName", "button"], 0, null, ["loc", [null, [15, 8], [17, 20]]]]],
       locals: [],
       templates: [child0]
     };
@@ -4000,6 +3984,175 @@ define("trailmap/templates/components/ui-sticky", ["exports"], function (exports
       statements: [["inline", "yield", [["subexpr", "action", ["execute"], [], ["loc", [null, [1, 8], [1, 26]]], 0, 0]], [], ["loc", [null, [1, 0], [1, 28]]], 0, 0]],
       locals: [],
       templates: []
+    };
+  })());
+});
+define("trailmap/templates/contribute", ["exports"], function (exports) {
+  exports["default"] = Ember.HTMLBars.template((function () {
+    var child0 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.9.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 4,
+              "column": 6
+            },
+            "end": {
+              "line": 4,
+              "column": 61
+            }
+          },
+          "moduleName": "trailmap/templates/contribute.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Close");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
+    return {
+      meta: {
+        "revision": "Ember@2.9.1",
+        "loc": {
+          "source": null,
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 22,
+            "column": 0
+          }
+        },
+        "moduleName": "trailmap/templates/contribute.hbs"
+      },
+      isEmpty: false,
+      arity: 0,
+      cachedFragment: null,
+      hasRendered: false,
+      buildFragment: function buildFragment(dom) {
+        var el0 = dom.createDocumentFragment();
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "wrapper");
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("div");
+        dom.setAttribute(el2, "id", "main");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("article");
+        dom.setAttribute(el3, "id", "work");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("h2");
+        dom.setAttribute(el4, "class", "major");
+        var el5 = dom.createTextNode("Add and Export Data");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createComment("<span class=\"image main\"><img src=\"images/pic02.jpg\" alt=\"\" /></span>");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("Contribute to this Map");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      We welcome contributions to this map including adding to and editing the data! We have an online editing tool available for you to use. To found out how to access the editing functions, please contact David Loutzenheiser at ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5, "href", "mailto:dloutzenheiser@mapc.org");
+        var el6 = dom.createTextNode("dloutzenheiser@mapc.org");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("b");
+        var el6 = dom.createTextNode("Export GIS Data");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      The MAPC Trailmap database is available for download in Arcmap format for organization or agency use to create or supplement their maps.");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("br");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("a");
+        dom.setAttribute(el5, "href", "https://mapc-org.sharefile.com/d-s74fbcc6149a40478");
+        var el6 = dom.createTextNode("Download here");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("br");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("p");
+        var el5 = dom.createElement("i");
+        var el6 = dom.createTextNode("Disclaimer");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createElement("br");
+        dom.appendChild(el5, el6);
+        var el6 = dom.createTextNode("\n      The data herein is provided for informational purposes only. MAPC makes no warranties, either expressed or implied, and assumes no responsibility for its completeness or accuracy. Users assume all responsibility and risk associated with use of the map and agree to indemnify and hold harmless MAPC with respect to any and all claims and demands that may arise resulting from use of this map.​");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n");
+        dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment(" BG ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "bg");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        return el0;
+      },
+      buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+        var morphs = new Array(1);
+        morphs[0] = dom.createMorphAt(dom.childAt(fragment, [0, 1, 1]), 1, 1);
+        return morphs;
+      },
+      statements: [["block", "link-to", ["index"], ["tagName", "div", "class", "close"], 0, null, ["loc", [null, [4, 6], [4, 61]]]]],
+      locals: [],
+      templates: [child0]
     };
   })());
 });
@@ -4961,7 +5114,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 153,
+            "line": 156,
             "column": 6
           }
         },
@@ -4986,6 +5139,26 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
         var el3 = dom.createTextNode("  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("a");
+        dom.setAttribute(el2, "href", "http://mapc.org");
+        dom.setAttribute(el2, "target", "_blank");
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("img");
+        dom.setAttribute(el3, "class", "ui left floated tiny image mapc-logo");
+        dom.setAttribute(el3, "src", "assets/mapc-logo.png");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
+        dom.appendChild(el1, el2);
+        var el2 = dom.createTextNode("\n  ");
+        dom.appendChild(el1, el2);
+        var el2 = dom.createElement("img");
+        dom.setAttribute(el2, "class", "ui left floated small image mapc-logo");
+        dom.setAttribute(el2, "src", "assets/landline-network.png");
+        dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
         dom.appendChild(el1, el2);
         dom.appendChild(el0, el1);
@@ -5004,9 +5177,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
         var el4 = dom.createTextNode("\n      Submit Feedback\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("  ");
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
         var el2 = dom.createTextNode("\n");
@@ -5021,7 +5192,7 @@ define("trailmap/templates/filters", ["exports"], function (exports) {
         morphs[1] = dom.createAttrMorph(element11, 'onClick');
         return morphs;
       },
-      statements: [["block", "ui-accordion", [], ["class", "ui accordion"], 0, null, ["loc", [null, [3, 4], [143, 21]]]], ["attribute", "onClick", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.feedback_adding", ["loc", [null, [148, 44], [148, 81]]], 0, 0, 0, 0]], [], ["loc", [null, [148, 39], [148, 82]]], 0, 0]], [], ["loc", [null, [null, null], [148, 84]]], 0, 0], 0, 0, 0, 0]],
+      statements: [["block", "ui-accordion", [], ["class", "ui accordion"], 0, null, ["loc", [null, [3, 4], [143, 21]]]], ["attribute", "onClick", ["subexpr", "action", [["subexpr", "mut", [["get", "applicationController.feedback_adding", ["loc", [null, [152, 44], [152, 81]]], 0, 0, 0, 0]], [], ["loc", [null, [152, 39], [152, 82]]], 0, 0]], [], ["loc", [null, [null, null], [152, 84]]], 0, 0], 0, 0, 0, 0]],
       locals: [],
       templates: [child0]
     };
@@ -5036,12 +5207,12 @@ define("trailmap/templates/index", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 20,
-              "column": 16
+              "line": 13,
+              "column": 12
             },
             "end": {
-              "line": 20,
-              "column": 73
+              "line": 13,
+              "column": 57
             }
           },
           "moduleName": "trailmap/templates/index.hbs"
@@ -5052,7 +5223,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Mobile");
+          var el1 = dom.createTextNode("Desktop: View the Map");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -5071,12 +5242,12 @@ define("trailmap/templates/index", ["exports"], function (exports) {
           "loc": {
             "source": null,
             "start": {
-              "line": 21,
-              "column": 16
+              "line": 14,
+              "column": 12
             },
             "end": {
-              "line": 21,
-              "column": 75
+              "line": 14,
+              "column": 60
             }
           },
           "moduleName": "trailmap/templates/index.hbs"
@@ -5087,7 +5258,7 @@ define("trailmap/templates/index", ["exports"], function (exports) {
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("Desktop");
+          var el1 = dom.createTextNode("Mobile: Your GPS Location");
           dom.appendChild(el0, el1);
           return el0;
         },
@@ -5100,157 +5271,73 @@ define("trailmap/templates/index", ["exports"], function (exports) {
       };
     })();
     var child2 = (function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            "revision": "Ember@2.9.1",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 39,
-                "column": 19
-              },
-              "end": {
-                "line": 39,
-                "column": 65
-              }
-            },
-            "moduleName": "trailmap/templates/index.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode(" ");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createComment("");
-            dom.appendChild(el0, el1);
-            var el1 = dom.createTextNode(" ");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-            var morphs = new Array(1);
-            morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-            return morphs;
-          },
-          statements: [["content", "tile.description", ["loc", [null, [39, 44], [39, 64]]], 0, 0, 0, 0]],
-          locals: [],
-          templates: []
-        };
-      })();
-      var child1 = (function () {
-        return {
-          meta: {
-            "revision": "Ember@2.9.1",
-            "loc": {
-              "source": null,
-              "start": {
-                "line": 39,
-                "column": 65
-              },
-              "end": {
-                "line": 39,
-                "column": 95
-              }
-            },
-            "moduleName": "trailmap/templates/index.hbs"
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode(" Ipsum dolor sit amet ");
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
       return {
         meta: {
           "revision": "Ember@2.9.1",
           "loc": {
             "source": null,
             "start": {
-              "line": 33,
-              "column": 10
+              "line": 15,
+              "column": 12
             },
             "end": {
-              "line": 42,
-              "column": 10
+              "line": 15,
+              "column": 39
             }
           },
           "moduleName": "trailmap/templates/index.hbs"
         },
         isEmpty: false,
-        arity: 1,
+        arity: 0,
         cachedFragment: null,
         hasRendered: false,
         buildFragment: function buildFragment(dom) {
           var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode("            ");
-          dom.appendChild(el0, el1);
-          var el1 = dom.createElement("article");
-          var el2 = dom.createTextNode("\n              ");
-          dom.appendChild(el1, el2);
-          var el2 = dom.createElement("header");
-          dom.setAttribute(el2, "class", "major");
-          var el3 = dom.createTextNode("\n                ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("h3");
-          var el4 = dom.createTextNode("\n                  ");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createElement("a");
-          dom.setAttribute(el4, "href", "#");
-          dom.setAttribute(el4, "class", "link");
-          var el5 = dom.createComment("");
-          dom.appendChild(el4, el5);
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode("\n                ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n                ");
-          dom.appendChild(el2, el3);
-          var el3 = dom.createElement("p");
-          var el4 = dom.createComment("");
-          dom.appendChild(el3, el4);
-          var el4 = dom.createTextNode(" ");
-          dom.appendChild(el3, el4);
-          dom.appendChild(el2, el3);
-          var el3 = dom.createTextNode("\n              ");
-          dom.appendChild(el2, el3);
-          dom.appendChild(el1, el2);
-          var el2 = dom.createTextNode("\n            ");
-          dom.appendChild(el1, el2);
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createTextNode("About");
           dom.appendChild(el0, el1);
           return el0;
         },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var element0 = dom.childAt(fragment, [1]);
-          var element1 = dom.childAt(element0, [1]);
-          var element2 = dom.childAt(element1, [1, 1]);
-          var morphs = new Array(4);
-          morphs[0] = dom.createAttrMorph(element0, 'style');
-          morphs[1] = dom.createElementMorph(element2);
-          morphs[2] = dom.createMorphAt(element2, 0, 0);
-          morphs[3] = dom.createMorphAt(dom.childAt(element1, [3]), 0, 0);
-          return morphs;
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
         },
-        statements: [["attribute", "style", ["concat", ["background-image: url(", ["get", "host", ["loc", [null, [34, 52], [34, 56]]], 0, 0, 0, 0], ["get", "tile.background-image", ["loc", [null, [34, 60], [34, 81]]], 0, 0, 0, 0], ")"], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["element", "action", ["transitionTo", "filters", ["get", "tile.config", ["loc", [null, [37, 77], [37, 88]]], 0, 0, 0, 0]], [], ["loc", [null, [37, 43], [37, 90]]], 0, 0], ["content", "tile.title", ["loc", [null, [37, 91], [37, 105]]], 0, 0, 0, 0], ["block", "if", [["get", "tile.description", ["loc", [null, [39, 25], [39, 41]]], 0, 0, 0, 0]], [], 0, 1, ["loc", [null, [39, 19], [39, 102]]]]],
-        locals: ["tile"],
-        templates: [child0, child1]
+        statements: [],
+        locals: [],
+        templates: []
+      };
+    })();
+    var child3 = (function () {
+      return {
+        meta: {
+          "revision": "Ember@2.9.1",
+          "loc": {
+            "source": null,
+            "start": {
+              "line": 16,
+              "column": 12
+            },
+            "end": {
+              "line": 16,
+              "column": 63
+            }
+          },
+          "moduleName": "trailmap/templates/index.hbs"
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("Add & Export Trails Data");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes() {
+          return [];
+        },
+        statements: [],
+        locals: [],
+        templates: []
       };
     })();
     return {
@@ -5263,8 +5350,8 @@ define("trailmap/templates/index", ["exports"], function (exports) {
             "column": 0
           },
           "end": {
-            "line": 93,
-            "column": 6
+            "line": 31,
+            "column": 0
           }
         },
         "moduleName": "trailmap/templates/index.hbs"
@@ -5275,348 +5362,130 @@ define("trailmap/templates/index", ["exports"], function (exports) {
       hasRendered: false,
       buildFragment: function buildFragment(dom) {
         var el0 = dom.createDocumentFragment();
+        var el1 = dom.createTextNode("  ");
+        dom.appendChild(el0, el1);
         var el1 = dom.createElement("div");
         dom.setAttribute(el1, "id", "wrapper");
         var el2 = dom.createTextNode("\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment(" Header ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("header");
         dom.setAttribute(el2, "id", "header");
-        dom.setAttribute(el2, "class", "alt");
-        var el3 = dom.createTextNode("\n      ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("a");
-        dom.setAttribute(el3, "href", "index.html");
-        dom.setAttribute(el3, "class", "logo");
-        var el4 = dom.createElement("strong");
-        var el5 = dom.createTextNode("MAPC");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment(" Menu ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment(" Banner ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("section");
-        dom.setAttribute(el2, "id", "banner");
-        dom.setAttribute(el2, "class", "major");
-        var el3 = dom.createTextNode("\n      ");
         dom.appendChild(el2, el3);
         var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "inner");
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("header");
-        dom.setAttribute(el4, "class", "major");
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("h1");
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("div");
-        dom.setAttribute(el4, "class", "content");
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("p");
-        var el6 = dom.createComment("");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("ul");
-        dom.setAttribute(el5, "class", "actions");
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("li");
-        var el7 = dom.createComment("");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("li");
-        var el7 = dom.createComment("");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
+        dom.setAttribute(el3, "class", "content");
         var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment(" Main ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("div");
-        dom.setAttribute(el2, "id", "main");
-        var el3 = dom.createTextNode("\n\n      ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment(" One ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n\n        ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("section");
-        dom.setAttribute(el3, "id", "one");
-        dom.setAttribute(el3, "class", "tiles");
-        var el4 = dom.createTextNode("\n");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createComment("");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("        ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n\n      ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createComment(" Two ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n      ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("section");
-        dom.setAttribute(el3, "id", "two");
-        var el4 = dom.createTextNode("\n        ");
         dom.appendChild(el3, el4);
         var el4 = dom.createElement("div");
         dom.setAttribute(el4, "class", "inner");
-        var el5 = dom.createTextNode("\n          ");
+        var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        var el5 = dom.createElement("header");
-        dom.setAttribute(el5, "class", "major");
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("h2");
-        var el7 = dom.createTextNode("Disclaimer");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
+        var el5 = dom.createElement("h1");
+        dom.setAttribute(el5, "class", "htmlup");
+        var el6 = dom.createTextNode("MAPC Trailmap");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
+        var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
         var el5 = dom.createElement("p");
+        var el6 = dom.createTextNode("Explore a comprehensive network of foot trails and bicycle paths across metro Boston");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
+        dom.appendChild(el3, el4);
+        var el4 = dom.createTextNode("\n    ");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n    ");
+        dom.appendChild(el2, el3);
+        var el3 = dom.createElement("nav");
+        var el4 = dom.createTextNode("\n      ");
+        dom.appendChild(el3, el4);
+        var el4 = dom.createElement("ul");
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
         var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
-        dom.appendChild(el2, el3);
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n  ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createComment(" Contact ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
-        dom.appendChild(el1, el2);
-        var el2 = dom.createElement("section");
-        dom.setAttribute(el2, "id", "contact");
-        var el3 = dom.createTextNode("\n      ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "inner");
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("section");
-        var el5 = dom.createTextNode("\n            ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("div");
-        dom.setAttribute(el5, "class", "contact-method");
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("span");
-        dom.setAttribute(el6, "class", "icon alt fa-envelope");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("h3");
-        var el7 = dom.createTextNode("Email Us");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n              ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "class", "button");
-        var el7 = dom.createComment("");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("section");
-        dom.setAttribute(el4, "class", "split");
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("section");
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6, "class", "contact-method");
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "icon alt fa-phone");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("h3");
-        var el8 = dom.createTextNode("Phone");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("span");
-        var el8 = dom.createComment("");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("section");
-        var el6 = dom.createTextNode("\n            ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("div");
-        dom.setAttribute(el6, "class", "contact-method");
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("span");
-        dom.setAttribute(el7, "class", "icon alt fa-home");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("h3");
-        var el8 = dom.createTextNode("Address");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n              ");
-        dom.appendChild(el6, el7);
-        var el7 = dom.createElement("span");
-        var el8 = dom.createComment("");
-        dom.appendChild(el7, el8);
-        dom.appendChild(el6, el7);
-        var el7 = dom.createTextNode("\n            ");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        var el6 = dom.createTextNode("\n          ");
+        var el5 = dom.createElement("li");
+        var el6 = dom.createComment("");
         dom.appendChild(el5, el6);
         dom.appendChild(el4, el5);
         var el5 = dom.createTextNode("\n        ");
         dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n        ");
+        dom.appendChild(el4, el5);
+        var el5 = dom.createElement("li");
+        var el6 = dom.createComment("");
+        dom.appendChild(el5, el6);
+        dom.appendChild(el4, el5);
+        var el5 = dom.createTextNode("\n      ");
+        dom.appendChild(el4, el5);
         dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
+        var el4 = dom.createTextNode("\n    ");
         dom.appendChild(el3, el4);
         dom.appendChild(el2, el3);
-        var el3 = dom.createTextNode("\n    ");
+        var el3 = dom.createTextNode("\n  ");
         dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n\n  ");
+        var el2 = dom.createTextNode("\n\n\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createComment(" Footer ");
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n    ");
+        var el2 = dom.createTextNode("\n  ");
         dom.appendChild(el1, el2);
         var el2 = dom.createElement("footer");
         dom.setAttribute(el2, "id", "footer");
-        var el3 = dom.createTextNode("\n      ");
-        dom.appendChild(el2, el3);
-        var el3 = dom.createElement("div");
-        dom.setAttribute(el3, "class", "inner");
-        var el4 = dom.createTextNode("\n        ");
-        dom.appendChild(el3, el4);
-        var el4 = dom.createElement("ul");
-        dom.setAttribute(el4, "class", "copyright");
-        var el5 = dom.createTextNode("\n          ");
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
-        var el6 = dom.createTextNode("© MAPC");
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createElement("li");
-        var el6 = dom.createTextNode("Design: ");
-        dom.appendChild(el5, el6);
-        var el6 = dom.createElement("a");
-        dom.setAttribute(el6, "href", "https://html5up.net");
-        var el7 = dom.createTextNode("HTML5 UP");
-        dom.appendChild(el6, el7);
-        dom.appendChild(el5, el6);
-        dom.appendChild(el4, el5);
-        var el5 = dom.createTextNode("\n        ");
-        dom.appendChild(el4, el5);
-        dom.appendChild(el3, el4);
-        var el4 = dom.createTextNode("\n      ");
-        dom.appendChild(el3, el4);
-        dom.appendChild(el2, el3);
         var el3 = dom.createTextNode("\n    ");
         dom.appendChild(el2, el3);
+        var el3 = dom.createElement("p");
+        dom.setAttribute(el3, "class", "copyright");
+        var el4 = dom.createTextNode("© Metropolitan Area Planning Council");
+        dom.appendChild(el3, el4);
+        dom.appendChild(el2, el3);
+        var el3 = dom.createTextNode("\n  ");
+        dom.appendChild(el2, el3);
         dom.appendChild(el1, el2);
-        var el2 = dom.createTextNode("\n");
+        var el2 = dom.createTextNode("\n\n");
         dom.appendChild(el1, el2);
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment(" BG ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createElement("div");
+        dom.setAttribute(el1, "id", "bg");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
         return el0;
       },
       buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-        var element3 = dom.childAt(fragment, [0]);
-        var element4 = dom.childAt(element3, [9, 1]);
-        var element5 = dom.childAt(element4, [3]);
-        var element6 = dom.childAt(element5, [3]);
-        var element7 = dom.childAt(element3, [13]);
-        var element8 = dom.childAt(element3, [17, 1]);
-        var element9 = dom.childAt(element8, [1, 1, 5]);
-        var element10 = dom.childAt(element8, [3]);
-        var morphs = new Array(10);
-        morphs[0] = dom.createMorphAt(dom.childAt(element4, [1, 1]), 0, 0);
-        morphs[1] = dom.createMorphAt(dom.childAt(element5, [1]), 0, 0);
-        morphs[2] = dom.createMorphAt(dom.childAt(element6, [1]), 0, 0);
-        morphs[3] = dom.createMorphAt(dom.childAt(element6, [3]), 0, 0);
-        morphs[4] = dom.createMorphAt(dom.childAt(element7, [3]), 1, 1);
-        morphs[5] = dom.createMorphAt(dom.childAt(element7, [7, 1, 3]), 0, 0);
-        morphs[6] = dom.createAttrMorph(element9, 'href');
-        morphs[7] = dom.createMorphAt(element9, 0, 0);
-        morphs[8] = dom.createMorphAt(dom.childAt(element10, [1, 1, 5]), 0, 0);
-        morphs[9] = dom.createMorphAt(dom.childAt(element10, [3, 1, 5]), 0, 0);
+        var element0 = dom.childAt(fragment, [1, 3, 3, 1]);
+        var morphs = new Array(4);
+        morphs[0] = dom.createMorphAt(dom.childAt(element0, [1]), 0, 0);
+        morphs[1] = dom.createMorphAt(dom.childAt(element0, [3]), 0, 0);
+        morphs[2] = dom.createMorphAt(dom.childAt(element0, [5]), 0, 0);
+        morphs[3] = dom.createMorphAt(dom.childAt(element0, [7]), 0, 0);
         return morphs;
       },
-      statements: [["content", "aboutPage.title", ["loc", [null, [15, 14], [15, 33]]], 0, 0, 0, 0], ["content", "aboutPage.tagline", ["loc", [null, [18, 13], [18, 34]]], 0, 0, 0, 0], ["block", "link-to", ["mobile"], ["class", "button next scrolly"], 0, null, ["loc", [null, [20, 16], [20, 73]]]], ["block", "link-to", ["desktop"], ["class", "button next scrolly"], 1, null, ["loc", [null, [21, 16], [21, 75]]]], ["block", "each", [["get", "aboutPage.tiles", ["loc", [null, [33, 18], [33, 33]]], 0, 0, 0, 0]], [], 2, null, ["loc", [null, [33, 10], [42, 19]]]], ["content", "aboutPage.disclaimer", ["loc", [null, [51, 13], [51, 37]]], 0, 0, 0, 0], ["attribute", "href", ["concat", ["mailto:", ["get", "aboutPage.email", ["loc", [null, [63, 32], [63, 47]]], 0, 0, 0, 0]], 0, 0, 0, 0, 0], 0, 0, 0, 0], ["content", "aboutPage.email", ["loc", [null, [63, 66], [63, 85]]], 0, 0, 0, 0], ["content", "aboutPage.phone", ["loc", [null, [71, 20], [71, 39]]], 0, 0, 0, 0], ["content", "aboutPage.address", ["loc", [null, [78, 20], [78, 41]]], 0, 0, 0, 0]],
+      statements: [["block", "link-to", ["desktop"], [], 0, null, ["loc", [null, [13, 12], [13, 57]]]], ["block", "link-to", ["mobile"], [], 1, null, ["loc", [null, [14, 12], [14, 60]]]], ["block", "link-to", ["about"], [], 2, null, ["loc", [null, [15, 12], [15, 39]]]], ["block", "link-to", ["contribute"], [], 3, null, ["loc", [null, [16, 12], [16, 63]]]]],
       locals: [],
-      templates: [child0, child1, child2]
+      templates: [child0, child1, child2, child3]
     };
   })());
 });
@@ -5669,11 +5538,11 @@ define('trailmap/transitions', ['exports'], function (exports) {
 
   ;
 });
-define('trailmap/utils/error-handler', ['exports', 'ember-cli-trackjs/utils/error-handler'], function (exports, _emberCliTrackjsUtilsErrorHandler) {
+define('trailmap/utils/can-use-dom', ['exports', 'ember-metrics/utils/can-use-dom'], function (exports, _emberMetricsUtilsCanUseDom) {
   Object.defineProperty(exports, 'default', {
     enumerable: true,
     get: function get() {
-      return _emberCliTrackjsUtilsErrorHandler['default'];
+      return _emberMetricsUtilsCanUseDom['default'];
     }
   });
 });
@@ -5698,6 +5567,14 @@ define('trailmap/utils/is-promise', ['exports', 'ember-promise-tools/utils/is-pr
     enumerable: true,
     get: function get() {
       return _emberPromiseToolsUtilsIsPromise['default'];
+    }
+  });
+});
+define('trailmap/utils/object-transforms', ['exports', 'ember-metrics/utils/object-transforms'], function (exports, _emberMetricsUtilsObjectTransforms) {
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function get() {
+      return _emberMetricsUtilsObjectTransforms['default'];
     }
   });
 });
@@ -5749,7 +5626,7 @@ catch(err) {
 /* jshint ignore:start */
 
 if (!runningTests) {
-  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+244fa4ab"});
+  require("trailmap/app")["default"].create({"filters":[{"name":"fac_type","alias":"bike_fac_type","table":"bike_facilities","type":"list"},{"name":"fac_type_status","alias":"bike_fac_type_status","table":"bike_facilities","type":"list"},{"name":"fac_type_simp_code","alias":"walk_fac_type","table":"walking_trails","type":"list"},{"name":"fac_type","alias":"dual_fac_type","table":"bike_facilities","type":"list"},{"name":"none","alias":"land_line_type","table":"landline_regional_greenways","type":"toggle"}],"domains":{"bike_fac_type":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type","codedValues":[{"name":"Protected Bike Lane","code":2,"color":"#7f3193"},{"name":"Shared Lane Marking","code":9,"color":"#82C5EC"},{"name":"Bike Lane","code":1,"color":"#0874b9"}]},"editable":true,"nullable":false},"bike_fac_type_status":{"name":"fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_stat","codedValues":[{"name":"Existing","code":1},{"name":"Proposed","code":2}]}},"walk_fac_type":{"name":"fac_type_simp_code","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"fac_type_simp_code","codedValues":[{"name":"Walkways & Trails","code":1,"color":"#db813f"}]},"editable":true,"nullable":false},"dual_fac_type":{"name":"dual_fac_type","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"dual_fac_type","codedValues":[{"name":"Multi-Use Path","code":5,"color":"#275f68"}]},"editable":true,"nullable":false},"landline_regional_greenways":{"name":"landline_regional_greenways","type":"esriFieldTypeSmallInteger","alias":"Facility Type","domain":{"type":"codedValue","name":"landline_regional_greenways","codedValues":[{"name":"Regional Land Lines","code":false,"color":"#FFCC00"}]},"editable":true,"nullable":false}},"name":"trailmap","version":"0.0.0+556371d7"});
 }
 
 /* jshint ignore:end */

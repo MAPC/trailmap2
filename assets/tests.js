@@ -52,15 +52,6 @@ define('trailmap/tests/components/scoped-array-checklist.jshint', ['exports'], f
     assert.ok(false, 'components/scoped-array-checklist.js should pass jshint.\ncomponents/scoped-array-checklist.js: line 22, col 79, Expected an assignment or function call and instead saw an expression.\ncomponents/scoped-array-checklist.js: line 22, col 80, Missing semicolon.\n\n2 errors');
   });
 });
-define('trailmap/tests/components/splash-intro.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | components/splash-intro.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(false, 'components/splash-intro.js should pass jshint.\ncomponents/splash-intro.js: line 6, col 5, \'$\' is not defined.\ncomponents/splash-intro.js: line 9, col 5, \'$\' is not defined.\n\n2 errors');
-  });
-});
 define('trailmap/tests/components/ui-accordion.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -729,147 +720,6 @@ define('trailmap/tests/integration/components/scoped-array-checklist-test.jshint
     assert.ok(true, 'integration/components/scoped-array-checklist-test.js should pass jshint.');
   });
 });
-define('trailmap/tests/integration/components/splash-intro-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
-
-  (0, _emberQunit.moduleForComponent)('splash-intro', 'Integration | Component | splash intro', {
-    integration: true
-  });
-
-  (0, _emberQunit.test)('it renders', function (assert) {
-
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.on('myAction', function(val) { ... });
-
-    this.render(Ember.HTMLBars.template((function () {
-      return {
-        meta: {
-          'revision': 'Ember@2.9.1',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 1,
-              'column': 16
-            }
-          }
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
-          dom.insertBoundary(fragment, 0);
-          dom.insertBoundary(fragment, null);
-          return morphs;
-        },
-        statements: [['content', 'splash-intro', ['loc', [null, [1, 0], [1, 16]]], 0, 0, 0, 0]],
-        locals: [],
-        templates: []
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), '');
-
-    // Template block usage:
-    this.render(Ember.HTMLBars.template((function () {
-      var child0 = (function () {
-        return {
-          meta: {
-            'revision': 'Ember@2.9.1',
-            'loc': {
-              'source': null,
-              'start': {
-                'line': 2,
-                'column': 4
-              },
-              'end': {
-                'line': 4,
-                'column': 4
-              }
-            }
-          },
-          isEmpty: false,
-          arity: 0,
-          cachedFragment: null,
-          hasRendered: false,
-          buildFragment: function buildFragment(dom) {
-            var el0 = dom.createDocumentFragment();
-            var el1 = dom.createTextNode('      template block text\n');
-            dom.appendChild(el0, el1);
-            return el0;
-          },
-          buildRenderNodes: function buildRenderNodes() {
-            return [];
-          },
-          statements: [],
-          locals: [],
-          templates: []
-        };
-      })();
-
-      return {
-        meta: {
-          'revision': 'Ember@2.9.1',
-          'loc': {
-            'source': null,
-            'start': {
-              'line': 1,
-              'column': 0
-            },
-            'end': {
-              'line': 5,
-              'column': 2
-            }
-          }
-        },
-        isEmpty: false,
-        arity: 0,
-        cachedFragment: null,
-        hasRendered: false,
-        buildFragment: function buildFragment(dom) {
-          var el0 = dom.createDocumentFragment();
-          var el1 = dom.createTextNode('\n');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createComment('');
-          dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode('  ');
-          dom.appendChild(el0, el1);
-          return el0;
-        },
-        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
-          var morphs = new Array(1);
-          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
-          return morphs;
-        },
-        statements: [['block', 'splash-intro', [], [], 0, null, ['loc', [null, [2, 4], [4, 21]]]]],
-        locals: [],
-        templates: [child0]
-      };
-    })()));
-
-    assert.equal(this.$().text().trim(), 'template block text');
-  });
-});
-define('trailmap/tests/integration/components/splash-intro-test.jshint', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('JSHint | integration/components/splash-intro-test.js');
-  QUnit.test('should pass jshint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'integration/components/splash-intro-test.js should pass jshint.');
-  });
-});
 define('trailmap/tests/integration/components/ui-accordion-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleForComponent)('ui-accordion', 'Integration | Component | ui accordion', {
@@ -1152,6 +1002,15 @@ define('trailmap/tests/integration/components/ui-checkbox-test.jshint', ['export
     assert.ok(true, 'integration/components/ui-checkbox-test.js should pass jshint.');
   });
 });
+define('trailmap/tests/mixins/track-page.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | mixins/track-page.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'mixins/track-page.js should pass jshint.');
+  });
+});
 define('trailmap/tests/models/page.jshint', ['exports'], function (exports) {
   'use strict';
 
@@ -1185,7 +1044,16 @@ define('trailmap/tests/router.jshint', ['exports'], function (exports) {
   QUnit.module('JSHint | router.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'router.js should pass jshint.\nrouter.js: line 16, col 25, Expected \'!==\' and instead saw \'!=\'.\nrouter.js: line 17, col 16, \'ga\' is not defined.\n\n2 errors');
+    assert.ok(false, 'router.js should pass jshint.\nrouter.js: line 18, col 25, Expected \'!==\' and instead saw \'!=\'.\nrouter.js: line 19, col 16, \'ga\' is not defined.\n\n2 errors');
+  });
+});
+define('trailmap/tests/routes/about.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | routes/about.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'routes/about.js should pass jshint.');
   });
 });
 define('trailmap/tests/routes/application.jshint', ['exports'], function (exports) {
@@ -1194,7 +1062,16 @@ define('trailmap/tests/routes/application.jshint', ['exports'], function (export
   QUnit.module('JSHint | routes/application.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 49, col 76, \'geoObject\' is defined but never used.\nroutes/application.js: line 12, col 12, \'$\' is not defined.\nroutes/application.js: line 2, col 10, \'computed\' is defined but never used.\nroutes/application.js: line 2, col 20, \'observer\' is defined but never used.\n\n4 errors');
+    assert.ok(false, 'routes/application.js should pass jshint.\nroutes/application.js: line 51, col 76, \'geoObject\' is defined but never used.\nroutes/application.js: line 14, col 12, \'$\' is not defined.\nroutes/application.js: line 2, col 10, \'computed\' is defined but never used.\nroutes/application.js: line 2, col 20, \'observer\' is defined but never used.\n\n4 errors');
+  });
+});
+define('trailmap/tests/routes/contribute.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | routes/contribute.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'routes/contribute.js should pass jshint.');
   });
 });
 define('trailmap/tests/routes/desktop.jshint', ['exports'], function (exports) {
@@ -1203,7 +1080,7 @@ define('trailmap/tests/routes/desktop.jshint', ['exports'], function (exports) {
   QUnit.module('JSHint | routes/desktop.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/desktop.js should pass jshint.\nroutes/desktop.js: line 15, col 7, Missing semicolon.\n\n1 error');
+    assert.ok(false, 'routes/desktop.js should pass jshint.\nroutes/desktop.js: line 16, col 7, Missing semicolon.\n\n1 error');
   });
 });
 define('trailmap/tests/routes/mobile.jshint', ['exports'], function (exports) {
@@ -1212,7 +1089,16 @@ define('trailmap/tests/routes/mobile.jshint', ['exports'], function (exports) {
   QUnit.module('JSHint | routes/mobile.js');
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'routes/mobile.js should pass jshint.\nroutes/mobile.js: line 7, col 72, \'geoObject\' is defined but never used.\n\n1 error');
+    assert.ok(false, 'routes/mobile.js should pass jshint.\nroutes/mobile.js: line 8, col 72, \'geoObject\' is defined but never used.\n\n1 error');
+  });
+});
+define('trailmap/tests/services/raven.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | services/raven.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'services/raven.js should pass jshint.');
   });
 });
 define('trailmap/tests/test-helper', ['exports', 'trailmap/tests/helpers/resolver', 'trailmap/tests/helpers/responsive', 'ember-qunit'], function (exports, _trailmapTestsHelpersResolver, _trailmapTestsHelpersResponsive, _emberQunit) {
@@ -1421,6 +1307,26 @@ define('trailmap/tests/unit/initializers/ember-leaflet-pulse-icon-test.jshint', 
     assert.ok(true, 'unit/initializers/ember-leaflet-pulse-icon-test.js should pass jshint.');
   });
 });
+define('trailmap/tests/unit/mixins/track-page-test', ['exports', 'ember', 'trailmap/mixins/track-page', 'qunit'], function (exports, _ember, _trailmapMixinsTrackPage, _qunit) {
+
+  (0, _qunit.module)('Unit | Mixin | track page');
+
+  // Replace this with your real tests.
+  (0, _qunit.test)('it works', function (assert) {
+    var TrackPageObject = _ember['default'].Object.extend(_trailmapMixinsTrackPage['default']);
+    var subject = TrackPageObject.create();
+    assert.ok(subject);
+  });
+});
+define('trailmap/tests/unit/mixins/track-page-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/mixins/track-page-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/mixins/track-page-test.js should pass jshint.');
+  });
+});
 define('trailmap/tests/unit/models/page-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleForModel)('page', 'Unit | Model | page', {
@@ -1465,6 +1371,27 @@ define('trailmap/tests/unit/models/tile-test.jshint', ['exports'], function (exp
     assert.ok(true, 'unit/models/tile-test.js should pass jshint.');
   });
 });
+define('trailmap/tests/unit/routes/about-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:about', 'Unit | Route | about', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('trailmap/tests/unit/routes/about-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/about-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/about-test.js should pass jshint.');
+  });
+});
 define('trailmap/tests/unit/routes/application-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleFor)('route:application', 'Unit | Route | application', {
@@ -1484,6 +1411,27 @@ define('trailmap/tests/unit/routes/application-test.jshint', ['exports'], functi
   QUnit.test('should pass jshint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/application-test.js should pass jshint.');
+  });
+});
+define('trailmap/tests/unit/routes/contribute-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('route:contribute', 'Unit | Route | contribute', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('trailmap/tests/unit/routes/contribute-test.jshint', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('JSHint | unit/routes/contribute-test.js');
+  QUnit.test('should pass jshint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/contribute-test.js should pass jshint.');
   });
 });
 define('trailmap/tests/unit/routes/desktop-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
