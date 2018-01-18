@@ -1,7 +1,7 @@
 {{outlet}}
 
 <main>
-  {{#leaflet-map lat=lat lng=lng zoom=zoom zoomControl=false onMoveend=(action "updatePosition") as |layers|}}
+  {{#leaflet-map lat=lat lng=lng zoom=zoom onMoveend=(action "updatePosition") as |layers|}}
     {{#if (eq basemap 'default')}}
       {{tile-layer url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png'}}
     {{/if}}

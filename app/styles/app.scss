@@ -226,6 +226,12 @@ h1.ui.inverted.header.logo {
   display: none;
 }
 
+.leaflet-control-container {
+  position: absolute;
+  bottom: 85px;
+  right: 60px;
+}
+
 // .leaflet-popup-content {
 //   width: 400px;
 // }
